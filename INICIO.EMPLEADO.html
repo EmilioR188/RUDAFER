@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RUDAFER | Panel de Empleado</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="EMPLEADO.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         CONTENEDOR PRINCIPAL
+    ====================================================== -->
+
+    <div class="app-container">
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-top">
+
+                <!-- LOGO -->
+                <div class="brand">
+                    <div class="brand-logo">
+                        R
+                    </div>
+
+                    <div class="brand-name">
+                        RUDAFER
+                    </div>
+                </div>
+
+                <!-- PERFIL -->
+                <div class="employee-profile">
+
+                    <div class="profile-avatar">
+                        F
+                    </div>
+
+                    <div class="profile-info">
+                        <span class="profile-name">
+                            Facundo
+                        </span>
+
+                        <span class="profile-role">
+                            Empleado
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- NAVEGACIÓN -->
+                <nav class="sidebar-navigation">
+
+                    <a href="#" class="nav-item active">
+
+                        <span class="nav-icon">
+                            +
+                        </span>
+
+                        <span>
+                            Nueva venta
+                        </span>
+
+                    </a>
+
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            ▣
+                        </span>
+
+                        <span>
+                            Mis ventas
+                        </span>
+
+                    </a>
+
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            ◉
+                        </span>
+
+                        <span>
+                            Mi comisión
+                        </span>
+
+                    </a>
+
+
+                    <a href="#" class="nav-item">
+
+                        <span class="nav-icon">
+                            ⚙
+                        </span>
+
+                        <span>
+                            Mi cuenta
+                        </span>
+
+                    </a>
+
+                </nav>
+
+            </div>
+
+
+            <!-- CERRAR SESIÓN -->
+
+            <div class="sidebar-bottom">
+
+                <button class="logout-button">
+
+                    <span class="nav-icon">
+                        ←
+                    </span>
+
+                    <span>
+                        Cerrar sesión
+                    </span>
+
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             CONTENIDO PRINCIPAL
+        ================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <header class="top-header">
+
+                <div class="header-title">
+
+                    <span class="page-section">
+                        Panel de empleado
+                    </span>
+
+                    <h1>
+                        Nueva venta
+                    </h1>
+
+                </div>
+
+
+                <div class="header-date">
+
+                    <span>
+                        Lunes, 24 de agosto
+                    </span>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 RESUMEN
+            ================================================== -->
+
+            <section class="employee-summary">
+
+
+                <!-- VENTAS -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon sales-icon">
+                        #
+                    </div>
+
+                    <div class="summary-information">
+
+                        <span class="summary-label">
+                            Ventas realizadas
+                        </span>
+
+                        <strong class="summary-value">
+                            18
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- COMISIÓN -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon commission-icon">
+                        $
+                    </div>
+
+                    <div class="summary-information">
+
+                        <span class="summary-label">
+                            Comisión acumulada
+                        </span>
+
+                        <strong class="summary-value">
+                            $12.795
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- =================================================
+                 CONTENEDOR DE VENTA
+            ================================================== -->
+
+            <section class="sale-container">
+
+
+                <!-- =================================================
+                     PANEL DE PRODUCTOS
+                ================================================== -->
+
+                <div class="sale-products-panel">
+
+
+                    <!-- ENCABEZADO -->
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <span class="panel-label">
+                                Punto de venta
+                            </span>
+
+                            <h2>
+                                Productos
+                            </h2>
+
+                        </div>
+
+                        <span class="sale-status">
+                            Venta en curso
+                        </span>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ESCÁNER
+                    ================================================== -->
+
+                    <div class="scanner-container">
+
+                        <div class="scanner-label">
+
+                            <span class="scanner-icon">
+                                ▣
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Escanear producto
+                                </strong>
+
+                                <span>
+                                    Escanee el código de barras del producto
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="scanner-input-container">
+
+                            <input
+                                type="text"
+                                id="barcode-input"
+                                class="barcode-input"
+                                placeholder="Escanee o ingrese el código de barras"
+                                autocomplete="off"
+                                autofocus
+                            >
+
+                            <button
+                                type="button"
+                                id="scan-button"
+                                class="scan-button"
+                            >
+                                Agregar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         TABLA DE PRODUCTOS
+                    ================================================== -->
+
+                    <div class="products-table-container">
+
+                        <table class="products-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Producto
+                                    </th>
+
+                                    <th>
+                                        Código
+                                    </th>
+
+                                    <th>
+                                        Precio
+                                    </th>
+
+                                    <th>
+                                        Cantidad
+                                    </th>
+
+                                    <th>
+                                        Subtotal
+                                    </th>
+
+                                    <th>
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="sale-products">
+
+                                <!--
+
+                                EJEMPLO DE PRODUCTO
+
+                                Estos datos posteriormente serán
+                                generados automáticamente mediante JS.
+
+                                -->
+
+                                <tr class="product-row">
+
+                                    <td>
+
+                                        <div class="product-information">
+
+                                            <div class="product-placeholder">
+                                                P
+                                            </div>
+
+                                            <div>
+
+                                                <strong>
+                                                    Pintura interior 1L
+                                                </strong>
+
+                                                <span>
+                                                    Producto de ejemplo
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        7791234567890
+                                    </td>
+
+
+                                    <td>
+                                        $8.200
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="quantity-control">
+
+                                            <button
+                                                type="button"
+                                                class="quantity-button"
+                                            >
+                                                −
+                                            </button>
+
+                                            <span>
+                                                1
+                                            </span>
+
+                                            <button
+                                                type="button"
+                                                class="quantity-button"
+                                            >
+                                                +
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <strong>
+                                            $8.200
+                                        </strong>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <button
+                                            type="button"
+                                            class="delete-product"
+                                            aria-label="Eliminar producto"
+                                        >
+                                            ×
+                                        </button>
+
+                                    </td>
+
+                                </tr>
+
+
+                                <!--
+
+                                SI NO HAY PRODUCTOS:
+
+                                -->
+
+                                <!--
+
+                                <tr class="empty-sale">
+
+                                    <td colspan="6">
+
+                                        <div class="empty-sale-content">
+
+                                            <span>
+                                                +
+                                            </span>
+
+                                            <strong>
+                                                No hay productos cargados
+                                            </strong>
+
+                                            <p>
+                                                Escanee un producto para comenzar la venta.
+                                            </p>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                                -->
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACCIONES DE VENTA
+                    ================================================== -->
+
+                    <div class="sale-actions">
+
+                        <button
+                            type="button"
+                            class="cancel-sale-button"
+                        >
+                            Cancelar venta
+                        </button>
+
+                        <button
+                            type="button"
+                            class="clear-sale-button"
+                        >
+                            Vaciar carrito
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PANEL DERECHO
+                ================================================== -->
+
+                <aside class="checkout-panel">
+
+
+                    <!-- TOTAL -->
+
+                    <div class="total-section">
+
+                        <span>
+                            Total de la venta
+                        </span>
+
+                        <strong id="sale-total">
+                            $8.200
+                        </strong>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         MÉTODO DE PAGO
+                    ================================================== -->
+
+                    <div class="payment-section">
+
+                        <div class="payment-title">
+
+                            <span>
+                                Método de pago
+                            </span>
+
+                            <small>
+                                Seleccione una opción
+                            </small>
+
+                        </div>
+
+
+                        <!-- MÉTODOS PRINCIPALES -->
+
+                        <div class="payment-methods">
+
+
+                            <button
+                                type="button"
+                                class="payment-method"
+                                data-payment="efectivo"
+                            >
+
+                                <span class="payment-method-icon">
+                                    $
+                                </span>
+
+                                <span>
+                                    Efectivo
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="payment-method"
+                                data-payment="transferencia"
+                            >
+
+                                <span class="payment-method-icon">
+                                    ⇄
+                                </span>
+
+                                <span>
+                                    Transferencia
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="payment-method"
+                                data-payment="qr"
+                            >
+
+                                <span class="payment-method-icon">
+                                    ▦
+                                </span>
+
+                                <span>
+                                    QR / Mercado Pago
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="payment-method"
+                                data-payment="tarjeta"
+                            >
+
+                                <span class="payment-method-icon">
+                                    ▭
+                                </span>
+
+                                <span>
+                                    Tarjeta
+                                </span>
+
+                            </button>
+
+
+                        </div>
+
+
+                        <!-- =================================================
+                             TARJETA
+                        ================================================== -->
+
+                        <div
+                            class="card-payment-options"
+                            id="card-payment-options"
+                        >
+
+                            <!-- TIPO -->
+
+                            <div class="payment-subsection">
+
+                                <span class="payment-subtitle">
+                                    Tipo de tarjeta
+                                </span>
+
+
+                                <div class="card-types">
+
+                                    <button
+                                        type="button"
+                                        class="card-type-button"
+                                        data-card-type="debito"
+                                    >
+                                        Débito
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="card-type-button"
+                                        data-card-type="credito"
+                                    >
+                                        Crédito
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CUOTAS -->
+
+                            <div
+                                class="installments-section"
+                                id="installments-section"
+                            >
+
+                                <span class="payment-subtitle">
+                                    Cuotas
+                                </span>
+
+
+                                <div class="installment-options">
+
+                                    <button
+                                        type="button"
+                                        class="installment-button"
+                                        data-installments="1"
+                                    >
+                                        1 pago
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="installment-button"
+                                        data-installments="3"
+                                    >
+                                        3 cuotas
+                                    </button>
+
+
+                                    <button
+                                        type="button"
+                                        class="installment-button"
+                                        data-installments="6"
+                                    >
+                                        6 cuotas
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         RESUMEN
+                    ================================================== -->
+
+                    <div class="checkout-summary">
+
+                        <div class="checkout-line">
+
+                            <span>
+                                Productos
+                            </span>
+
+                            <strong id="product-count">
+                                1
+                            </strong>
+
+                        </div>
+
+
+                        <div class="checkout-line">
+
+                            <span>
+                                Método
+                            </span>
+
+                            <strong id="selected-payment">
+                                Sin seleccionar
+                            </strong>
+
+                        </div>
+
+
+                        <div class="checkout-line total-line">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong id="checkout-total">
+                                $8.200
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         FINALIZAR
+                    ================================================== -->
+
+                    <button
+                        type="button"
+                        id="finish-sale-button"
+                        class="finish-sale-button"
+                    >
+
+                        <span>
+                            Finalizar compra
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <p class="database-warning">
+
+                        La venta se registrará en el sistema
+                        únicamente al finalizar la compra.
+
+                    </p>
+
+                </aside>
+
+            </section>
+
+
+            <!-- =================================================
+                 HISTORIAL DE VENTAS
+            ================================================== -->
+
+            <section class="sales-history">
+
+
+                <div class="history-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            Actividad
+                        </span>
+
+                        <h2>
+                            Mis ventas de hoy
+                        </h2>
+
+                    </div>
+
+
+                    <span class="history-count">
+                        18 operaciones
+                    </span>
+
+                </div>
+
+
+                <div class="history-table-container">
+
+                    <table class="history-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Venta
+                                </th>
+
+                                <th>
+                                    Hora
+                                </th>
+
+                                <th>
+                                    Productos
+                                </th>
+
+                                <th>
+                                    Método de pago
+                                </th>
+
+                                <th>
+                                    Estado
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    #000421
+                                </td>
+
+                                <td>
+                                    10:32
+                                </td>
+
+                                <td>
+                                    3 productos
+                                </td>
+
+                                <td>
+                                    Efectivo
+                                </td>
+
+                                <td>
+                                    <span class="sale-completed">
+                                        Completada
+                                    </span>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    #000422
+                                </td>
+
+                                <td>
+                                    10:48
+                                </td>
+
+                                <td>
+                                    1 producto
+                                </td>
+
+                                <td>
+                                    Tarjeta · Débito
+                                </td>
+
+                                <td>
+                                    <span class="sale-completed">
+                                        Completada
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    #000423
+                                </td>
+
+                                <td>
+                                    11:15
+                                </td>
+
+                                <td>
+                                    5 productos
+                                </td>
+
+                                <td>
+                                    Tarjeta · Crédito · 3 cuotas
+                                </td>
+
+                                <td>
+                                    <span class="sale-completed">
+                                        Completada
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         MODAL DE CONFIRMACIÓN
+    ====================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="confirmation-modal"
+    >
+
+        <div class="confirmation-modal">
+
+            <div class="confirmation-icon">
+                ✓
+            </div>
+
+            <h2>
+                ¿Finalizar compra?
+            </h2>
+
+            <p>
+                Una vez confirmada, la venta será registrada
+                en el sistema y se actualizará el stock.
+            </p>
+
+
+            <div class="confirmation-actions">
+
+                <button
+                    type="button"
+                    class="modal-cancel"
+                >
+                    Cancelar
+                </button>
+
+
+                <button
+                    type="button"
+                    class="modal-confirm"
+                >
+                    Confirmar compra
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="empleado.js"></script>
+
+</body>
+
+</html>
