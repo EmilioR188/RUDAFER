@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="RUDAFER - Movimientos"
+    >
+
+    <title>RUDAFER | Movimientos</title>
+
+    <link
+        rel="stylesheet"
+        href="ESTILOS.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="MOVIMIENTOS.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         CONTROL MODO OSCURO
+    ====================================================== -->
+
+    <input
+        type="checkbox"
+        id="modo-oscuro"
+        class="theme-toggle-input"
+    >
+
+
+    <div class="app">
+
+
+        <!-- =================================================
+             BARRA LATERAL
+        ================================================== -->
+
+        <aside class="sidebar">
+
+
+            <!-- LOGO -->
+
+            <div class="brand">
+
+                <a
+                    href="INICIO.html"
+                    class="brand-link"
+                >
+
+                    <div class="brand-mark">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+
+                    <div class="brand-text">
+
+                        <h1>RUDAFER</h1>
+
+                        <p>
+                            Gestión Interna
+                        </p>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- MENÚ -->
+
+            <nav
+                class="main-nav"
+                aria-label="Navegación principal"
+            >
+
+
+                <!-- INICIO -->
+
+                <a
+                    href="INICIO.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5h-5.7v-6h-5.6v6H3.5a.5.5 0 0 1-.5-.5z"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Inicio
+                    </span>
+
+                </a>
+
+
+
+                <!-- INVENTARIO -->
+
+                <a
+                    href="INVENTARIO.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path d="M5 4h14v16H5z"/>
+
+                            <path
+                                d="M8 8h8M8 12h8M8 16h5"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Inventario
+                    </span>
+
+                </a>
+
+
+
+                <!-- PEDIDOS -->
+
+                <a
+                    href="PEDIDOS.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M6 3h9l3 3v15H6z"
+                            />
+
+                            <path
+                                d="M15 3v4h4M9 11h6M9 15h6M9 7h3"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Pedidos
+                    </span>
+
+                </a>
+
+
+
+                <!-- MOVIMIENTOS -->
+
+                <a
+                    href="MOVIMIENTOS.html"
+                    class="nav-item active"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M7 7h11l-2.5-2.5"
+                            />
+
+                            <path
+                                d="M17 17H6l2.5 2.5"
+                            />
+
+                            <path
+                                d="M18 7a6 6 0 0 0-6-4"
+                            />
+
+                            <path
+                                d="M6 17a6 6 0 0 0 6 4"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Movimientos
+                    </span>
+
+                </a>
+
+
+
+                <!-- REPORTES -->
+
+                <a
+                    href="REPORTES.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M5 19V9M12 19V5M19 19v-8"
+                            />
+
+                            <path d="M3 19h18"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Reportes
+                    </span>
+
+                </a>
+
+
+
+                <!-- CONFIGURACIÓN -->
+
+                <a
+                    href="CONFIGURACION.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="3"
+                            />
+
+                            <path
+                                d="
+                                M19.4 15
+                                a1.8 1.8 0 0 0 .4 2
+                                l.1.1
+                                -1.6 1.6
+                                -.1-.1
+                                a1.8 1.8 0 0 0-2-.4
+                                1.8 1.8 0 0 0-1.1 1.7
+                                v.1
+                                h-2.2
+                                v-.1
+                                a1.8 1.8 0 0 0-1.1-1.7
+                                1.8 1.8 0 0 0-2 .4
+                                l-.1.1
+                                -1.6-1.6
+                                .1-.1
+                                a1.8 1.8 0 0 0 .4-2
+                                A1.8 1.8 0 0 0 7 13.9
+                                h-.1
+                                v-2.2
+                                H7
+                                a1.8 1.8 0 0 0 1.6-1.1
+                                1.8 1.8 0 0 0-.4-2
+                                l-.1-.1
+                                1.6-1.6
+                                .1.1
+                                a1.8 1.8 0 0 0 2 .4
+                                A1.8 1.8 0 0 0 12.9 6
+                                v-.1
+                                h2.2
+                                V6
+                                a1.8 1.8 0 0 0 1.1 1.7
+                                1.8 1.8 0 0 0 2-.4
+                                l.1-.1
+                                1.6 1.6
+                                -.1.1
+                                a1.8 1.8 0 0 0-.4 2
+                                1.8 1.8 0 0 0 1.7 1.1
+                                h.1
+                                v2.2
+                                h.1
+                                a1.8 1.8 0 0 0-1.7.8z
+                                "
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Configuración
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+
+            <!-- ESTADO -->
+
+            <div class="sidebar-footer">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        Sistema operativo
+                    </strong>
+
+                    <span>
+                        Todo funcionando correctamente
+                    </span>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =================================================
+             CONTENIDO PRINCIPAL
+        ================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =================================================
+                 TOPBAR
+            ================================================== -->
+
+            <header class="topbar">
+
+
+                <!-- BUSCADOR -->
+
+                <div class="search-box">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="7"
+                        />
+
+                        <path
+                            d="m20 20-4-4"
+                        />
+
+                    </svg>
+
+
+                    <input
+                        type="search"
+                        id="busqueda"
+                        name="busqueda"
+                        placeholder="Buscar producto, código, movimiento..."
+                        autocomplete="off"
+                    >
+
+
+                    <kbd>
+                        Ctrl K
+                    </kbd>
+
+                </div>
+
+
+
+                <!-- ACCIONES -->
+
+                <div class="topbar-actions">
+
+
+                    <!-- NOTIFICACIONES -->
+
+                    <button
+                        class="icon-button notification-button"
+                        type="button"
+                        aria-label="Ver notificaciones"
+                    >
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="
+                                M18 9
+                                a6 6 0 0 0-12 0
+                                c0 7-3 7-3 9
+                                h18
+                                c0-2-3-2-3-9
+                                M10 21h4
+                                "
+                            />
+
+                        </svg>
+
+
+                        <span class="notification-dot">
+                            3
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- MODO OSCURO -->
+
+                    <label
+                        for="modo-oscuro"
+                        class="theme-switch"
+                        title="Cambiar modo claro/oscuro"
+                    >
+
+                        <span class="theme-sun">
+                            ☀
+                        </span>
+
+
+                        <span class="theme-track">
+
+                            <span class="theme-knob"></span>
+
+                        </span>
+
+
+                        <span class="theme-moon">
+                            ☾
+                        </span>
+
+                    </label>
+
+
+
+                    <!-- USUARIO -->
+
+                    <a
+                        href="CONFIGURACION.html"
+                        class="user-profile"
+                    >
+
+                        <div class="avatar">
+                            JP
+                        </div>
+
+
+                        <div class="user-info">
+
+                            <strong>
+                                Juan Pérez
+                            </strong>
+
+                            <span>
+                                Administrador
+                            </span>
+
+                        </div>
+
+
+                        <span class="chevron">
+                            ⌄
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 CONTENIDO
+            ================================================== -->
+
+            <div class="page-content movements-page">
+
+
+                <!-- =================================================
+                     ENCABEZADO
+                ================================================== -->
+
+                <section class="movements-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            HISTORIAL DEL SISTEMA
+                        </span>
+
+
+                        <h2>
+                            Movimientos
+                        </h2>
+
+
+                        <p>
+                            Registro de todas las entradas y salidas de mercadería de RUDAFER.
+                        </p>
+
+                    </div>
+
+
+                    <!-- SUCURSAL -->
+
+                    <div class="movement-branch">
+
+                        <label for="sucursalMovimiento">
+                            VISUALIZANDO
+                        </label>
+
+
+                        <div class="movement-select">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M3 21h18M5 21V6l7-3 7 3v15M9 21v-7h6v7M8 9h.01M12 9h.01M16 9h.01"
+                                />
+
+                            </svg>
+
+
+                            <select id="sucursalMovimiento">
+
+                                <option value="general">
+                                    GENERAL
+                                </option>
+
+                                <option value="sucursal1">
+                                    SUCURSAL 1
+                                </option>
+
+                                <option value="sucursal2">
+                                    SUCURSAL 2
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     RESUMEN
+                ================================================== -->
+
+                <section class="movement-summary">
+
+
+                    <article class="movement-summary-card">
+
+                        <span class="summary-icon sale">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M5 4h14v16H5z"
+                                />
+
+                                <path
+                                    d="M8 8h8M8 12h5M8 16h4"
+                                />
+
+                            </svg>
+
+                        </span>
+
+
+                        <div>
+
+                            <span>
+                                Ventas
+                            </span>
+
+                            <strong>
+                                184
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <article class="movement-summary-card">
+
+                        <span class="summary-icon purchase">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M4 7h16v13H4z"
+                                />
+
+                                <path
+                                    d="M8 7a4 4 0 0 1 8 0"
+                                />
+
+                            </svg>
+
+                        </span>
+
+
+                        <div>
+
+                            <span>
+                                Compras
+                            </span>
+
+                            <strong>
+                                27
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <article class="movement-summary-card">
+
+                        <span class="summary-icon transfer">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M5 7h13l-3-3"
+                                />
+
+                                <path
+                                    d="M19 17H6l3 3"
+                                />
+
+                            </svg>
+
+                        </span>
+
+
+                        <div>
+
+                            <span>
+                                Transferencias
+                            </span>
+
+                            <strong>
+                                14
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <article class="movement-summary-card">
+
+                        <span class="summary-icon adjustment">
+
+                            <svg viewBox="0 0 24 24">
+
+                                <path
+                                    d="M12 3v18M3 12h18"
+                                />
+
+                            </svg>
+
+                        </span>
+
+
+                        <div>
+
+                            <span>
+                                Ajustes
+                            </span>
+
+                            <strong>
+                                6
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     FILTROS
+                ================================================== -->
+
+                <section class="movement-filters">
+
+
+                    <div class="movement-filter">
+
+                        <label for="filtroMovimiento">
+                            TIPO DE MOVIMIENTO
+                        </label>
+
+                        <select id="filtroMovimiento">
+
+                            <option value="todos">
+                                Todos los movimientos
+                            </option>
+
+                            <option value="venta">
+                                Ventas
+                            </option>
+
+                            <option value="compra">
+                                Compras
+                            </option>
+
+                            <option value="transferencia">
+                                Transferencias
+                            </option>
+
+                            <option value="ajuste">
+                                Ajustes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="movement-filter">
+
+                        <label for="filtroFechaDesde">
+                            DESDE
+                        </label>
+
+                        <input
+                            type="date"
+                            id="filtroFechaDesde"
+                        >
+
+                    </div>
+
+
+
+                    <div class="movement-filter">
+
+                        <label for="filtroFechaHasta">
+                            HASTA
+                        </label>
+
+                        <input
+                            type="date"
+                            id="filtroFechaHasta"
+                        >
+
+                    </div>
+
+
+
+                    <div class="movement-filter">
+
+                        <label for="filtroSucursal">
+                            SUCURSAL
+                        </label>
+
+                        <select id="filtroSucursal">
+
+                            <option value="todas">
+                                Todas
+                            </option>
+
+                            <option value="sucursal1">
+                                Sucursal 1
+                            </option>
+
+                            <option value="sucursal2">
+                                Sucursal 2
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <button
+                        type="button"
+                        class="clear-movement-filters"
+                        id="limpiarMovimiento"
+                    >
+
+                        Limpiar filtros
+
+                    </button>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     TABLA
+                ================================================== -->
+
+                <section class="movements-section">
+
+
+                    <div class="movements-header">
+
+                        <div>
+
+                            <h3>
+                                Historial de movimientos
+                            </h3>
+
+                            <span>
+                                Últimos movimientos registrados
+                            </span>
+
+                        </div>
+
+
+                        <div class="movement-sort">
+
+                            <span>
+                                Ordenar por
+                            </span>
+
+                            <select id="ordenMovimientos">
+
+                                <option value="reciente">
+                                    Más recientes
+                                </option>
+
+                                <option value="antiguo">
+                                    Más antiguos
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="movements-table-card">
+
+                        <div class="movements-table-wrapper">
+
+                            <table class="movements-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            FECHA
+                                        </th>
+
+                                        <th>
+                                            MOVIMIENTO
+                                        </th>
+
+                                        <th>
+                                            PRODUCTO
+                                        </th>
+
+                                        <th>
+                                            CÓDIGO
+                                        </th>
+
+                                        <th>
+                                            CANTIDAD
+                                        </th>
+
+                                        <th>
+                                            SUCURSAL
+                                        </th>
+
+                                        <th>
+                                            RESPONSABLE
+                                        </th>
+
+                                        <th>
+                                            REFERENCIA
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody id="tablaMovimientos">
+
+
+                                    <!-- VENTA -->
+
+                                    <tr data-movimiento="venta">
+
+                                        <td>
+                                            08/09/2026 18:42
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-type sale">
+
+                                                <span class="movement-dot"></span>
+
+                                                Venta
+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <div class="movement-product">
+
+                                                <strong>
+                                                    Tornillo hexagonal 1/2"
+                                                </strong>
+
+                                                <span>
+                                                    Ferretería
+                                                </span>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-code">
+                                                TOR0012
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong class="quantity negative">
+                                                −12
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+                                            Sucursal 1
+                                        </td>
+
+                                        <td>
+                                            Juan Pérez
+                                        </td>
+
+                                        <td>
+                                            VTA-01842
+                                        </td>
+
+                                    </tr>
+
+
+
+                                    <!-- COMPRA -->
+
+                                    <tr data-movimiento="compra">
+
+                                        <td>
+                                            08/09/2026 16:20
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-type purchase">
+
+                                                <span class="movement-dot"></span>
+
+                                                Compra
+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <div class="movement-product">
+
+                                                <strong>
+                                                    Cemento Portland 50kg
+                                                </strong>
+
+                                                <span>
+                                                    Construcción
+                                                </span>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-code">
+                                                CEM0001
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong class="quantity positive">
+                                                +20
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+                                            Sucursal 1
+                                        </td>
+
+                                        <td>
+                                            Juan Pérez
+                                        </td>
+
+                                        <td>
+                                            PED-0025
+                                        </td>
+
+                                    </tr>
+
+
+
+                                    <!-- TRANSFERENCIA -->
+
+                                    <tr data-movimiento="transferencia">
+
+                                        <td>
+                                            08/09/2026 14:05
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-type transfer">
+
+                                                <span class="movement-dot"></span>
+
+                                                Transferencia
+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <div class="movement-product">
+
+                                                <strong>
+                                                    Cable Unipolar 2,5mm
+                                                </strong>
+
+                                                <span>
+                                                    Electricidad
+                                                </span>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-code">
+                                                CAB2500
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong class="quantity negative">
+                                                −50
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+                                            Sucursal 1 → 2
+                                        </td>
+
+                                        <td>
+                                            Martín López
+                                        </td>
+
+                                        <td>
+                                            TRF-0014
+                                        </td>
+
+                                    </tr>
+
+
+
+                                    <!-- AJUSTE -->
+
+                                    <tr data-movimiento="ajuste">
+
+                                        <td>
+                                            08/09/2026 11:30
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-type adjustment">
+
+                                                <span class="movement-dot"></span>
+
+                                                Ajuste
+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <div class="movement-product">
+
+                                                <strong>
+                                                    Pintura Látex 20L
+                                                </strong>
+
+                                                <span>
+                                                    Pinturas
+                                                </span>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-code">
+                                                PIN2020
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong class="quantity positive">
+                                                +2
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+                                            Sucursal 1
+                                        </td>
+
+                                        <td>
+                                            Juan Pérez
+                                        </td>
+
+                                        <td>
+                                            AJU-0048
+                                        </td>
+
+                                    </tr>
+
+
+
+                                    <!-- VENTA -->
+
+                                    <tr data-movimiento="venta">
+
+                                        <td>
+                                            08/09/2026 10:17
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-type sale">
+
+                                                <span class="movement-dot"></span>
+
+                                                Venta
+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <div class="movement-product">
+
+                                                <strong>
+                                                    Caño PVC 110mm
+                                                </strong>
+
+                                                <span>
+                                                    Plomería
+                                                </span>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-code">
+                                                PVC0110
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong class="quantity negative">
+                                                −4
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+                                            Sucursal 2
+                                        </td>
+
+                                        <td>
+                                            Carlos Gómez
+                                        </td>
+
+                                        <td>
+                                            VTA-01839
+                                        </td>
+
+                                    </tr>
+
+
+
+                                    <!-- COMPRA -->
+
+                                    <tr data-movimiento="compra">
+
+                                        <td>
+                                            07/09/2026 17:45
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-type purchase">
+
+                                                <span class="movement-dot"></span>
+
+                                                Compra
+
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <div class="movement-product">
+
+                                                <strong>
+                                                    Cable Unipolar 2,5mm
+                                                </strong>
+
+                                                <span>
+                                                    Electricidad
+                                                </span>
+
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+
+                                            <span class="movement-code">
+                                                CAB2500
+                                            </span>
+
+                                        </td>
+
+                                        <td>
+
+                                            <strong class="quantity positive">
+                                                +100
+                                            </strong>
+
+                                        </td>
+
+                                        <td>
+                                            Sucursal 2
+                                        </td>
+
+                                        <td>
+                                            Juan Pérez
+                                        </td>
+
+                                        <td>
+                                            PED-0024
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             PAGINACIÓN
+                        ================================================== -->
+
+                        <div class="movements-pagination">
+
+                            <span class="pagination-info">
+                                Mostrando 1–6 de 231 movimientos
+                            </span>
+
+
+                            <div class="pagination-buttons">
+
+                                <button
+                                    class="pagination-button disabled"
+                                    type="button"
+                                >
+                                    ← Anterior
+                                </button>
+
+
+                                <button
+                                    class="pagination-button active"
+                                    type="button"
+                                >
+                                    1
+                                </button>
+
+
+                                <button
+                                    class="pagination-button"
+                                    type="button"
+                                >
+                                    2
+                                </button>
+
+
+                                <button
+                                    class="pagination-button"
+                                    type="button"
+                                >
+                                    3
+                                </button>
+
+
+                                <span class="pagination-dots">
+                                    ...
+                                </span>
+
+
+                                <button
+                                    class="pagination-button"
+                                    type="button"
+                                >
+                                    39
+                                </button>
+
+
+                                <button
+                                    class="pagination-button"
+                                    type="button"
+                                >
+                                    Siguiente →
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+
+        /* =================================================
+           CTRL + K
+        ================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.ctrlKey &&
+                    event.key.toLowerCase() === "k"
+                ) {
+
+                    event.preventDefault();
+
+                    document
+                        .getElementById("busqueda")
+                        .focus();
+
+                }
+
+            }
+        );
+
+
+
+        /* =================================================
+           FILTRO POR TIPO
+        ================================================== */
+
+        const filtroMovimiento =
+            document.getElementById(
+                "filtroMovimiento"
+            );
+
+
+        const filasMovimientos =
+            document.querySelectorAll(
+                "#tablaMovimientos tr"
+            );
+
+
+        filtroMovimiento.addEventListener(
+            "change",
+            function () {
+
+                const tipo =
+                    this.value;
+
+
+                filasMovimientos.forEach(
+                    function (fila) {
+
+                        const movimiento =
+                            fila.dataset.movimiento;
+
+
+                        if (
+                            tipo === "todos" ||
+                            tipo === movimiento
+                        ) {
+
+                            fila.style.display = "";
+
+                        } else {
+
+                            fila.style.display =
+                                "none";
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* =================================================
+           LIMPIAR FILTROS
+        ================================================== */
+
+        document
+            .getElementById(
+                "limpiarMovimiento"
+            )
+            .addEventListener(
+                "click",
+                function () {
+
+                    document
+                        .getElementById(
+                            "filtroMovimiento"
+                        )
+                        .value = "todos";
+
+
+                    document
+                        .getElementById(
+                            "filtroFechaDesde"
+                        )
+                        .value = "";
+
+
+                    document
+                        .getElementById(
+                            "filtroFechaHasta"
+                        )
+                        .value = "";
+
+
+                    document
+                        .getElementById(
+                            "filtroSucursal"
+                        )
+                        .value = "todas";
+
+
+                    filasMovimientos.forEach(
+                        function (fila) {
+
+                            fila.style.display = "";
+
+                        }
+                    );
+
+                }
+            );
+
+    </script>
+
+
+</body>
+
+</html>

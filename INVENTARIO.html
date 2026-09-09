@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="RUDAFER - Inventario"
+    >
+
+    <title>RUDAFER | Inventario</title>
+
+    <link rel="stylesheet" href="ESTILOS.css">
+    <link rel="stylesheet" href="INVENTARIO.css">
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         CONTROL MODO OSCURO
+    ====================================================== -->
+
+    <input
+        type="checkbox"
+        id="modo-oscuro"
+        class="theme-toggle-input"
+    >
+
+
+    <div class="app">
+
+
+        <!-- =================================================
+             BARRA LATERAL
+        ================================================== -->
+
+        <aside class="sidebar">
+
+
+            <!-- LOGO -->
+
+            <div class="brand">
+
+                <a
+                    href="INICIO.html"
+                    class="brand-link"
+                >
+
+                    <div class="brand-mark">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+
+                    <div class="brand-text">
+
+                        <h1>RUDAFER</h1>
+
+                        <p>
+                            Gestión Interna
+                        </p>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- MENÚ -->
+
+            <nav
+                class="main-nav"
+                aria-label="Navegación principal"
+            >
+
+
+                <!-- INICIO -->
+
+                <a
+                    href="INICIO.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5h-5.7v-6h-5.6v6H3.5a.5.5 0 0 1-.5-.5z"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Inicio
+                    </span>
+
+                </a>
+
+
+
+                <!-- INVENTARIO -->
+
+                <a
+                    href="INVENTARIO.html"
+                    class="nav-item active"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path d="M5 4h14v16H5z"/>
+
+                            <path
+                                d="M8 8h8M8 12h8M8 16h5"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Inventario
+                    </span>
+
+                </a>
+
+
+
+                <!-- PEDIDOS -->
+
+                <a
+                    href="PEDIDOS.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M6 3h9l3 3v15H6z"
+                            />
+
+                            <path
+                                d="M15 3v4h4M9 11h6M9 15h6M9 7h3"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Pedidos
+                    </span>
+
+                </a>
+
+
+
+                <!-- MOVIMIENTOS -->
+
+                <a
+                    href="MOVIMIENTOS.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M7 7h11l-2.5-2.5"
+                            />
+
+                            <path
+                                d="M17 17H6l2.5 2.5"
+                            />
+
+                            <path
+                                d="M18 7a6 6 0 0 0-6-4"
+                            />
+
+                            <path
+                                d="M6 17a6 6 0 0 0 6 4"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Movimientos
+                    </span>
+
+                </a>
+
+
+
+                <!-- REPORTES -->
+
+                <a
+                    href="REPORTES.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M5 19V9M12 19V5M19 19v-8"
+                            />
+
+                            <path
+                                d="M3 19h18"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Reportes
+                    </span>
+
+                </a>
+
+
+
+                <!-- CONFIGURACIÓN -->
+
+                <a
+                    href="CONFIGURACION.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="3"
+                            />
+
+                            <path
+                                d="
+                                M19.4 15
+                                a1.8 1.8 0 0 0 .4 2
+                                l.1.1
+                                -1.6 1.6
+                                -.1-.1
+                                a1.8 1.8 0 0 0-2-.4
+                                1.8 1.8 0 0 0-1.1 1.7
+                                v.1
+                                h-2.2
+                                v-.1
+                                a1.8 1.8 0 0 0-1.1-1.7
+                                1.8 1.8 0 0 0-2 .4
+                                l-.1.1
+                                -1.6-1.6
+                                .1-.1
+                                a1.8 1.8 0 0 0 .4-2
+                                A1.8 1.8 0 0 0 7 13.9
+                                h-.1
+                                v-2.2
+                                H7
+                                a1.8 1.8 0 0 0 1.6-1.1
+                                1.8 1.8 0 0 0-.4-2
+                                l-.1-.1
+                                1.6-1.6
+                                .1.1
+                                a1.8 1.8 0 0 0 2 .4
+                                A1.8 1.8 0 0 0 12.9 6
+                                v-.1
+                                h2.2
+                                V6
+                                a1.8 1.8 0 0 0 1.1 1.7
+                                1.8 1.8 0 0 0 2-.4
+                                l.1-.1
+                                1.6 1.6
+                                -.1.1
+                                a1.8 1.8 0 0 0-.4 2
+                                1.8 1.8 0 0 0 1.7 1.1
+                                h.1
+                                v2.2
+                                h-.1
+                                a1.8 1.8 0 0 0-1.7.8z
+                                "
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Configuración
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+
+            <!-- ESTADO -->
+
+            <div class="sidebar-footer">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        Sistema operativo
+                    </strong>
+
+                    <span>
+                        Todo funcionando correctamente
+                    </span>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =================================================
+             CONTENIDO PRINCIPAL
+        ================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =================================================
+                 TOPBAR
+            ================================================== -->
+
+            <header class="topbar">
+
+
+                <!-- BUSCADOR -->
+
+                <div class="search-box">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="7"
+                        />
+
+                        <path
+                            d="m20 20-4-4"
+                        />
+
+                    </svg>
+
+
+                    <input
+                        type="search"
+                        id="busqueda-global"
+                        placeholder="Buscar producto, código, categoría..."
+                        autocomplete="off"
+                    >
+
+
+                    <kbd>
+                        Ctrl K
+                    </kbd>
+
+                </div>
+
+
+
+                <!-- ACCIONES -->
+
+                <div class="topbar-actions">
+
+
+                    <!-- NOTIFICACIONES -->
+
+                    <button
+                        class="icon-button notification-button"
+                        type="button"
+                        aria-label="Ver notificaciones"
+                    >
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="
+                                M18 9
+                                a6 6 0 0 0-12 0
+                                c0 7-3 7-3 9
+                                h18
+                                c0-2-3-2-3-9
+                                M10 21h4
+                                "
+                            />
+
+                        </svg>
+
+
+                        <span class="notification-dot">
+                            3
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- MODO OSCURO -->
+
+                    <label
+                        for="modo-oscuro"
+                        class="theme-switch"
+                        title="Cambiar modo claro/oscuro"
+                    >
+
+                        <span class="theme-sun">
+                            ☀
+                        </span>
+
+
+                        <span class="theme-track">
+
+                            <span class="theme-knob"></span>
+
+                        </span>
+
+
+                        <span class="theme-moon">
+                            ☾
+                        </span>
+
+                    </label>
+
+
+
+                    <!-- USUARIO -->
+
+                    <a
+                        href="CONFIGURACION.html"
+                        class="user-profile"
+                    >
+
+                        <div class="avatar">
+                            JP
+                        </div>
+
+
+                        <div class="user-info">
+
+                            <strong>
+                                Juan Pérez
+                            </strong>
+
+                            <span>
+                                Administrador
+                            </span>
+
+                        </div>
+
+
+                        <span class="chevron">
+                            ⌄
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 CONTENIDO INVENTARIO
+            ================================================== -->
+
+            <div class="page-content">
+
+
+                <!-- ENCABEZADO -->
+
+                <section class="inventory-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            GESTIÓN DE STOCK
+                        </span>
+
+                        <h2>
+                            Inventario
+                        </h2>
+
+                        <p>
+                            Consultá, modificá y administrá todos los productos de RUDAFER.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="new-product-button"
+                        id="nuevo-producto"
+                    >
+
+                        <span class="plus-icon">
+                            +
+                        </span>
+
+                        Nuevo producto
+
+                    </button>
+
+                </section>
+
+
+
+                <!-- FILTROS -->
+
+                <section class="inventory-filters panel">
+
+                    <div class="filter-search">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <circle
+                                cx="11"
+                                cy="11"
+                                r="7"
+                            />
+
+                            <path
+                                d="m20 20-4-4"
+                            />
+
+                        </svg>
+
+
+                        <input
+                            type="search"
+                            id="buscar-producto"
+                            placeholder="Buscar por nombre o código..."
+                        >
+
+                    </div>
+
+
+
+                    <div class="filter-select">
+
+                        <label>
+                            Categoría
+                        </label>
+
+                        <select id="filtro-categoria">
+
+                            <option value="todas">
+                                Todas las categorías
+                            </option>
+
+                            <option value="pintura">
+                                Pinturas
+                            </option>
+
+                            <option value="herramientas">
+                                Herramientas
+                            </option>
+
+                            <option value="electricidad">
+                                Electricidad
+                            </option>
+
+                            <option value="plomeria">
+                                Plomería
+                            </option>
+
+                            <option value="ferreteria">
+                                Ferretería
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="filter-select">
+
+                        <label>
+                            Marca
+                        </label>
+
+                        <select id="filtro-marca">
+
+                            <option value="todas">
+                                Todas las marcas
+                            </option>
+
+                            <option value="sinteplast">
+                                Sinteplast
+                            </option>
+
+                            <option value="alba">
+                                Alba
+                            </option>
+
+                            <option value="tigre">
+                                Tigre
+                            </option>
+
+                            <option value="stanley">
+                                Stanley
+                            </option>
+
+                            <option value="bosch">
+                                Bosch
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="filter-select">
+
+                        <label>
+                            Estado
+                        </label>
+
+                        <select id="filtro-estado">
+
+                            <option value="todos">
+                                Todos
+                            </option>
+
+                            <option value="disponible">
+                                Disponible
+                            </option>
+
+                            <option value="bajo">
+                                Stock bajo
+                            </option>
+
+                            <option value="agotado">
+                                Agotado
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- CABECERA CATALOGO -->
+
+                <section class="catalog-header">
+
+                    <div>
+
+                        <strong>
+                            Productos
+                        </strong>
+
+                        <span>
+                            1.248 productos encontrados
+                        </span>
+
+                    </div>
+
+
+                    <div class="catalog-options">
+
+                        <span>
+                            Ordenar por
+                        </span>
+
+                        <select id="orden-productos">
+
+                            <option value="nombre">
+                                Nombre
+                            </option>
+
+                            <option value="stock">
+                                Stock
+                            </option>
+
+                            <option value="categoria">
+                                Categoría
+                            </option>
+
+                            <option value="recientes">
+                                Más recientes
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- TABLA -->
+
+                <section class="inventory-table-panel panel">
+
+                    <div class="inventory-table-wrapper">
+
+                        <table class="inventory-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        CÓDIGO
+                                    </th>
+
+                                    <th>
+                                        PRODUCTO
+                                    </th>
+
+                                    <th>
+                                        CATEGORÍA
+                                    </th>
+
+                                    <th>
+                                        MARCA
+                                    </th>
+
+                                    <th>
+                                        STOCK
+                                    </th>
+
+                                    <th>
+                                        STOCK MÍNIMO
+                                    </th>
+
+                                    <th>
+                                        ESTADO
+                                    </th>
+
+                                    <th>
+                                        ACCIONES
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+
+                                <!-- PRODUCTO 1 -->
+
+                                <tr>
+
+                                    <td>
+
+                                        <span class="product-code">
+                                            TOR0012
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="catalog-product">
+
+                                            <div class="product-image">
+                                                T
+                                            </div>
+
+                                            <div>
+
+                                                <strong>
+                                                    Tornillo hexagonal 1/2"
+                                                </strong>
+
+                                                <span>
+                                                    Tornillo de acero galvanizado
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        Ferretería
+                                    </td>
+
+
+                                    <td>
+                                        Fixer
+                                    </td>
+
+
+                                    <td>
+
+                                        <strong class="stock-number critical">
+                                            5
+                                        </strong>
+
+                                    </td>
+
+
+                                    <td>
+                                        20
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="status-badge danger">
+                                            Stock bajo
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="action-buttons">
+
+                                            <button
+                                                type="button"
+                                                class="action-button edit"
+                                                title="Editar producto"
+                                            >
+
+                                                <svg viewBox="0 0 24 24">
+
+                                                    <path
+                                                        d="M12 20h9"
+                                                    />
+
+                                                    <path
+                                                        d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"
+                                                    />
+
+                                                </svg>
+
+                                            </button>
+
+
+                                            <button
+                                                type="button"
+                                                class="action-button delete"
+                                                title="Eliminar producto"
+                                            >
+
+                                                <svg viewBox="0 0 24 24">
+
+                                                    <path
+                                                        d="M4 7h16"
+                                                    />
+
+                                                    <path
+                                                        d="M10 11v6M14 11v6"
+                                                    />
+
+                                                    <path
+                                                        d="M6 7l1 14h10l1-14"
+                                                    />
+
+                                                    <path
+                                                        d="M9 7V4h6v3"
+                                                    />
+
+                                                </svg>
+
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+
+
+                                <!-- PRODUCTO 2 -->
+
+                                <tr>
+
+                                    <td>
+
+                                        <span class="product-code">
+                                            CEM0001
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="catalog-product">
+
+                                            <div class="product-image cement">
+                                                C
+                                            </div>
+
+                                            <div>
+
+                                                <strong>
+                                                    Cemento Portland 50kg
+                                                </strong>
+
+                                                <span>
+                                                    Cemento para construcción
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        Construcción
+                                    </td>
+
+
+                                    <td>
+                                        Loma Negra
+                                    </td>
+
+
+                                    <td>
+
+                                        <strong class="stock-number low">
+                                            8
+                                        </strong>
+
+                                    </td>
+
+
+                                    <td>
+                                        15
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="status-badge warning">
+                                            Stock bajo
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="action-buttons">
+
+                                            <button
+                                                type="button"
+                                                class="action-button edit"
+                                                title="Editar producto"
+                                            >
+
+                                                <svg viewBox="0 0 24 24">
+
+                                                    <path
+                                                        d="M12 20h9"
+                                                    />
+
+                                                    <path
+                                                        d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"
+                                                    />
+
+                                                </svg>
+
+                                            </button>
+
+
+                                            <button
+                                                type="button"
+                                                class="action-button delete"
+                                                title="Eliminar producto"
+                                            >
+
+                                                <svg viewBox="0 0 24 24">
+
+                                                    <path
+                                                        d="M4 7h16"
+                                                    />
+
+                                                    <path
+                                                        d="M10 11v6M14 11v6"
+                                                    />
+
+                                                    <path
+                                                        d="M6 7l1 14h10l1-14"
+                                                    />
+
+                                                    <path
+                                                        d="M9 7V4h6v3"
+                                                    />
+
+                                                </svg>
+
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+
+
+                                <!-- PRODUCTO 3 -->
+
+                                <tr>
+
+                                    <td>
+
+                                        <span class="product-code">
+                                            PVC0110
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="catalog-product">
+
+                                            <div class="product-image pvc">
+                                                P
+                                            </div>
+
+                                            <div>
+
+                                                <strong>
+                                                    Caño PVC 110mm
+                                                </strong>
+
+                                                <span>
+                                                    Caño PVC sanitario
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        Plomería
+                                    </td>
+
+
+                                    <td>
+                                        Tigre
+                                    </td>
+
+
+                                    <td>
+
+                                        <strong class="stock-number critical">
+                                            3
+                                        </strong>
+
+                                    </td>
+
+
+                                    <td>
+                                        10
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="status-badge danger">
+                                            Stock bajo
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="action-buttons">
+
+                                            <button
+                                                type="button"
+                                                class="action-button edit"
+                                            >
+
+                                                <svg viewBox="0 0 24 24">
+
+                                                    <path
+                                                        d="M12 20h9"
+                                                    />
+
+                                                    <path
+                                                        d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"
+                                                    />
+
+                                                </svg>
+
+                                            </button>
+
+
+                                            <button
+                                                type="button"
+                                                class="action-button delete"
+                                            >
+
+                                                <svg viewBox="0 0 24 24">
+
+                                                    <path
+                                                        d="M4 7h16"
+                                                    />
+
+                                                    <path
+                                                        d="M10 11v6M14 11v6"
+                                                    />
+
+                                                    <path
+                                                        d="M6 7l1 14h10l1-14"
+                                                    />
+
+                                                    <path
+                                                        d="M9 7V4h6v3"
+                                                    />
+
+                                                </svg>
+
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+
+
+                                <!-- PRODUCTO 4 -->
+
+                                <tr>
+
+                                    <td>
+
+                                        <span class="product-code">
+                                            PIN2020
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="catalog-product">
+
+                                            <div class="product-image paint">
+                                                P
+                                            </div>
+
+                                            <div>
+
+                                                <strong>
+                                                    Pintura Látex 20L
+                                                </strong>
+
+                                                <span>
+                                                    Pintura interior mate
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        Pinturas
+                                    </td>
+
+
+                                    <td>
+                                        Alba
+                                    </td>
+
+
+                                    <td>
+
+                                        <strong class="stock-number good">
+                                            34
+                                        </strong>
+
+                                    </td>
+
+
+                                    <td>
+                                        12
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="status-badge success">
+                                            Disponible
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="action-buttons">
+
+                                            <button
+                                                type="button"
+                                                class="action-button edit"
+                                            >
+
+                                                <svg viewBox="0 0 24 24">
+
+                                                    <path
+                                                        d="M12 20h9"
+                                                    />
+
+                                                    <path
+                                                        d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"
+                                                    />
+
+                                                </svg>
+
+                                            </button>
+
+
+                                            <button
+                                                type="button"
+                                                class="action-button delete"
+                                            >
+
+                                                <svg viewBox="0 0 24 24">
+
+                                                    <path
+                                                        d="M4 7h16"
+                                                    />
+
+                                                    <path
+                                                        d="M10 11v6M14 11v6"
+                                                    />
+
+                                                    <path
+                                                        d="M6 7l1 14h10l1-14"
+                                                    />
+
+                                                    <path
+                                                        d="M9 7V4h6v3"
+                                                    />
+
+                                                </svg>
+
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+
+
+                                <!-- PRODUCTO 5 -->
+
+                                <tr>
+
+                                    <td>
+
+                                        <span class="product-code">
+                                            CAB2500
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="catalog-product">
+
+                                            <div class="product-image cable">
+                                                C
+                                            </div>
+
+                                            <div>
+
+                                                <strong>
+                                                    Cable Unipolar 2,5mm
+                                                </strong>
+
+                                                <span>
+                                                    Cable eléctrico unipolar
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <td>
+                                        Electricidad
+                                    </td>
+
+
+                                    <td>
+                                        Prysmian
+                                    </td>
+
+
+                                    <td>
+
+                                        <strong class="stock-number good">
+                                            67
+                                        </strong>
+
+                                    </td>
+
+
+                                    <td>
+                                        25
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="status-badge success">
+                                            Disponible
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <div class="action-buttons">
+
+                                            <button
+                                                type="button"
+                                                class="action-button edit"
+                                            >
+
+                                                <svg viewBox="0 0 24 24">
+
+                                                    <path
+                                                        d="M12 20h9"
+                                                    />
+
+                                                    <path
+                                                        d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"
+                                                    />
+
+                                                </svg>
+
+                                            </button>
+
+
+                                            <button
+                                                type="button"
+                                                class="action-button delete"
+                                            >
+
+                                                <svg viewBox="0 0 24 24">
+
+                                                    <path
+                                                        d="M4 7h16"
+                                                    />
+
+                                                    <path
+                                                        d="M10 11v6M14 11v6"
+                                                    />
+
+                                                    <path
+                                                        d="M6 7l1 14h10l1-14"
+                                                    />
+
+                                                    <path
+                                                        d="M9 7V4h6v3"
+                                                    />
+
+                                                </svg>
+
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+
+                    <!-- PAGINACIÓN -->
+
+                    <div class="inventory-pagination">
+
+
+                        <span class="pagination-info">
+                            Mostrando 1–5 de 1.248 productos
+                        </span>
+
+
+                        <div class="pagination-buttons">
+
+                            <button
+                                type="button"
+                                class="pagination-button disabled"
+                            >
+                                ←
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="pagination-button active"
+                            >
+                                1
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="pagination-button"
+                            >
+                                2
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="pagination-button"
+                            >
+                                3
+                            </button>
+
+
+                            <span class="pagination-dots">
+                                ...
+                            </span>
+
+
+                            <button
+                                type="button"
+                                class="pagination-button"
+                            >
+                                25
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="pagination-button"
+                            >
+                                →
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- FOOTER -->
+
+                <footer class="footer">
+
+                    <span>
+                        RUDAFER · Gestión Interna
+                    </span>
+
+                    <span>
+                        Última sincronización: hace 2 minutos
+                    </span>
+
+                </footer>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        /* ================================================
+           CTRL + K
+        ================================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.ctrlKey &&
+                    event.key.toLowerCase() === "k"
+                ) {
+
+                    event.preventDefault();
+
+                    document
+                        .getElementById("busqueda-global")
+                        .focus();
+
+                }
+
+            }
+        );
+
+
+        /* ================================================
+           BUSCADOR DEL INVENTARIO
+        ================================================= */
+
+        const buscador =
+            document.getElementById("buscar-producto");
+
+
+        buscador.addEventListener(
+            "input",
+            function () {
+
+                const texto =
+                    this.value.toLowerCase();
+
+                const filas =
+                    document.querySelectorAll(
+                        ".inventory-table tbody tr"
+                    );
+
+
+                filas.forEach(
+                    function (fila) {
+
+                        const contenido =
+                            fila.textContent.toLowerCase();
+
+                        fila.style.display =
+                            contenido.includes(texto)
+                                ? ""
+                                : "none";
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* ================================================
+           BUSCADOR SUPERIOR
+        ================================================= */
+
+        const busquedaGlobal =
+            document.getElementById(
+                "busqueda-global"
+            );
+
+
+        busquedaGlobal.addEventListener(
+            "input",
+            function () {
+
+                buscador.value =
+                    this.value;
+
+                buscador.dispatchEvent(
+                    new Event("input")
+                );
+
+            }
+        );
+
+
+        /* ================================================
+           NUEVO PRODUCTO
+        ================================================= */
+
+        document
+            .getElementById("nuevo-producto")
+            .addEventListener(
+                "click",
+                function () {
+
+                    alert(
+                        "Acá se abrirá el formulario para crear un nuevo producto."
+                    );
+
+                }
+            );
+
+
+        /* ================================================
+           BOTONES EDITAR
+        ================================================= */
+
+        document
+            .querySelectorAll(".action-button.edit")
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            alert(
+                                "Acá se abrirá la edición del producto."
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+
+        /* ================================================
+           BOTONES ELIMINAR
+        ================================================= */
+
+        document
+            .querySelectorAll(".action-button.delete")
+            .forEach(
+                function (button) {
+
+                    button.addEventListener(
+                        "click",
+                        function () {
+
+                            const confirmar =
+                                confirm(
+                                    "¿Seguro que querés eliminar este producto?"
+                                );
+
+
+                            if (confirmar) {
+
+                                this
+                                    .closest("tr")
+                                    .remove();
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+    </script>
+
+</body>
+</html>

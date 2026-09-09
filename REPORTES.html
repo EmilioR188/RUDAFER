@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="RUDAFER - Reportes y estadísticas"
+    >
+
+    <title>RUDAFER | Reportes</title>
+
+    <link rel="stylesheet" href="ESTILOS.css">
+    <link rel="stylesheet" href="REPORTES.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         CONTROL MODO OSCURO
+    ====================================================== -->
+
+    <input
+        type="checkbox"
+        id="modo-oscuro"
+        class="theme-toggle-input"
+    >
+
+
+    <div class="app">
+
+
+        <!-- =================================================
+             BARRA LATERAL
+        ================================================== -->
+
+        <aside class="sidebar">
+
+
+            <!-- LOGO -->
+
+            <div class="brand">
+
+                <a
+                    href="INICIO.html"
+                    class="brand-link"
+                >
+
+                    <div class="brand-mark">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+
+                    <div class="brand-text">
+
+                        <h1>RUDAFER</h1>
+
+                        <p>
+                            Gestión Interna
+                        </p>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- MENÚ -->
+
+            <nav
+                class="main-nav"
+                aria-label="Navegación principal"
+            >
+
+
+                <!-- INICIO -->
+
+                <a
+                    href="INICIO.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5h-5.7v-6h-5.6v6H3.5a.5.5 0 0 1-.5-.5z"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Inicio
+                    </span>
+
+                </a>
+
+
+
+                <!-- INVENTARIO -->
+
+                <a
+                    href="INVENTARIO.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path d="M5 4h14v16H5z"/>
+
+                            <path
+                                d="M8 8h8M8 12h8M8 16h5"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Inventario
+                    </span>
+
+                </a>
+
+
+
+                <!-- PEDIDOS -->
+
+                <a
+                    href="PEDIDOS.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M6 3h9l3 3v15H6z"
+                            />
+
+                            <path
+                                d="M15 3v4h4M9 11h6M9 15h6M9 7h3"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Pedidos
+                    </span>
+
+                </a>
+
+
+
+                <!-- MOVIMIENTOS -->
+
+                <a
+                    href="MOVIMIENTOS.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M7 7h11l-2.5-2.5"
+                            />
+
+                            <path
+                                d="M17 17H6l2.5 2.5"
+                            />
+
+                            <path
+                                d="M18 7a6 6 0 0 0-6-4"
+                            />
+
+                            <path
+                                d="M6 17a6 6 0 0 0 6 4"
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Movimientos
+                    </span>
+
+                </a>
+
+
+
+                <!-- REPORTES -->
+
+                <a
+                    href="REPORTES.html"
+                    class="nav-item active"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M5 19V9M12 19V5M19 19v-8"
+                            />
+
+                            <path d="M3 19h18"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Reportes
+                    </span>
+
+                </a>
+
+
+
+                <!-- CONFIGURACIÓN -->
+
+                <a
+                    href="CONFIGURACION.html"
+                    class="nav-item"
+                >
+
+                    <span class="nav-icon">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="3"
+                            />
+
+                            <path
+                                d="
+                                M19.4 15
+                                a1.8 1.8 0 0 0 .4 2
+                                l.1.1
+                                -1.6 1.6
+                                -.1-.1
+                                a1.8 1.8 0 0 0-2-.4
+                                1.8 1.8 0 0 0-1.1 1.7
+                                v.1
+                                h-2.2
+                                v-.1
+                                a1.8 1.8 0 0 0-1.1-1.7
+                                1.8 1.8 0 0 0-2 .4
+                                l-.1.1
+                                -1.6-1.6
+                                .1-.1
+                                a1.8 1.8 0 0 0 .4-2
+                                A1.8 1.8 0 0 0 7 13.9
+                                h-.1
+                                v-2.2
+                                H7
+                                a1.8 1.8 0 0 0 1.6-1.1
+                                1.8 1.8 0 0 0-.4-2
+                                l-.1-.1
+                                1.6-1.6
+                                .1.1
+                                a1.8 1.8 0 0 0 2 .4
+                                A1.8 1.8 0 0 0 12.9 6
+                                v-.1
+                                h2.2
+                                V6
+                                a1.8 1.8 0 0 0 1.1 1.7
+                                1.8 1.8 0 0 0 2-.4
+                                l.1-.1
+                                1.6 1.6
+                                -.1.1
+                                a1.8 1.8 0 0 0-.4 2
+                                1.8 1.8 0 0 0 1.7 1.1
+                                h.1
+                                v2.2
+                                h-.1
+                                a1.8 1.8 0 0 0-1.7.8z
+                                "
+                            />
+
+                        </svg>
+
+                    </span>
+
+                    <span>
+                        Configuración
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+
+            <!-- ESTADO -->
+
+            <div class="sidebar-footer">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        Sistema operativo
+                    </strong>
+
+                    <span>
+                        Todo funcionando correctamente
+                    </span>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- =================================================
+             CONTENIDO PRINCIPAL
+        ================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- =================================================
+                 TOPBAR
+            ================================================== -->
+
+            <header class="topbar">
+
+
+                <!-- BUSCADOR -->
+
+                <div class="search-box">
+
+                    <svg viewBox="0 0 24 24">
+
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="7"
+                        />
+
+                        <path
+                            d="m20 20-4-4"
+                        />
+
+                    </svg>
+
+
+                    <input
+                        type="search"
+                        id="busqueda"
+                        name="busqueda"
+                        placeholder="Buscar producto, código, categoría..."
+                        autocomplete="off"
+                    >
+
+
+                    <kbd>
+                        Ctrl K
+                    </kbd>
+
+                </div>
+
+
+
+                <!-- ACCIONES -->
+
+                <div class="topbar-actions">
+
+
+                    <!-- NOTIFICACIONES -->
+
+                    <button
+                        class="icon-button notification-button"
+                        type="button"
+                        aria-label="Ver notificaciones"
+                    >
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="
+                                M18 9
+                                a6 6 0 0 0-12 0
+                                c0 7-3 7-3 9
+                                h18
+                                c0-2-3-2-3-9
+                                M10 21h4
+                                "
+                            />
+
+                        </svg>
+
+
+                        <span class="notification-dot">
+                            3
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- MODO OSCURO -->
+
+                    <label
+                        for="modo-oscuro"
+                        class="theme-switch"
+                        title="Cambiar modo claro/oscuro"
+                    >
+
+                        <span class="theme-sun">
+                            ☀
+                        </span>
+
+
+                        <span class="theme-track">
+
+                            <span class="theme-knob"></span>
+
+                        </span>
+
+
+                        <span class="theme-moon">
+                            ☾
+                        </span>
+
+                    </label>
+
+
+
+                    <!-- USUARIO -->
+
+                    <a
+                        href="CONFIGURACION.html"
+                        class="user-profile"
+                    >
+
+                        <div class="avatar">
+                            JP
+                        </div>
+
+
+                        <div class="user-info">
+
+                            <strong>
+                                Juan Pérez
+                            </strong>
+
+                            <span>
+                                Administrador
+                            </span>
+
+                        </div>
+
+
+                        <span class="chevron">
+                            ⌄
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =================================================
+                 CONTENIDO REPORTES
+            ================================================== -->
+
+            <div class="page-content">
+
+
+                <!-- ENCABEZADO -->
+
+                <section class="page-heading">
+
+                    <div class="heading-left">
+
+                        <span class="eyebrow">
+                            ANÁLISIS DEL NEGOCIO
+                        </span>
+
+                        <h2>
+                            Reportes y estadísticas
+                        </h2>
+
+                        <p>
+                            Analizá las ventas, ganancias, inventario y rendimiento de RUDAFER.
+                        </p>
+
+
+                        <!-- SUCURSAL -->
+
+                        <div class="branch-selector">
+
+                            <label for="reportesSucursal">
+                                VISUALIZANDO
+                            </label>
+
+
+                            <div class="select-wrapper">
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <path
+                                        d="M3 21h18M5 21V6l7-3 7 3v15M9 21v-7h6v7M8 9h.01M12 9h.01M16 9h.01"
+                                    />
+
+                                </svg>
+
+
+                                <select id="reportesSucursal">
+
+                                    <option value="general">
+                                        GENERAL
+                                    </option>
+
+                                    <option value="sucursal1">
+                                        SUCURSAL 1
+                                    </option>
+
+                                    <option value="sucursal2">
+                                        SUCURSAL 2
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- FECHA -->
+
+                    <div class="date-pill">
+
+                        <svg viewBox="0 0 24 24">
+
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="16"
+                                rx="2"
+                            />
+
+                            <path
+                                d="M16 3v4M8 3v4M3 10h18"
+                            />
+
+                        </svg>
+
+                        <span>
+                            8 Septiembre 2026
+                        </span>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     FILTROS
+                ================================================== -->
+
+                <section class="reportes-filtros">
+
+                    <div class="reportes-filtro">
+
+                        <label>
+                            PERÍODO
+                        </label>
+
+                        <select id="reportesPeriodo">
+
+                            <option value="mes">
+                                Este mes
+                            </option>
+
+                            <option value="semana">
+                                Esta semana
+                            </option>
+
+                            <option value="hoy">
+                                Hoy
+                            </option>
+
+                            <option value="trimestre">
+                                Últimos 3 meses
+                            </option>
+
+                            <option value="anio">
+                                Este año
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="reportes-filtro">
+
+                        <label>
+                            COMPARAR CON
+                        </label>
+
+                        <select id="reportesComparacion">
+
+                            <option value="anterior">
+                                Período anterior
+                            </option>
+
+                            <option value="anio">
+                                Mismo período año anterior
+                            </option>
+
+                            <option value="ninguno">
+                                Sin comparación
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="reportes-filtro-boton"
+                        id="actualizarReportes"
+                    >
+
+                        <svg viewBox="0 0 24 24">
+
+                            <path
+                                d="M20 11a8 8 0 0 0-14.9-4M4 4v5h5"
+                            />
+
+                            <path
+                                d="M4 13a8 8 0 0 0 14.9 4M20 20v-5h-5"
+                            />
+
+                        </svg>
+
+                        Actualizar
+
+                    </button>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     INDICADORES PRINCIPALES
+                ================================================== -->
+
+                <section class="reportes-indicadores">
+
+
+                    <!-- FACTURACIÓN -->
+
+                    <article class="reportes-card reportes-card-orange">
+
+                        <div class="reportes-card-superior">
+
+                            <span>
+                                FACTURACIÓN
+                            </span>
+
+                            <div class="reportes-icono">
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <rect
+                                        x="3"
+                                        y="6"
+                                        width="18"
+                                        height="13"
+                                        rx="2"
+                                    />
+
+                                    <path
+                                        d="M7 10h4M7 14h7"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                        <strong class="reportes-numero">
+                            $1.284.500
+                        </strong>
+
+                        <div class="reportes-variacion positiva">
+                            ↗ 8,4%
+                            <span>vs. período anterior</span>
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- GANANCIA -->
+
+                    <article class="reportes-card reportes-card-green">
+
+                        <div class="reportes-card-superior">
+
+                            <span>
+                                GANANCIA ESTIMADA
+                            </span>
+
+                            <div class="reportes-icono">
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <path
+                                        d="M4 19V5M4 19h16"
+                                    />
+
+                                    <path
+                                        d="m7 15 4-4 3 2 5-7"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                        <strong class="reportes-numero">
+                            $428.360
+                        </strong>
+
+                        <div class="reportes-variacion positiva">
+                            ↗ 11,2%
+                            <span>vs. período anterior</span>
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- VENTAS -->
+
+                    <article class="reportes-card reportes-card-yellow">
+
+                        <div class="reportes-card-superior">
+
+                            <span>
+                                VENTAS
+                            </span>
+
+                            <div class="reportes-icono">
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <path
+                                        d="M6 3h12v18H6z"
+                                    />
+
+                                    <path
+                                        d="M9 7h6M9 11h6M9 15h3"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                        <strong class="reportes-numero">
+                            184
+                        </strong>
+
+                        <div class="reportes-variacion positiva">
+                            ↗ 5,7%
+                            <span>operaciones realizadas</span>
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- TICKET -->
+
+                    <article class="reportes-card reportes-card-blue">
+
+                        <div class="reportes-card-superior">
+
+                            <span>
+                                TICKET PROMEDIO
+                            </span>
+
+                            <div class="reportes-icono">
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <path
+                                        d="M6 3h12v18H6z"
+                                    />
+
+                                    <path
+                                        d="M9 8h6M9 12h6M9 16h4"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                        <strong class="reportes-numero">
+                            $6.981
+                        </strong>
+
+                        <div class="reportes-variacion positiva">
+                            ↗ 2,6%
+                            <span>importe promedio</span>
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- STOCK -->
+
+                    <article class="reportes-card reportes-card-dark">
+
+                        <div class="reportes-card-superior">
+
+                            <span>
+                                VALOR DEL STOCK
+                            </span>
+
+                            <div class="reportes-icono">
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <path
+                                        d="m12 3 9 5-9 5-9-5z"
+                                    />
+
+                                    <path
+                                        d="m3 12 9 5 9-5M3 16l9 5 9-5"
+                                    />
+
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                        <strong class="reportes-numero">
+                            $8.742.900
+                        </strong>
+
+                        <div class="reportes-variacion neutra">
+                            924
+                            <span>productos registrados</span>
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     GRÁFICO DE VENTAS + MÉTODOS DE PAGO
+                ================================================== -->
+
+                <section class="reportes-fila-principal">
+
+
+                    <!-- GRÁFICO -->
+
+                    <article class="panel reportes-panel reportes-panel-grafico">
+
+                        <div class="reportes-panel-header">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    EVOLUCIÓN
+                                </span>
+
+                                <h3>
+                                    Ventas del período
+                                </h3>
+
+                                <p>
+                                    Facturación diaria registrada.
+                                </p>
+
+                            </div>
+
+
+                            <div class="reportes-leyenda">
+
+                                <span class="reportes-leyenda-item">
+
+                                    <i></i>
+
+                                    Ventas
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="reportes-grafico">
+
+                            <div class="reportes-eje">
+
+                                <span>$250k</span>
+                                <span>$200k</span>
+                                <span>$150k</span>
+                                <span>$100k</span>
+                                <span>$50k</span>
+                                <span>$0</span>
+
+                            </div>
+
+
+                            <div class="reportes-grafico-area">
+
+                                <div class="reportes-linea linea-1"></div>
+                                <div class="reportes-linea linea-2"></div>
+                                <div class="reportes-linea linea-3"></div>
+                                <div class="reportes-linea linea-4"></div>
+                                <div class="reportes-linea linea-5"></div>
+
+
+                                <div class="reportes-barras">
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:42%;"
+                                        ></div>
+
+                                        <span>
+                                            1
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:57%;"
+                                        ></div>
+
+                                        <span>
+                                            2
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:48%;"
+                                        ></div>
+
+                                        <span>
+                                            3
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:72%;"
+                                        ></div>
+
+                                        <span>
+                                            4
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:61%;"
+                                        ></div>
+
+                                        <span>
+                                            5
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:84%;"
+                                        ></div>
+
+                                        <span>
+                                            6
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:68%;"
+                                        ></div>
+
+                                        <span>
+                                            7
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:92%;"
+                                        ></div>
+
+                                        <span>
+                                            8
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:76%;"
+                                        ></div>
+
+                                        <span>
+                                            9
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:64%;"
+                                        ></div>
+
+                                        <span>
+                                            10
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:87%;"
+                                        ></div>
+
+                                        <span>
+                                            11
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="reportes-barra-item">
+
+                                        <div
+                                            class="reportes-barra"
+                                            style="height:96%;"
+                                        ></div>
+
+                                        <span>
+                                            12
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- MÉTODOS DE PAGO -->
+
+                    <article class="panel reportes-panel reportes-pagos">
+
+                        <div class="reportes-panel-header">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    VENTAS
+                                </span>
+
+                                <h3>
+                                    Métodos de pago
+                                </h3>
+
+                                <p>
+                                    Distribución de operaciones.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="reportes-pagos-lista">
+
+
+                            <div class="reportes-pago">
+
+                                <div class="reportes-pago-icono efectivo">
+
+                                    $
+
+                                </div>
+
+                                <div class="reportes-pago-info">
+
+                                    <strong>
+                                        Efectivo
+                                    </strong>
+
+                                    <span>
+                                        68 operaciones
+                                    </span>
+
+                                </div>
+
+                                <strong>
+                                    37%
+                                </strong>
+
+                            </div>
+
+
+                            <div class="reportes-pago">
+
+                                <div class="reportes-pago-icono debito">
+
+                                    ▣
+
+                                </div>
+
+                                <div class="reportes-pago-info">
+
+                                    <strong>
+                                        Débito
+                                    </strong>
+
+                                    <span>
+                                        43 operaciones
+                                    </span>
+
+                                </div>
+
+                                <strong>
+                                    23%
+                                </strong>
+
+                            </div>
+
+
+                            <div class="reportes-pago">
+
+                                <div class="reportes-pago-icono credito">
+
+                                    ◇
+
+                                </div>
+
+                                <div class="reportes-pago-info">
+
+                                    <strong>
+                                        Crédito
+                                    </strong>
+
+                                    <span>
+                                        31 operaciones
+                                    </span>
+
+                                </div>
+
+                                <strong>
+                                    17%
+                                </strong>
+
+                            </div>
+
+
+                            <div class="reportes-pago">
+
+                                <div class="reportes-pago-icono transferencia">
+
+                                    ↗
+
+                                </div>
+
+                                <div class="reportes-pago-info">
+
+                                    <strong>
+                                        Transferencia / QR
+                                    </strong>
+
+                                    <span>
+                                        42 operaciones
+                                    </span>
+
+                                </div>
+
+                                <strong>
+                                    23%
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="reportes-total-pagos">
+
+                            <span>
+                                Total de operaciones
+                            </span>
+
+                            <strong>
+                                184
+                            </strong>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     GANANCIAS + INVENTARIO
+                ================================================== -->
+
+                <section class="reportes-fila-secundaria">
+
+
+                    <!-- GANANCIAS -->
+
+                    <article class="panel reportes-panel">
+
+                        <div class="reportes-panel-header">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    RENTABILIDAD
+                                </span>
+
+                                <h3>
+                                    Ganancias
+                                </h3>
+
+                            </div>
+
+                            <span class="reportes-margen">
+                                Margen 33,3%
+                            </span>
+
+                        </div>
+
+
+                        <div class="reportes-ganancias">
+
+                            <div class="reportes-ganancia-row">
+
+                                <span>
+                                    Facturación
+                                </span>
+
+                                <strong>
+                                    $1.284.500
+                                </strong>
+
+                            </div>
+
+
+                            <div class="reportes-ganancia-row">
+
+                                <span>
+                                    Costo de mercadería
+                                </span>
+
+                                <strong class="reportes-costo">
+                                    -$856.140
+                                </strong>
+
+                            </div>
+
+
+                            <div class="reportes-separador"></div>
+
+
+                            <div class="reportes-ganancia-row total">
+
+                                <span>
+                                    Ganancia bruta
+                                </span>
+
+                                <strong>
+                                    $428.360
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="reportes-rentabilidad">
+
+                            <div class="reportes-rentabilidad-dato">
+
+                                <span>
+                                    Mejor categoría
+                                </span>
+
+                                <strong>
+                                    Pinturas
+                                </strong>
+
+                            </div>
+
+
+                            <div class="reportes-rentabilidad-dato">
+
+                                <span>
+                                    Mayor margen
+                                </span>
+
+                                <strong>
+                                    41,8%
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+
+                    <!-- INVENTARIO -->
+
+                    <article class="panel reportes-panel">
+
+                        <div class="reportes-panel-header">
+
+                            <div>
+
+                                <span class="eyebrow">
+                                    INVENTARIO
+                                </span>
+
+                                <h3>
+                                    Estado del stock
+                                </h3>
+
+                            </div>
+
+                            <a
+                                href="INVENTARIO.html"
+                                class="text-button"
+                            >
+                                Ver inventario →
+                            </a>
+
+                        </div>
+
+
+                        <div class="reportes-stock">
+
+
+                            <div class="reportes-stock-item">
+
+                                <div class="reportes-stock-cabecera">
+
+                                    <span>
+                                        Stock correcto
+                                    </span>
+
+                                    <strong>
+                                        864
+                                    </strong>
+
+                                </div>
+
+                                <div class="reportes-progreso">
+
+                                    <span
+                                        class="reportes-progreso-verde"
+                                        style="width: 93%;"
+                                    ></span>
+
+                                </div>
+
+                                <small>
+                                    93% del inventario
+                                </small>
+
+                            </div>
+
+
+
+                            <div class="reportes-stock-item">
+
+                                <div class="reportes-stock-cabecera">
+
+                                    <span>
+                                        Stock intermedio
+                                    </span>
+
+                                    <strong>
+                                        42
+                                    </strong>
+
+                                </div>
+
+                                <div class="reportes-progreso">
+
+                                    <span
+                                        class="reportes-progreso-amarillo"
+                                        style="width: 4.5%;"
+                                    ></span>
+
+                                </div>
+
+                                <small>
+                                    Requiere seguimiento
+                                </small>
+
+                            </div>
+
+
+
+                            <div class="reportes-stock-item">
+
+                                <div class="reportes-stock-cabecera">
+
+                                    <span>
+                                        Stock bajo
+                                    </span>
+
+                                    <strong>
+                                        18
+                                    </strong>
+
+                                </div>
+
+                                <div class="reportes-progreso">
+
+                                    <span
+                                        class="reportes-progreso-rojo"
+                                        style="width: 2%;"
+                                    ></span>
+
+                                </div>
+
+                                <small>
+                                    Requiere reposición
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     PRODUCTOS DESTACADOS
+                ================================================== -->
+
+                <section class="panel reportes-panel reportes-productos">
+
+                    <div class="reportes-panel-header">
+
+                        <div>
+
+                            <span class="eyebrow">
+                                RENDIMIENTO
+                            </span>
+
+                            <h3>
+                                Productos más vendidos
+                            </h3>
+
+                            <p>
+                                Productos con mayor cantidad de unidades vendidas durante el período.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="INVENTARIO.html"
+                            class="text-button"
+                        >
+                            Ver inventario →
+                        </a>
+
+                    </div>
+
+
+                    <div class="reportes-productos-grid">
+
+
+                        <div class="reportes-producto">
+
+                            <div class="reportes-ranking">
+                                01
+                            </div>
+
+                            <div class="reportes-producto-info">
+
+                                <strong>
+                                    Tornillo hexagonal 1/2"
+                                </strong>
+
+                                <span>
+                                    Ferretería
+                                </span>
+
+                            </div>
+
+                            <div class="reportes-producto-valor">
+
+                                <strong>
+                                    86
+                                </strong>
+
+                                <span>
+                                    unidades
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="reportes-producto">
+
+                            <div class="reportes-ranking">
+                                02
+                            </div>
+
+                            <div class="reportes-producto-info">
+
+                                <strong>
+                                    Cemento Portland 50kg
+                                </strong>
+
+                                <span>
+                                    Construcción
+                                </span>
+
+                            </div>
+
+                            <div class="reportes-producto-valor">
+
+                                <strong>
+                                    64
+                                </strong>
+
+                                <span>
+                                    unidades
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="reportes-producto">
+
+                            <div class="reportes-ranking">
+                                03
+                            </div>
+
+                            <div class="reportes-producto-info">
+
+                                <strong>
+                                    Pintura Látex 20L
+                                </strong>
+
+                                <span>
+                                    Pinturas
+                                </span>
+
+                            </div>
+
+                            <div class="reportes-producto-valor">
+
+                                <strong>
+                                    51
+                                </strong>
+
+                                <span>
+                                    unidades
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="reportes-producto">
+
+                            <div class="reportes-ranking">
+                                04
+                            </div>
+
+                            <div class="reportes-producto-info">
+
+                                <strong>
+                                    Caño PVC 110mm
+                                </strong>
+
+                                <span>
+                                    Sanitarios
+                                </span>
+
+                            </div>
+
+                            <div class="reportes-producto-valor">
+
+                                <strong>
+                                    44
+                                </strong>
+
+                                <span>
+                                    unidades
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     ALERTAS
+                ================================================== -->
+
+                <section class="reportes-alertas">
+
+
+                    <div class="reportes-alerta reportes-alerta-roja">
+
+                        <div class="reportes-alerta-icono">
+                            !
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                18 productos con stock bajo
+                            </strong>
+
+                            <span>
+                                Hay productos por debajo del stock mínimo configurado.
+                            </span>
+
+                        </div>
+
+                        <a href="INVENTARIO.html#alertas-stock">
+                            Revisar →
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="reportes-alerta reportes-alerta-amarilla">
+
+                        <div class="reportes-alerta-icono">
+                            $
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Pinturas lidera la rentabilidad
+                            </strong>
+
+                            <span>
+                                Esta categoría presenta el mayor margen del período.
+                            </span>
+
+                        </div>
+
+                        <a href="#">
+                            Analizar →
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+
+                <!-- =================================================
+                     FOOTER
+                ================================================== -->
+
+                <footer class="footer">
+
+                    <span>
+                        RUDAFER · Gestión Interna
+                    </span>
+
+                    <span>
+                        Última sincronización: hace 2 minutos
+                    </span>
+
+                </footer>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        /* =================================================
+           CTRL + K
+        ================================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.ctrlKey &&
+                    event.key.toLowerCase() === "k"
+                ) {
+
+                    event.preventDefault();
+
+                    document
+                        .getElementById("busqueda")
+                        .focus();
+
+                }
+
+            }
+        );
+
+
+
+        /* =================================================
+           ACTUALIZAR REPORTES
+        ================================================= */
+
+        const botonActualizar =
+            document.getElementById(
+                "actualizarReportes"
+            );
+
+
+        botonActualizar.addEventListener(
+            "click",
+            function () {
+
+                const periodo =
+                    document.getElementById(
+                        "reportesPeriodo"
+                    ).value;
+
+                const comparacion =
+                    document.getElementById(
+                        "reportesComparacion"
+                    ).value;
+
+                const sucursal =
+                    document.getElementById(
+                        "reportesSucursal"
+                    ).value;
+
+
+                console.log(
+                    "Actualizar reportes:",
+                    {
+                        periodo,
+                        comparacion,
+                        sucursal
+                    }
+                );
+
+                /*
+                    Más adelante:
+
+                    fetch(...)
+                    Java
+                    API
+                    Base de datos
+
+                    cargarán los valores reales.
+                */
+
+            }
+        );
+
+
+
+        /* =================================================
+           CAMBIO DE SUCURSAL
+        ================================================= */
+
+        document
+            .getElementById("reportesSucursal")
+            .addEventListener(
+                "change",
+                function () {
+
+                    console.log(
+                        "Sucursal:",
+                        this.value
+                    );
+
+                }
+            );
+
+    </script>
+
+</body>
+</html>

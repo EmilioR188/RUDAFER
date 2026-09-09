@@ -1,48 +1,76 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="RUDAFER - Sistema de gestión interna">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="RUDAFER - Sistema de gestión interna"
+    >
 
     <title>RUDAFER | Inicio</title>
 
-    <!-- CSS GENERAL DEL SISTEMA -->
     <link rel="stylesheet" href="ESTILOS.css">
+
 </head>
+
 
 <body>
 
-    <!--
-        CONTROL DEL MODO OSCURO
-        Se utiliza CSS para que funcione sin JavaScript.
-    -->
-    <input type="checkbox" id="modo-oscuro" class="theme-toggle-input">
+    <!-- =====================================================
+         CONTROL MODO OSCURO
+    ====================================================== -->
+
+    <input
+        type="checkbox"
+        id="modo-oscuro"
+        class="theme-toggle-input"
+    >
 
 
     <div class="app">
 
-        <!-- =====================================================
+
+        <!-- =================================================
              BARRA LATERAL
-        ====================================================== -->
+        ================================================== -->
 
         <aside class="sidebar">
 
+
             <!-- LOGO -->
+
             <div class="brand">
 
-                <a href="INICIO.html" class="brand-link">
+                <a
+                    href="INICIO.html"
+                    class="brand-link"
+                >
 
                     <div class="brand-mark">
+
                         <span></span>
                         <span></span>
                         <span></span>
+
                     </div>
 
+
                     <div class="brand-text">
+
                         <h1>RUDAFER</h1>
-                        <p>Gestión Interna</p>
+
+                        <p>
+                            Gestión Interna
+                        </p>
+
                     </div>
 
                 </a>
@@ -50,106 +78,189 @@
             </div>
 
 
+
             <!-- MENÚ -->
-            <nav class="main-nav" aria-label="Navegación principal">
+
+            <nav
+                class="main-nav"
+                aria-label="Navegación principal"
+            >
 
 
-                <!-- DASHBOARD -->
-                <a href="INICIO.html" class="nav-item active">
+                <!-- INICIO -->
+
+                <a
+                    href="INICIO.html"
+                    class="nav-item active"
+                >
 
                     <span class="nav-icon">
 
                         <svg viewBox="0 0 24 24">
-                            <path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5h-5.7v-6h-5.6v6H3.5a.5.5 0 0 1-.5-.5z"/>
+
+                            <path
+                                d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5h-5.7v-6h-5.6v6H3.5a.5.5 0 0 1-.5-.5z"
+                            />
+
                         </svg>
 
                     </span>
 
-                    <span>Dashboard</span>
+                    <span>
+                        Inicio
+                    </span>
 
                 </a>
+
 
 
                 <!-- INVENTARIO -->
-                <a href="INVENTARIO.html" class="nav-item">
+
+                <a
+                    href="INVENTARIO.html"
+                    class="nav-item"
+                >
 
                     <span class="nav-icon">
 
                         <svg viewBox="0 0 24 24">
+
                             <path d="M5 4h14v16H5z"/>
-                            <path d="M8 8h8M8 12h8M8 16h5"/>
+
+                            <path
+                                d="M8 8h8M8 12h8M8 16h5"
+                            />
+
                         </svg>
 
                     </span>
 
-                    <span>Inventario</span>
+                    <span>
+                        Inventario
+                    </span>
 
                 </a>
+
 
 
                 <!-- PEDIDOS -->
-                <a href="PEDIDOS.html" class="nav-item">
+
+                <a
+                    href="PEDIDOS.html"
+                    class="nav-item"
+                >
 
                     <span class="nav-icon">
 
                         <svg viewBox="0 0 24 24">
-                            <path d="M6 3h9l3 3v15H6z"/>
-                            <path d="M15 3v4h4M9 11h6M9 15h6M9 7h3"/>
+
+                            <path
+                                d="M6 3h9l3 3v15H6z"
+                            />
+
+                            <path
+                                d="M15 3v4h4M9 11h6M9 15h6M9 7h3"
+                            />
+
                         </svg>
 
                     </span>
 
-                    <span>Pedidos</span>
+                    <span>
+                        Pedidos
+                    </span>
 
                 </a>
+
 
 
                 <!-- MOVIMIENTOS -->
-                <a href="MOVIMIENTOS.html" class="nav-item">
+
+                <a
+                    href="MOVIMIENTOS.html"
+                    class="nav-item"
+                >
 
                     <span class="nav-icon">
 
                         <svg viewBox="0 0 24 24">
-                            <path d="M7 7h11l-2.5-2.5"/>
-                            <path d="M17 17H6l2.5 2.5"/>
-                            <path d="M18 7a6 6 0 0 0-6-4"/>
-                            <path d="M6 17a6 6 0 0 0 6 4"/>
+
+                            <path
+                                d="M7 7h11l-2.5-2.5"
+                            />
+
+                            <path
+                                d="M17 17H6l2.5 2.5"
+                            />
+
+                            <path
+                                d="M18 7a6 6 0 0 0-6-4"
+                            />
+
+                            <path
+                                d="M6 17a6 6 0 0 0 6 4"
+                            />
+
                         </svg>
 
                     </span>
 
-                    <span>Movimientos</span>
+                    <span>
+                        Movimientos
+                    </span>
 
                 </a>
+
 
 
                 <!-- REPORTES -->
-                <a href="REPORTES.html" class="nav-item">
+
+                <a
+                    href="REPORTES.html"
+                    class="nav-item"
+                >
 
                     <span class="nav-icon">
 
                         <svg viewBox="0 0 24 24">
-                            <path d="M5 19V9M12 19V5M19 19v-8"/>
+
+                            <path
+                                d="M5 19V9M12 19V5M19 19v-8"
+                            />
+
                             <path d="M3 19h18"/>
+
                         </svg>
 
                     </span>
 
-                    <span>Reportes</span>
+                    <span>
+                        Reportes
+                    </span>
 
                 </a>
 
 
+
                 <!-- CONFIGURACIÓN -->
-                <a href="CONFIGURACION.html" class="nav-item">
+
+                <a
+                    href="CONFIGURACION.html"
+                    class="nav-item"
+                >
 
                     <span class="nav-icon">
 
                         <svg viewBox="0 0 24 24">
 
-                            <circle cx="12" cy="12" r="3"/>
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="3"
+                            />
 
-                            <path d="
+                            <path
+                                d="
                                 M19.4 15
                                 a1.8 1.8 0 0 0 .4 2
                                 l.1.1
@@ -191,27 +302,34 @@
                                 v2.2
                                 h-.1
                                 a1.8 1.8 0 0 0-1.7.8z
-                            "/>
+                                "
+                            />
 
                         </svg>
 
                     </span>
 
-                    <span>Configuración</span>
+                    <span>
+                        Configuración
+                    </span>
 
                 </a>
 
             </nav>
 
 
-            <!-- ESTADO DEL SISTEMA -->
+
+            <!-- ESTADO -->
+
             <div class="sidebar-footer">
 
                 <span class="status-dot"></span>
 
                 <div>
 
-                    <strong>Sistema operativo</strong>
+                    <strong>
+                        Sistema operativo
+                    </strong>
 
                     <span>
                         Todo funcionando correctamente
@@ -225,28 +343,35 @@
 
 
 
-        <!-- =====================================================
+        <!-- =================================================
              CONTENIDO PRINCIPAL
-        ====================================================== -->
+        ================================================== -->
 
         <main class="main-content">
 
 
             <!-- =================================================
-                 BARRA SUPERIOR
+                 TOPBAR
             ================================================== -->
 
             <header class="topbar">
 
 
                 <!-- BUSCADOR -->
+
                 <div class="search-box">
 
                     <svg viewBox="0 0 24 24">
 
-                        <circle cx="11" cy="11" r="7"/>
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="7"
+                        />
 
-                        <path d="m20 20-4-4"/>
+                        <path
+                            d="m20 20-4-4"
+                        />
 
                     </svg>
 
@@ -260,17 +385,21 @@
                     >
 
 
-                    <kbd>Ctrl K</kbd>
+                    <kbd>
+                        Ctrl K
+                    </kbd>
 
                 </div>
 
 
 
                 <!-- ACCIONES -->
+
                 <div class="topbar-actions">
 
 
                     <!-- NOTIFICACIONES -->
+
                     <button
                         class="icon-button notification-button"
                         type="button"
@@ -279,14 +408,16 @@
 
                         <svg viewBox="0 0 24 24">
 
-                            <path d="
+                            <path
+                                d="
                                 M18 9
                                 a6 6 0 0 0-12 0
                                 c0 7-3 7-3 9
                                 h18
                                 c0-2-3-2-3-9
                                 M10 21h4
-                            "/>
+                                "
+                            />
 
                         </svg>
 
@@ -299,7 +430,8 @@
 
 
 
-                    <!-- MODO CLARO / OSCURO -->
+                    <!-- MODO OSCURO -->
+
                     <label
                         for="modo-oscuro"
                         class="theme-switch"
@@ -327,6 +459,7 @@
 
 
                     <!-- USUARIO -->
+
                     <a
                         href="CONFIGURACION.html"
                         class="user-profile"
@@ -363,16 +496,20 @@
 
 
             <!-- =================================================
-                 CONTENIDO DEL DASHBOARD
+                 CONTENIDO
             ================================================== -->
 
             <div class="page-content">
 
 
-                <!-- ENCABEZADO -->
+                <!-- =================================================
+                     ENCABEZADO
+                ================================================== -->
+
                 <section class="page-heading">
 
-                    <div>
+
+                    <div class="heading-left">
 
                         <span class="eyebrow">
                             PANEL GENERAL
@@ -388,11 +525,56 @@
 
 
                         <p>
-                            Acá tenés un resumen del estado actual de tu inventario.
+                            Acá tenés un resumen del estado actual de RUDAFER.
                         </p>
+
+
+
+                        <!-- SELECTOR DE SUCURSAL -->
+
+                        <div class="branch-selector">
+
+                            <label for="sucursal">
+                                VISUALIZANDO
+                            </label>
+
+
+                            <div class="select-wrapper">
+
+                                <svg viewBox="0 0 24 24">
+
+                                    <path
+                                        d="M3 21h18M5 21V6l7-3 7 3v15M9 21v-7h6v7M8 9h.01M12 9h.01M16 9h.01"
+                                    />
+
+                                </svg>
+
+
+                                <select id="sucursal">
+
+                                    <option value="general">
+                                        GENERAL
+                                    </option>
+
+                                    <option value="sucursal1">
+                                        SUCURSAL 1
+                                    </option>
+
+                                    <option value="sucursal2">
+                                        SUCURSAL 2
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
+
+
+                    <!-- FECHA -->
 
                     <div class="date-pill">
 
@@ -406,13 +588,15 @@
                                 rx="2"
                             />
 
-                            <path d="M16 3v4M8 3v4M3 10h18"/>
+                            <path
+                                d="M16 3v4M8 3v4M3 10h18"
+                            />
 
                         </svg>
 
 
                         <span>
-                            23 Mayo 2024
+                            8 Septiembre 2026
                         </span>
 
                     </div>
@@ -431,13 +615,14 @@
                 >
 
 
-                    <!-- PRODUCTOS -->
+                    <!-- TOTAL VENDIDO -->
+
                     <article class="stat-card orange">
 
                         <div class="stat-top">
 
                             <span>
-                                PRODUCTOS TOTALES
+                                TOTAL VENDIDO
                             </span>
 
 
@@ -445,14 +630,17 @@
 
                                 <svg viewBox="0 0 24 24">
 
-                                    <path d="
-                                        m21 8-9-5-9 5 9 5z
-                                    "/>
+                                    <rect
+                                        x="3"
+                                        y="6"
+                                        width="18"
+                                        height="13"
+                                        rx="2"
+                                    />
 
-                                    <path d="
-                                        M3 8v9l9 5 9-5V8
-                                        M12 13v9
-                                    "/>
+                                    <path
+                                        d="M7 10h4M7 14h7"
+                                    />
 
                                 </svg>
 
@@ -461,8 +649,8 @@
                         </div>
 
 
-                        <div class="stat-number">
-                            1.250
+                        <div class="stat-number money">
+                            $1.284.500
                         </div>
 
 
@@ -475,7 +663,7 @@
                             8,4%
 
                             <small>
-                                vs. mes anterior
+                                más que el mes anterior
                             </small>
 
                         </div>
@@ -484,13 +672,14 @@
 
 
 
-                    <!-- STOCK -->
+                    <!-- CANTIDAD DE VENTAS -->
+
                     <article class="stat-card yellow">
 
                         <div class="stat-top">
 
                             <span>
-                                STOCK DISPONIBLE
+                                CANTIDAD DE VENTAS
                             </span>
 
 
@@ -498,12 +687,13 @@
 
                                 <svg viewBox="0 0 24 24">
 
-                                    <path d="
-                                        M4 20V10
-                                        M10 20V4
-                                        M16 20v-7
-                                        M22 20H2
-                                    "/>
+                                    <path
+                                        d="M6 3h12v18H6z"
+                                    />
+
+                                    <path
+                                        d="M9 7h6M9 11h6M9 15h3"
+                                    />
 
                                 </svg>
 
@@ -513,7 +703,7 @@
 
 
                         <div class="stat-number">
-                            820
+                            184
                         </div>
 
 
@@ -523,10 +713,10 @@
                                 ↗
                             </span>
 
-                            5,1%
+                            5,7%
 
                             <small>
-                                vs. mes anterior
+                                más que el mes anterior
                             </small>
 
                         </div>
@@ -535,66 +725,14 @@
 
 
 
-                    <!-- STOCK BAJO -->
-                    <article class="stat-card warning">
+                    <!-- UNIDADES VENDIDAS -->
 
-                        <div class="stat-top">
-
-                            <span>
-                                STOCK BAJO
-                            </span>
-
-
-                            <div class="stat-icon">
-
-                                <svg viewBox="0 0 24 24">
-
-                                    <path d="
-                                        m12 3 10 18H2z
-                                    "/>
-
-                                    <path d="
-                                        M12 9v5
-                                        M12 18h.01
-                                    "/>
-
-                                </svg>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="stat-number">
-                            28
-                        </div>
-
-
-                        <div class="stat-bottom negative">
-
-                            <span>
-                                ↗
-                            </span>
-
-                            12,0%
-
-                            <small>
-                                requieren atención
-                            </small>
-
-                        </div>
-
-                    </article>
-
-
-
-                    <!-- PENDIENTES -->
                     <article class="stat-card soft">
 
                         <div class="stat-top">
 
                             <span>
-                                PENDIENTES
+                                UNIDADES VENDIDAS
                             </span>
 
 
@@ -602,19 +740,13 @@
 
                                 <svg viewBox="0 0 24 24">
 
-                                    <rect
-                                        x="5"
-                                        y="3"
-                                        width="14"
-                                        height="18"
-                                        rx="2"
+                                    <path
+                                        d="m12 3 9 5-9 5-9-5z"
                                     />
 
-                                    <path d="
-                                        M9 3v3h6V3
-                                        M8 11h8
-                                        M8 15h5
-                                    "/>
+                                    <path
+                                        d="m3 12 9 5 9-5M3 16l9 5 9-5"
+                                    />
 
                                 </svg>
 
@@ -624,20 +756,20 @@
 
 
                         <div class="stat-number">
-                            15
+                            527
                         </div>
 
 
-                        <div class="stat-bottom neutral">
+                        <div class="stat-bottom positive">
 
                             <span>
-                                •
+                                ↗
                             </span>
 
-                            6 pedidos
+                            9,2%
 
                             <small>
-                                pendientes de revisión
+                                más que el mes anterior
                             </small>
 
                         </div>
@@ -646,13 +778,14 @@
 
 
 
-                    <!-- ÚLTIMO MOVIMIENTO -->
-                    <article class="stat-card dark-card">
+                    <!-- ESTADO STOCK -->
+
+                    <article class="stat-card stock-card">
 
                         <div class="stat-top">
 
                             <span>
-                                ÚLTIMO MOVIMIENTO
+                                ESTADO DEL STOCK
                             </span>
 
 
@@ -660,19 +793,13 @@
 
                                 <svg viewBox="0 0 24 24">
 
-                                    <rect
-                                        x="3"
-                                        y="5"
-                                        width="18"
-                                        height="16"
-                                        rx="2"
+                                    <path
+                                        d="M4 19V5M4 19h16"
                                     />
 
-                                    <path d="
-                                        M16 3v4
-                                        M8 3v4
-                                        M3 10h18
-                                    "/>
+                                    <path
+                                        d="M8 16v-3M12 16V9M16 16V6"
+                                    />
 
                                 </svg>
 
@@ -681,18 +808,236 @@
                         </div>
 
 
-                        <div class="stat-date">
-                            23/05/2024
+                        <div class="stock-summary">
+
+                            <div class="stock-status good">
+
+                                <span class="stock-dot"></span>
+
+                                <strong>
+                                    864
+                                </strong>
+
+                                <small>
+                                    Bien
+                                </small>
+
+                            </div>
+
+
+                            <div class="stock-status medium">
+
+                                <span class="stock-dot"></span>
+
+                                <strong>
+                                    42
+                                </strong>
+
+                                <small>
+                                    Intermedio
+                                </small>
+
+                            </div>
+
+
+                            <div class="stock-status bad">
+
+                                <span class="stock-dot"></span>
+
+                                <strong>
+                                    18
+                                </strong>
+
+                                <small>
+                                    Bajo
+                                </small>
+
+                            </div>
+
                         </div>
 
 
-                        <div class="stat-bottom light">
+                        <div class="stock-description">
+                            Productos según nivel actual
+                        </div>
 
-                            <span>
-                                ●
-                            </span>
+                    </article>
 
-                            Actualizado hace 8 min
+
+
+                    <!-- GRÁFICO -->
+
+                    <article class="stat-card chart-card">
+
+                        <div class="chart-header">
+
+                            <div class="stat-top">
+
+                                <span>
+                                    VENTAS
+                                </span>
+
+                            </div>
+
+
+                            <select
+                                id="periodoGrafico"
+                                class="chart-filter"
+                            >
+
+                                <option value="7">
+                                    7 días
+                                </option>
+
+                                <option value="14">
+                                    14 días
+                                </option>
+
+                                <option value="30">
+                                    30 días
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="chart-title">
+                            Rendimiento semanal
+                        </div>
+
+
+                        <div class="mini-chart">
+
+
+                            <div class="chart-y">
+
+                                <span>
+                                    40
+                                </span>
+
+                                <span>
+                                    30
+                                </span>
+
+                                <span>
+                                    20
+                                </span>
+
+                                <span>
+                                    10
+                                </span>
+
+                            </div>
+
+
+                            <div class="bars-container">
+
+                                <div class="bar-item">
+
+                                    <div
+                                        class="bar"
+                                        style="height:48%;"
+                                        title="Lunes"
+                                    ></div>
+
+                                    <span>
+                                        L
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-item">
+
+                                    <div
+                                        class="bar"
+                                        style="height:65%;"
+                                        title="Martes"
+                                    ></div>
+
+                                    <span>
+                                        M
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-item">
+
+                                    <div
+                                        class="bar"
+                                        style="height:38%;"
+                                        title="Miércoles"
+                                    ></div>
+
+                                    <span>
+                                        X
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-item">
+
+                                    <div
+                                        class="bar"
+                                        style="height:78%;"
+                                        title="Jueves"
+                                    ></div>
+
+                                    <span>
+                                        J
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-item">
+
+                                    <div
+                                        class="bar"
+                                        style="height:58%;"
+                                        title="Viernes"
+                                    ></div>
+
+                                    <span>
+                                        V
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-item">
+
+                                    <div
+                                        class="bar"
+                                        style="height:90%;"
+                                        title="Sábado"
+                                    ></div>
+
+                                    <span>
+                                        S
+                                    </span>
+
+                                </div>
+
+
+                                <div class="bar-item">
+
+                                    <div
+                                        class="bar"
+                                        style="height:70%;"
+                                        title="Domingo"
+                                    ></div>
+
+                                    <span>
+                                        D
+                                    </span>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -736,6 +1081,7 @@
 
 
                         <!-- BUSCAR -->
+
                         <a
                             href="INVENTARIO.html"
                             class="quick-action"
@@ -751,7 +1097,9 @@
                                         r="6.5"
                                     />
 
-                                    <path d="m16 16 5 5"/>
+                                    <path
+                                        d="m16 16 5 5"
+                                    />
 
                                 </svg>
 
@@ -772,6 +1120,7 @@
 
 
                         <!-- NUEVO PRODUCTO -->
+
                         <a
                             href="INVENTARIO.html#nuevo-producto"
                             class="quick-action"
@@ -781,10 +1130,9 @@
 
                                 <svg viewBox="0 0 24 24">
 
-                                    <path d="
-                                        M12 5v14
-                                        M5 12h14
-                                    "/>
+                                    <path
+                                        d="M12 5v14M5 12h14"
+                                    />
 
                                 </svg>
 
@@ -805,6 +1153,7 @@
 
 
                         <!-- NUEVO PEDIDO -->
+
                         <a
                             href="PEDIDOS.html#nuevo-pedido"
                             class="quick-action"
@@ -822,11 +1171,9 @@
                                         rx="2"
                                     />
 
-                                    <path d="
-                                        M8 8h8
-                                        M8 12h8
-                                        M8 16h5
-                                    "/>
+                                    <path
+                                        d="M8 8h8M8 12h8M8 16h5"
+                                    />
 
                                 </svg>
 
@@ -847,6 +1194,7 @@
 
 
                         <!-- MOVIMIENTOS -->
+
                         <a
                             href="MOVIMIENTOS.html"
                             class="quick-action"
@@ -856,12 +1204,14 @@
 
                                 <svg viewBox="0 0 24 24">
 
-                                    <path d="
+                                    <path
+                                        d="
                                         M5 8h14
                                         M15 4l4 4-4 4
                                         M19 16H5
                                         M9 12l-4 4 4 4
-                                    "/>
+                                        "
+                                    />
 
                                 </svg>
 
@@ -882,6 +1232,7 @@
 
 
                         <!-- ALERTAS -->
+
                         <a
                             href="INVENTARIO.html#alertas-stock"
                             class="quick-action alert-action"
@@ -891,14 +1242,13 @@
 
                                 <svg viewBox="0 0 24 24">
 
-                                    <path d="
-                                        m12 3 10 18H2z
-                                    "/>
+                                    <path
+                                        d="m12 3 10 18H2z"
+                                    />
 
-                                    <path d="
-                                        M12 9v5
-                                        M12 18h.01
-                                    "/>
+                                    <path
+                                        d="M12 9v5M12 18h.01"
+                                    />
 
                                 </svg>
 
@@ -911,12 +1261,12 @@
 
 
                             <span>
-                                28 productos
+                                18 productos
                             </span>
 
 
                             <b class="mini-badge">
-                                28
+                                18
                             </b>
 
                         </a>
@@ -934,9 +1284,7 @@
                 <section class="data-grid">
 
 
-                    <!-- =================================================
-                         MOVIMIENTOS RECIENTES
-                    ================================================== -->
+                    <!-- MOVIMIENTOS -->
 
                     <article class="panel table-panel">
 
@@ -1008,12 +1356,16 @@
 
                                 <tbody>
 
-
                                     <tr>
 
                                         <td>
-                                            <strong>23/05</strong>
-                                            <small>10:15</small>
+                                            <strong>
+                                                08/09
+                                            </strong>
+
+                                            <small>
+                                                18:15
+                                            </small>
                                         </td>
 
                                         <td>
@@ -1023,7 +1375,7 @@
                                         </td>
 
                                         <td>
-                                            Tomillo hexagonal 1/2"
+                                            Tornillo hexagonal 1/2"
                                         </td>
 
                                         <td class="quantity negative">
@@ -1037,12 +1389,16 @@
                                     </tr>
 
 
-
                                     <tr>
 
                                         <td>
-                                            <strong>23/05</strong>
-                                            <small>09:42</small>
+                                            <strong>
+                                                08/09
+                                            </strong>
+
+                                            <small>
+                                                17:42
+                                            </small>
                                         </td>
 
                                         <td>
@@ -1066,12 +1422,16 @@
                                     </tr>
 
 
-
                                     <tr>
 
                                         <td>
-                                            <strong>22/05</strong>
-                                            <small>16:30</small>
+                                            <strong>
+                                                08/09
+                                            </strong>
+
+                                            <small>
+                                                16:30
+                                            </small>
                                         </td>
 
                                         <td>
@@ -1095,12 +1455,16 @@
                                     </tr>
 
 
-
                                     <tr>
 
                                         <td>
-                                            <strong>22/05</strong>
-                                            <small>11:05</small>
+                                            <strong>
+                                                08/09
+                                            </strong>
+
+                                            <small>
+                                                15:05
+                                            </small>
                                         </td>
 
                                         <td>
@@ -1124,12 +1488,16 @@
                                     </tr>
 
 
-
                                     <tr>
 
                                         <td>
-                                            <strong>21/05</strong>
-                                            <small>17:20</small>
+                                            <strong>
+                                                08/09
+                                            </strong>
+
+                                            <small>
+                                                14:20
+                                            </small>
                                         </td>
 
                                         <td>
@@ -1152,7 +1520,6 @@
 
                                     </tr>
 
-
                                 </tbody>
 
                             </table>
@@ -1163,9 +1530,7 @@
 
 
 
-                    <!-- =================================================
-                         ALERTAS DE STOCK
-                    ================================================== -->
+                    <!-- ALERTAS STOCK -->
 
                     <article class="panel table-panel alert-panel">
 
@@ -1189,7 +1554,7 @@
                                 href="INVENTARIO.html#alertas-stock"
                                 class="alert-counter"
                             >
-                                28 alertas
+                                18 alertas
                             </a>
 
                         </div>
@@ -1213,7 +1578,7 @@
                                         </th>
 
                                         <th>
-                                            STOCK ACTUAL
+                                            STOCK
                                         </th>
 
                                         <th>
@@ -1227,12 +1592,11 @@
 
                                 <tbody>
 
-
                                     <tr>
 
                                         <td>
                                             <strong>
-                                                Tomillo hexagonal 1/2"
+                                                Tornillo hexagonal 1/2"
                                             </strong>
                                         </td>
 
@@ -1251,7 +1615,6 @@
                                         </td>
 
                                     </tr>
-
 
 
                                     <tr>
@@ -1279,7 +1642,6 @@
                                     </tr>
 
 
-
                                     <tr>
 
                                         <td>
@@ -1303,7 +1665,6 @@
                                         </td>
 
                                     </tr>
-
 
 
                                     <tr>
@@ -1330,7 +1691,6 @@
 
                                     </tr>
 
-
                                 </tbody>
 
                             </table>
@@ -1354,7 +1714,7 @@
                     </span>
 
                     <span>
-                        Última sincronización: hace 8 minutos
+                        Última sincronización: hace 2 minutos
                     </span>
 
                 </footer>
@@ -1365,5 +1725,113 @@
 
     </div>
 
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        /* ================================================
+           SELECTOR DE SUCURSAL
+        ================================================= */
+
+        const selectorSucursal =
+            document.getElementById("sucursal");
+
+
+        selectorSucursal.addEventListener(
+            "change",
+            function () {
+
+                const sucursal =
+                    this.value;
+
+                console.log(
+                    "Sucursal seleccionada:",
+                    sucursal
+                );
+
+                /*
+                    Más adelante acá conectaremos
+                    la selección con la base de datos.
+
+                    Ejemplo:
+
+                    GENERAL
+                    SUCURSAL 1
+                    SUCURSAL 2
+                */
+
+            }
+        );
+
+
+
+        /* ================================================
+           FILTRO DEL GRÁFICO
+        ================================================= */
+
+        const periodoGrafico =
+            document.getElementById(
+                "periodoGrafico"
+            );
+
+
+        periodoGrafico.addEventListener(
+            "change",
+            function () {
+
+                const periodo =
+                    this.value;
+
+                console.log(
+                    "Período seleccionado:",
+                    periodo + " días"
+                );
+
+                /*
+                    Más adelante el gráfico
+                    tomará los datos reales
+                    desde la base de datos.
+
+                    7  = últimos 7 días
+                    14 = últimos 14 días
+                    30 = últimos 30 días
+                */
+
+            }
+        );
+
+
+
+        /* ================================================
+           ATAJO CTRL + K
+        ================================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.ctrlKey &&
+                    event.key.toLowerCase() === "k"
+                ) {
+
+                    event.preventDefault();
+
+                    document
+                        .getElementById("busqueda")
+                        .focus();
+
+                }
+
+            }
+        );
+
+    </script>
+
 </body>
 </html>
+```
