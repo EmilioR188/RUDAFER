@@ -1,6 +1,6 @@
 <?php
 // Reemplazá estos valores con los que te de Render en su panel
-$host = "://render.com"; 
+$host = "postgresql://rudafer_1_user:BsyoENN4kDEaRnPopJtH6dheUk7Asmxi@dpg-dbbqnoafngtc73a8i9fg-a.virginia-postgres.render.com/rudafer_1"; 
 $db   = "rudafer-dbb";
 $user = "rudafer_1_user";
 $pass = "BsyoENN4kDEaRnPopJtH6dheUk7Asmxi";
