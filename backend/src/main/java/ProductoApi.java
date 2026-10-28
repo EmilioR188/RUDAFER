@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class ProductoApi {
 
@@ -95,8 +97,13 @@ public class ProductoApi {
                         String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
                         System.out.println("JSON recibido en /api/pedidos/recibir: " + body);
                         
+                        JsonObject solicitud = JsonParser.parseString(body).getAsJsonObject();
+
+                        int idHistorial = solicitud.get("idHistorial").getAsInt();
+                        String itemsJson = solicitud.getAsJsonArray("items").toString();
+
                         PedidoDAO dao = new PedidoDAO();
-                        boolean exito = dao.procesarLlegadaPedido(body);
+                        boolean exito = dao.procesarLlegadaPedido(itemsJson, idHistorial);
 
                         String respuestaJson = "{\"exito\": " + exito + "}";
                         byte[] bytes = respuestaJson.getBytes(StandardCharsets.UTF_8);
