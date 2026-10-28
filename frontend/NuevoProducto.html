@@ -347,8 +347,9 @@
                     fila: document.getElementById('fila').value || '',
                     precioCompra: parseFloat(document.getElementById('precioCompra').value) || 0.0,
                     precioVenta: parseFloat(document.getElementById('precioVenta').value) || 0.0,
-                    stockMinimo: parseInt(document.getElementById('stockMinimo').value) || 0,
+                    stockMinimo: parseInt(document.getElementById('stockMinimo').value) || 5,
                     stockActual: parseInt(document.getElementById('stockActual').value) || 0,
+                    idSucursal: parseInt(obtenerSucursalActiva(), 10) || 1,
                     idCategoria: parseInt(document.getElementById('idCategoria').value) || 1
                 };
 
@@ -359,10 +360,12 @@
                         body: JSON.stringify(nuevoProducto)
                     });
 
-                    if (respuesta.ok) {
+                    const resultado = await respuesta.json().catch(() => ({}));
+                    if (respuesta.ok && resultado.exito === true) {
                         overlay.classList.add('visible');
                     } else {
-                        alert('Error al guardar el producto en la base de datos.');
+                        console.error('El backend no pudo guardar el producto:', resultado);
+                        alert(resultado.mensaje || 'No se pudo guardar el producto. Revisá los logs de Render.');
                     }
                 } catch (error) {
                     console.error('Error de conexión:', error);
