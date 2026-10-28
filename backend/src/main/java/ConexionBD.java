@@ -23,9 +23,9 @@ public class ConexionBD {
 
         String url = "jdbc:mysql://" + host + ":" + port + "/" +
             database +
-            "?useSSL=false&allowPublicKeyRetrieval=true" +
+            "?sslMode=REQUIRED&allowPublicKeyRetrieval=true" +
             "&serverTimezone=UTC&useUnicode=true" +
-            "&characterEncoding=utf8";
+            "&characterEncoding=UTF-8";
 
         return DriverManager.getConnection(url, user, password);
     }
