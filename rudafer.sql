@@ -29,7 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categoria` (
   `ID_Categoria` int(11) NOT NULL,
-  `Nombre_Categoria` varchar(50) NOT NULL
+  `Nombre_Categoria` varchar(50) NOT NULL,
+  PRIMARY KEY (`ID_Categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -52,7 +53,8 @@ INSERT INTO `categoria` (`ID_Categoria`, `Nombre_Categoria`) VALUES
 
 CREATE TABLE `categorias` (
   `ID_Categoria` int(11) NOT NULL,
-  `Nombre` varchar(100) NOT NULL
+  `Nombre` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID_Categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -80,7 +82,8 @@ CREATE TABLE `cierre_caja` (
   `Cantidad_Ventas` int(11) NOT NULL DEFAULT 0,
   `Unidades_Vendidas` int(11) NOT NULL DEFAULT 0,
   `Fecha_Cierre` datetime NOT NULL,
-  `ID_Sucursal` int(11) DEFAULT 1
+  `ID_Sucursal` int(11) DEFAULT 1,
+  PRIMARY KEY (`ID_Cierre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -100,7 +103,8 @@ CREATE TABLE `detalles_transferencia` (
   `ID_Detalle` int(11) NOT NULL,
   `ID_Transferencia` int(11) NOT NULL,
   `ID_Producto` int(11) NOT NULL,
-  `Cantidad` int(11) NOT NULL
+  `Cantidad` int(11) NOT NULL,
+  PRIMARY KEY (`ID_Detalle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -115,7 +119,8 @@ CREATE TABLE `detalles_venta` (
   `ID_Producto` int(11) NOT NULL,
   `Cantidad` int(11) NOT NULL,
   `Precio_Unitario` decimal(10,2) NOT NULL,
-  `Subtotal` decimal(10,2) NOT NULL
+  `Subtotal` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`ID_Detalle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -162,7 +167,8 @@ CREATE TABLE `empleados` (
   `Comision` decimal(5,2) DEFAULT 2.50,
   `comision_acumulada` decimal(10,2) DEFAULT 0.00,
   `ventas_realizadas` int(11) DEFAULT 0,
-  `Activo` tinyint(1) DEFAULT 1
+  `Activo` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`ID_Empleado`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -188,7 +194,8 @@ CREATE TABLE `historial_pedidos` (
   `fecha` timestamp NOT NULL DEFAULT current_timestamp(),
   `estado` varchar(50) DEFAULT 'Completado',
   `total` decimal(10,2) DEFAULT 0.00,
-  `ID_Sucursal` int(11) DEFAULT 1
+  `ID_Sucursal` int(11) DEFAULT 1,
+  PRIMARY KEY (`id_historial`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -222,7 +229,8 @@ INSERT INTO `historial_pedidos` (`id_historial`, `proveedor`, `detalle_pedido`, 
 
 CREATE TABLE `pago` (
   `ID_Pago` int(11) NOT NULL,
-  `Metodo_Pago` varchar(40) NOT NULL
+  `Metodo_Pago` varchar(40) NOT NULL,
+  PRIMARY KEY (`ID_Pago`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -248,7 +256,8 @@ CREATE TABLE `pagos_proveedores` (
   `ID_Proveedor` int(11) NOT NULL,
   `Monto` decimal(10,2) NOT NULL,
   `Fecha` timestamp NOT NULL DEFAULT current_timestamp(),
-  `Observacion` varchar(255) DEFAULT NULL
+  `Observacion` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID_Pago`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -278,7 +287,8 @@ CREATE TABLE `productos` (
   `Stock_Minimo` int(11) DEFAULT 0,
   `Stock_Actual` int(11) DEFAULT 0,
   `ID_Categoria` int(11) DEFAULT NULL,
-  `ID_Proveedor` int(11) DEFAULT NULL
+  `ID_Proveedor` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID_Producto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -294,6 +304,10 @@ INSERT INTO `productos` (`ID_Producto`, `Codigo_Barras`, `Nombre`, `Descripcion`
 (24, '6', 'La Gotita Chica', 'La Gotita Chica', 'POXIPOL', '1111', '111', 1650.00, 2600.00, 4, 11, 1, 4),
 (26, '101', 'Asiento de Hinodoro Universal Blanco', ',', 'Faplast', '222', '22', 1000.00, 0.00, 2, 0, 1, NULL);
 
+-- Modificación solicitada: el stock ahora se administra por sucursal.
+ALTER TABLE `productos` DROP COLUMN `Stock_Actual`;
+ALTER TABLE `productos` DROP COLUMN `Stock_Minimo`;
+
 -- --------------------------------------------------------
 
 --
@@ -305,7 +319,8 @@ CREATE TABLE `proveedor` (
   `Nombre` varchar(50) NOT NULL,
   `Telefono` varchar(20) DEFAULT NULL,
   `Email` varchar(50) DEFAULT NULL,
-  `Deuda_Total` decimal(10,2) DEFAULT 0.00
+  `Deuda_Total` decimal(10,2) DEFAULT 0.00,
+  PRIMARY KEY (`ID_Proveedor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -326,7 +341,8 @@ INSERT INTO `proveedor` (`ID_Proveedor`, `Nombre`, `Telefono`, `Email`, `Deuda_T
 
 CREATE TABLE `roles` (
   `ID_Rol` int(11) NOT NULL,
-  `Rol` varchar(50) NOT NULL
+  `Rol` varchar(50) NOT NULL,
+  PRIMARY KEY (`ID_Rol`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -346,22 +362,24 @@ INSERT INTO `roles` (`ID_Rol`, `Rol`) VALUES
 CREATE TABLE `stock_sucursal` (
   `ID_Sucursal` int(11) NOT NULL,
   `ID_Producto` int(11) NOT NULL,
-  `Cantidad` int(11) NOT NULL DEFAULT 0
+  `Cantidad` int(11) NOT NULL DEFAULT 0,
+  `Stock_Minimo` int(11) NOT NULL DEFAULT 5,
+  PRIMARY KEY (`ID_Sucursal`, `ID_Producto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `stock_sucursal`
 --
 
-INSERT INTO `stock_sucursal` (`ID_Sucursal`, `ID_Producto`, `Cantidad`) VALUES
-(1, 19, 100),
-(1, 20, 8),
-(1, 21, 5),
-(1, 22, 2),
-(1, 23, 0),
-(1, 24, 11),
-(1, 26, 5),
-(2, 22, 4);
+INSERT INTO `stock_sucursal` (`ID_Sucursal`, `ID_Producto`, `Cantidad`, `Stock_Minimo`) VALUES
+(1, 19, 100, 5),
+(1, 20, 8, 4),
+(1, 21, 5, 2),
+(1, 22, 2, 2),
+(1, 23, 0, 2),
+(1, 24, 11, 4),
+(1, 26, 5, 2),
+(2, 22, 4, 2);
 
 -- --------------------------------------------------------
 
@@ -374,7 +392,8 @@ CREATE TABLE `sucursal` (
   `Nombre` varchar(50) NOT NULL,
   `Direccion` varchar(100) NOT NULL,
   `Telefono` varchar(20) DEFAULT NULL,
-  `Email` varchar(50) DEFAULT NULL
+  `Email` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`ID_Sucursal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -396,7 +415,8 @@ CREATE TABLE `sucursales` (
   `Nombre` varchar(100) NOT NULL,
   `Direccion` varchar(255) DEFAULT NULL,
   `Telefono` varchar(50) DEFAULT NULL,
-  `Activo` tinyint(1) DEFAULT 1
+  `Activo` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`ID_Sucursal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -419,7 +439,8 @@ CREATE TABLE `transferencias` (
   `ID_Empleado` int(11) NOT NULL,
   `Fecha` datetime DEFAULT current_timestamp(),
   `Estado` varchar(50) DEFAULT 'COMPLETADA',
-  `Observacion` text DEFAULT NULL
+  `Observacion` text DEFAULT NULL,
+  PRIMARY KEY (`ID_Transferencia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -435,7 +456,8 @@ CREATE TABLE `ventas` (
   `ID_Pago` int(11) NOT NULL,
   `Cuotas` int(11) DEFAULT 1,
   `ID_Sucursal` int(11) NOT NULL,
-  `ID_Empleado` int(11) NOT NULL
+  `ID_Empleado` int(11) NOT NULL,
+  PRIMARY KEY (`ID_Venta`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -464,27 +486,23 @@ INSERT INTO `ventas` (`ID_Venta`, `Total_Venta`, `Fecha_Hora`, `ID_Pago`, `Cuota
 --
 -- Indices de la tabla `categoria`
 --
-ALTER TABLE `categoria`
-  ADD PRIMARY KEY (`ID_Categoria`);
+
 
 --
 -- Indices de la tabla `categorias`
 --
-ALTER TABLE `categorias`
-  ADD PRIMARY KEY (`ID_Categoria`);
+
 
 --
 -- Indices de la tabla `cierre_caja`
 --
 ALTER TABLE `cierre_caja`
-  ADD PRIMARY KEY (`ID_Cierre`),
   ADD UNIQUE KEY `Fecha` (`Fecha`);
 
 --
 -- Indices de la tabla `detalles_transferencia`
 --
 ALTER TABLE `detalles_transferencia`
-  ADD PRIMARY KEY (`ID_Detalle`),
   ADD KEY `fk_det_trans` (`ID_Transferencia`),
   ADD KEY `fk_det_prod` (`ID_Producto`);
 
@@ -492,7 +510,6 @@ ALTER TABLE `detalles_transferencia`
 -- Indices de la tabla `detalles_venta`
 --
 ALTER TABLE `detalles_venta`
-  ADD PRIMARY KEY (`ID_Detalle`),
   ADD KEY `FK_Detalle_Venta` (`ID_Venta`),
   ADD KEY `FK_Detalle_Producto` (`ID_Producto`);
 
@@ -500,7 +517,6 @@ ALTER TABLE `detalles_venta`
 -- Indices de la tabla `empleados`
 --
 ALTER TABLE `empleados`
-  ADD PRIMARY KEY (`ID_Empleado`),
   ADD UNIQUE KEY `DNI` (`DNI`),
   ADD KEY `FK_Empleado_Sucursal` (`ID_Sucursal`),
   ADD KEY `FK_Empleado_Rol` (`ID_Rol`);
@@ -508,27 +524,23 @@ ALTER TABLE `empleados`
 --
 -- Indices de la tabla `historial_pedidos`
 --
-ALTER TABLE `historial_pedidos`
-  ADD PRIMARY KEY (`id_historial`);
+
 
 --
 -- Indices de la tabla `pago`
 --
-ALTER TABLE `pago`
-  ADD PRIMARY KEY (`ID_Pago`);
+
 
 --
 -- Indices de la tabla `pagos_proveedores`
 --
 ALTER TABLE `pagos_proveedores`
-  ADD PRIMARY KEY (`ID_Pago`),
   ADD KEY `ID_Proveedor` (`ID_Proveedor`);
 
 --
 -- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
-  ADD PRIMARY KEY (`ID_Producto`),
   ADD UNIQUE KEY `Codigo_Barras` (`Codigo_Barras`),
   ADD KEY `FK_Producto_Categoria` (`ID_Categoria`),
   ADD KEY `FK_Producto_Proveedor` (`ID_Proveedor`);
@@ -536,39 +548,33 @@ ALTER TABLE `productos`
 --
 -- Indices de la tabla `proveedor`
 --
-ALTER TABLE `proveedor`
-  ADD PRIMARY KEY (`ID_Proveedor`);
+
 
 --
 -- Indices de la tabla `roles`
 --
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`ID_Rol`);
+
 
 --
 -- Indices de la tabla `stock_sucursal`
 --
 ALTER TABLE `stock_sucursal`
-  ADD PRIMARY KEY (`ID_Sucursal`,`ID_Producto`),
   ADD KEY `FK_Stock_Producto` (`ID_Producto`);
 
 --
 -- Indices de la tabla `sucursal`
 --
-ALTER TABLE `sucursal`
-  ADD PRIMARY KEY (`ID_Sucursal`);
+
 
 --
 -- Indices de la tabla `sucursales`
 --
-ALTER TABLE `sucursales`
-  ADD PRIMARY KEY (`ID_Sucursal`);
+
 
 --
 -- Indices de la tabla `transferencias`
 --
 ALTER TABLE `transferencias`
-  ADD PRIMARY KEY (`ID_Transferencia`),
   ADD KEY `fk_trans_origen` (`ID_Sucursal_Origen`),
   ADD KEY `fk_trans_destino` (`ID_Sucursal_Destino`),
   ADD KEY `fk_trans_empleado` (`ID_Empleado`);
@@ -577,7 +583,6 @@ ALTER TABLE `transferencias`
 -- Indices de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  ADD PRIMARY KEY (`ID_Venta`),
   ADD KEY `FK_Venta_Pago` (`ID_Pago`),
   ADD KEY `FK_Venta_Sucursal` (`ID_Sucursal`),
   ADD KEY `FK_Venta_Empleado` (`ID_Empleado`);
@@ -735,6 +740,19 @@ ALTER TABLE `ventas`
   ADD CONSTRAINT `FK_Venta_Empleado` FOREIGN KEY (`ID_Empleado`) REFERENCES `empleados` (`ID_Empleado`),
   ADD CONSTRAINT `FK_Venta_Pago` FOREIGN KEY (`ID_Pago`) REFERENCES `pago` (`ID_Pago`),
   ADD CONSTRAINT `FK_Venta_Sucursal` FOREIGN KEY (`ID_Sucursal`) REFERENCES `sucursal` (`ID_Sucursal`);
+
+-- Inicializa el stock por sucursal al insertar un nuevo producto.
+DELIMITER //
+CREATE TRIGGER `after_producto_insert`
+AFTER INSERT ON `productos`
+FOR EACH ROW
+BEGIN
+    INSERT INTO `stock_sucursal` (`ID_Producto`, `ID_Sucursal`, `Cantidad`, `Stock_Minimo`)
+    SELECT NEW.`ID_Producto`, `ID_Sucursal`, 0, 5
+    FROM `sucursal`;
+END//
+DELIMITER ;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
