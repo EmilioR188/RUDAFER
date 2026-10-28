@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             try {
-                const respuesta = await fetch('http://localhost:8081/api/login', {
+                const respuesta = await fetch('https://rudafer-api.onrender.com/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datosLogin)
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             } catch (error) {
                 console.error("Error de conexión con el servidor:", error);
-                alert("No se pudo conectar con el servidor Java (localhost:8081).");
+                alert("No se pudo conectar con el servidor Java (rudafer-api.onrender.com).");
             }
         });
     }

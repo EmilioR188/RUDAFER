@@ -260,7 +260,7 @@
         async function cargarDatosAdmin() {
             try {
                 // Cargar Empleados
-                const resEmp = await fetch('http://localhost:8081/api/empleados');
+                const resEmp = await fetch('https://rudafer-api.onrender.com/api/empleados');
                 empleadosCache = await resEmp.json();
                 const tbodyEmp = document.getElementById("tablaEmpleados");
                 tbodyEmp.innerHTML = "";
@@ -303,7 +303,7 @@
                 }
 
                 // Cargar Proveedores
-                const resProv = await fetch('http://localhost:8081/api/proveedores');
+                const resProv = await fetch('https://rudafer-api.onrender.com/api/proveedores');
                 proveedoresCache = await resProv.json();
                 const tbodyProv = document.getElementById("tablaProveedores");
                 tbodyProv.innerHTML = "";
@@ -348,7 +348,7 @@
             }
 
             try {
-                const respuesta = await fetch('http://localhost:8081/api/empleados/resetear-uno', {
+                const respuesta = await fetch('https://rudafer-api.onrender.com/api/empleados/resetear-uno', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ idEmpleado: idEmpleado })
@@ -442,7 +442,7 @@
                 comision: parseFloat(document.getElementById("empComision").value)
             };
 
-            const url = 'http://localhost:8081/api/empleados';
+            const url = 'https://rudafer-api.onrender.com/api/empleados';
             const method = id > 0 ? 'PUT' : 'POST';
 
             const res = await fetch(url, {
@@ -462,7 +462,7 @@
 
         async function eliminarEmpleado(id) {
             if(!confirm("¿Estás seguro de eliminar este empleado?")) return;
-            const res = await fetch(`http://localhost:8081/api/empleados?id=${id}`, { method: 'DELETE' });
+            const res = await fetch(`https://rudafer-api.onrender.com/api/empleados?id=${id}`, { method: 'DELETE' });
             if(res.ok) {
                 alert("Empleado eliminado");
                 cargarDatosAdmin();
@@ -485,7 +485,7 @@
                 deudaTotal: deudaVal
             };
 
-            const url = 'http://localhost:8081/api/proveedores';
+            const url = 'https://rudafer-api.onrender.com/api/proveedores';
             const method = id > 0 ? 'PUT' : 'POST';
 
             const res = await fetch(url, {
@@ -505,7 +505,7 @@
 
         async function eliminarProveedor(id) {
             if(!confirm("¿Estás seguro de eliminar este proveedor?")) return;
-            const res = await fetch(`http://localhost:8081/api/proveedores?id=${id}`, { method: 'DELETE' });
+            const res = await fetch(`https://rudafer-api.onrender.com/api/proveedores?id=${id}`, { method: 'DELETE' });
             if(res.ok) {
                 alert("Proveedor eliminado");
                 cargarDatosAdmin();
@@ -522,7 +522,7 @@
                 observacion: document.getElementById("pagoObservacion").value
             };
 
-            const res = await fetch('http://localhost:8081/api/proveedores/pago', {
+            const res = await fetch('https://rudafer-api.onrender.com/api/proveedores/pago', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)

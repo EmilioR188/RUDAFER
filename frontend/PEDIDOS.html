@@ -360,7 +360,7 @@
             const tbody = document.getElementById("tablaPedidos");
             
             try {
-                const response = await fetch('http://localhost:8081/api/pedidos/historial');
+                const response = await fetch('https://rudafer-api.onrender.com/api/pedidos/historial');
                 if (!response.ok) throw new Error('Error al conectar con el historial');
                 
                 const historial = await response.json();
@@ -494,7 +494,7 @@
 
             selectSuc.innerHTML = `<option value="">Cargando sucursales...</option>`;
             try {
-                const res = await fetch('http://localhost:8081/api/sucursales');
+                const res = await fetch('https://rudafer-api.onrender.com/api/sucursales');
                 const sucursales = await res.json();
                 
                 selectSuc.innerHTML = `<option value="">-- Seleccioná una sucursal --</option>`;
@@ -547,11 +547,11 @@
             }
 
             try {
-                const resProd = await fetch(`http://localhost:8081/api/productos?idSucursal=${idSucursalSeleccionada}`);
+                const resProd = await fetch(`https://rudafer-api.onrender.com/api/productos?idSucursal=${idSucursalSeleccionada}`);
                 if (!resProd.ok) throw new Error('Error al conectar con productos de la sucursal');
                 catalogoProductosGlobal = await resProd.json();
 
-                const resProv = await fetch('http://localhost:8081/api/proveedores');
+                const resProv = await fetch('https://rudafer-api.onrender.com/api/proveedores');
                 if (!resProv.ok) throw new Error('Error al conectar con proveedores');
                 const listaProveedoresBD = await resProv.json();
 
@@ -724,7 +724,7 @@
             };
 
             try {
-                const respuesta = await fetch('http://localhost:8081/api/pedidos/crear', {
+                const respuesta = await fetch('https://rudafer-api.onrender.com/api/pedidos/crear', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(nuevoPedidoBD)
@@ -831,7 +831,7 @@
             };
 
             try {
-                const res = await fetch('http://localhost:8081/api/pedidos/recibir', {
+                const res = await fetch('https://rudafer-api.onrender.com/api/pedidos/recibir', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(datosRecepcion)
@@ -861,7 +861,7 @@
             if (!confirm(`¿Querés cancelar el pedido ${num}?`)) return;
 
             try {
-                const response = await fetch('http://localhost:8081/api/pedidos/cancelar', {
+                const response = await fetch('https://rudafer-api.onrender.com/api/pedidos/cancelar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ idHistorial: idHistorial })

@@ -125,7 +125,7 @@ function cambiarSucursalActiva(idSucursal) {
 
 async function poblarSelectoresSucursales() {
     try {
-        const res = await fetch('http://localhost:8081/api/sucursales');
+        const res = await fetch('https://rudafer-api.onrender.com/api/sucursales');
         if (!res.ok) throw new Error('Error al obtener sucursales');
         const sucursales = await res.json();
         

@@ -373,7 +373,7 @@
             const periodo = document.getElementById('filtroTiempo').value;
 
             try {
-                const response = await fetch(`http://localhost:8081/api/dashboard/stats?periodo=${periodo}`);
+                const response = await fetch(`https://rudafer-api.onrender.com/api/dashboard/stats?periodo=${periodo}`);
                 if (!response.ok) throw new Error('Error al conectar con el servidor');
 
                 const data = await response.json();

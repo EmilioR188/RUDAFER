@@ -22,7 +22,7 @@ async function cargarMovimientos() {
     const sucursalSelect = document.getElementById('sucursalMovimiento').value;
     
     try {
-        const response = await fetch(`http://localhost:8081/api/movimientos?sucursal=${sucursalSelect}`);
+        const response = await fetch(`https://rudafer-api.onrender.com/api/movimientos?sucursal=${sucursalSelect}`);
         if (!response.ok) throw new Error('Error al conectar con el servidor');
 
         const data = await response.json();

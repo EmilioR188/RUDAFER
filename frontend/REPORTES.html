@@ -456,7 +456,7 @@
         async function cargarReportes() {
             const periodo = document.getElementById("reportesPeriodo").value;
             try {
-                const response = await fetch(`http://localhost:8081/api/dashboard/stats?periodo=${periodo}`);
+                const response = await fetch(`https://rudafer-api.onrender.com/api/dashboard/stats?periodo=${periodo}`);
                 if (!response.ok) throw new Error("Error al conectar con el servidor");
 
                 const data = await response.json();
@@ -575,7 +575,7 @@
             if (!tbody) return;
             
             try {
-                const response = await fetch("http://localhost:8081/api/cierre-caja");
+                const response = await fetch("https://rudafer-api.onrender.com/api/cierre-caja");
                 if (!response.ok) throw new Error("Error al conectar con el servidor");
 
                 const cierres = await response.json();
@@ -607,7 +607,7 @@
             if (!confirm("¿Deseas procesar y consolidar el cierre de caja de la jornada actual?")) return;
 
             try {
-                const response = await fetch("http://localhost:8081/api/cierre-caja", {
+                const response = await fetch("https://rudafer-api.onrender.com/api/cierre-caja", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({})

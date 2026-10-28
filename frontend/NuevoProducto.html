@@ -302,7 +302,7 @@
         async function cargarProveedoresEnFormulario() {
             const selectProv = document.getElementById('idProveedor');
             try {
-                const res = await fetch('http://localhost:8081/api/proveedores');
+                const res = await fetch('https://rudafer-api.onrender.com/api/proveedores');
                 if (!res.ok) throw new Error('Error del servidor: ' + res.status);
                 const proveedores = await res.json();
 
@@ -353,7 +353,7 @@
                 };
 
                 try {
-                    const respuesta = await fetch('http://localhost:8081/api/productos', {
+                    const respuesta = await fetch('https://rudafer-api.onrender.com/api/productos', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(nuevoProducto)

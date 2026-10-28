@@ -247,7 +247,7 @@
             const tbody = document.getElementById('tabla-productos-body');
 
             try {
-                const respuesta = await fetch('http://localhost:8081/api/productos');
+                const respuesta = await fetch('https://rudafer-api.onrender.com/api/productos');
                 if (!respuesta.ok) throw new Error('Error en la respuesta del servidor');
 
                 listaProductosGlobal = await respuesta.json();
@@ -260,7 +260,7 @@
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="7" style="text-align: center; color: var(--danger, #e74c3c); padding: 25px;">
-                            Error de conexión con el servidor Java (localhost:8081).
+                            Error de conexión con el servidor Java (rudafer-api.onrender.com).
                         </td>
                     </tr>`;
             }

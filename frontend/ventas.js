@@ -115,7 +115,7 @@ async function agregarProductoPorCodigo() {
     try {
         const idSucursal = obtenerSucursalActiva();
         // Se consulta estrictamente el inventario y stock de la sucursal actual
-        const response = await fetch(`http://localhost:8081/api/productos?idSucursal=${idSucursal}`);
+        const response = await fetch(`https://rudafer-api.onrender.com/api/productos?idSucursal=${idSucursal}`);
         if (!response.ok) throw new Error('Error al conectar con el inventario de la sucursal');
         
         const catalogo = await response.json();
@@ -265,7 +265,7 @@ document.querySelector('.cancel-sale-btn').addEventListener('click', () => {
 async function cargarEstadisticasEmpleado() {
     try {
         const idEmpleado = obtenerIdEmpleado();
-        const response = await fetch(`http://localhost:8081/api/empleado/stats?ID_Empleado=${idEmpleado}`);
+        const response = await fetch(`https://rudafer-api.onrender.com/api/empleado/stats?ID_Empleado=${idEmpleado}`);
         
         if (response.ok) {
             const data = await response.json();
@@ -290,7 +290,7 @@ async function cargarHistorialVentasHoy() {
 
     try {
         const idEmpleado = obtenerIdEmpleado();
-        const response = await fetch(`http://localhost:8081/api/empleado/ventas-hoy?ID_Empleado=${idEmpleado}`);
+        const response = await fetch(`https://rudafer-api.onrender.com/api/empleado/ventas-hoy?ID_Empleado=${idEmpleado}`);
         
         if (response.ok) {
             const ventas = await response.json();
@@ -363,7 +363,7 @@ btnFinalizar.addEventListener('click', async () => {
     };
 
     try {
-        const respuesta = await fetch('http://localhost:8081/api/ventas/crear', {
+        const respuesta = await fetch('https://rudafer-api.onrender.com/api/ventas/crear', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(datosVenta)

@@ -403,7 +403,7 @@
     const idSucursal = obtenerSucursalActiva(); // Obtenemos la sucursal activa
 
     try {
-        const respuesta = await fetch(`http://localhost:8081/api/productos?idSucursal=${idSucursal}`);
+        const respuesta = await fetch(`https://rudafer-api.onrender.com/api/productos?idSucursal=${idSucursal}`);
         if (!respuesta.ok) throw new Error('Error en la respuesta del servidor');
 
         listaProductosGlobal = await respuesta.json();
@@ -416,7 +416,7 @@
         tbody.innerHTML = `
             <tr>
                 <td colspan="7" style="text-align: center; color: var(--danger, #e74c3c); padding: 25px;">
-                    Error de conexión con el servidor Java (localhost:8081).
+                    Error de conexión con el servidor Java (rudafer-api.onrender.com).
                 </td>
             </tr>`;
     }
@@ -573,7 +573,7 @@
             if (!confirm('¿Estás seguro de que deseas eliminar este producto del inventario?')) return;
 
             try {
-                const respuesta = await fetch(`http://localhost:8081/api/productos?id=${id}`, {
+                const respuesta = await fetch(`https://rudafer-api.onrender.com/api/productos?id=${id}`, {
                     method: 'DELETE'
                 });
 
@@ -640,7 +640,7 @@
             };
 
             try {
-                const respuesta = await fetch('http://localhost:8081/api/productos', {
+                const respuesta = await fetch('https://rudafer-api.onrender.com/api/productos', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(productoActualizado)

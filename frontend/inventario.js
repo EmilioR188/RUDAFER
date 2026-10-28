@@ -14,7 +14,7 @@ async function cargarProductos() {
     try {
         const idSucursal = obtenerSucursalActiva();
         // Se consulta el endpoint pasando la sucursal activa para aislar el inventario
-        const respuesta = await fetch(`http://localhost:8081/api/productos?idSucursal=${idSucursal}`);
+        const respuesta = await fetch(`https://rudafer-api.onrender.com/api/productos?idSucursal=${idSucursal}`);
         const productos = await respuesta.json();
 
         // Limpiar filas estáticas/de prueba
@@ -75,7 +75,7 @@ async function guardarCambiosProductoDesdeModal(event) {
 
     try {
         // Se corrige la URL apuntando a /api/productos con método PUT para que el servidor Java lo reciba correctamente
-        const respuesta = await fetch('http://localhost:8081/api/productos', {
+        const respuesta = await fetch('https://rudafer-api.onrender.com/api/productos', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(productoModificado)
