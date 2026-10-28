@@ -38,10 +38,14 @@ public class PedidoDAO {
     public List<ItemPedido> listarProductosParaReponer() {
         List<ItemPedido> lista = new ArrayList<>();
         
-        String sql = "SELECT p.ID_Producto, p.Nombre, p.Codigo_Barras, p.Stock_Minimo, " +
+        String sql = "SELECT p.ID_Producto, p.Nombre, p.Codigo_Barras, " +
+                     "COALESCE(MAX(s.Stock_Minimo), 5) AS Stock_Minimo, " +
+                     "COALESCE(SUM(s.Stock_Actual), 0) AS Stock_Actual, " +
                      "pr.Nombre AS Proveedor " +
                      "FROM productos p " +
-                     "LEFT JOIN proveedor pr ON p.ID_Proveedor = pr.ID_Proveedor";
+                     "LEFT JOIN stock_sucursal s ON p.ID_Producto = s.ID_Producto " +
+                     "LEFT JOIN proveedor pr ON p.ID_Proveedor = pr.ID_Proveedor " +
+                     "GROUP BY p.ID_Producto, p.Nombre, p.Codigo_Barras, pr.Nombre";
 
         try (Connection con = ConexionBD.obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -52,7 +56,7 @@ public class PedidoDAO {
                     rs.getInt("ID_Producto"),
                     rs.getString("Nombre"),
                     rs.getString("Codigo_Barras"),
-                    0,
+                    rs.getInt("Stock_Actual"),
                     rs.getInt("Stock_Minimo"),
                     rs.getString("Proveedor")
                 ));
@@ -195,9 +199,10 @@ public class PedidoDAO {
                 psE.executeUpdate();
             }
 
-            // CORREGIDO: Sin Stock_Minimo en stock_sucursal
-            String sqlUpdateStock = "INSERT INTO stock_sucursal (ID_Producto, ID_Sucursal, Cantidad) " +
-                                    "VALUES (?, ?, ?) " +
+            // Cantidad es el valor editable del stock; Stock_Actual se genera automáticamente desde Cantidad.
+            // Si la fila todavía no existe, se crea con el mínimo predeterminado de 5.
+            String sqlUpdateStock = "INSERT INTO stock_sucursal (ID_Producto, ID_Sucursal, Cantidad, Stock_Minimo) " +
+                                    "VALUES (?, ?, ?, 5) " +
                                     "ON DUPLICATE KEY UPDATE Cantidad = Cantidad + ?";
             try (PreparedStatement ps = con.prepareStatement(sqlUpdateStock)) {
                 for (DatosItemRecepcion item : itemsProcesar) {

@@ -186,11 +186,16 @@ public class ServidorPrincipal {
                             exito = dao.registrarProducto(codigo, nombre, descripcion, marca, estante, fila, precioCompra, precioVenta, idCategoria, idProveedor, stock, stockMinimo, idSucursal);
                         }
 
-                        String respuestaJson = "{\"exito\": " + exito + "}";
+                        String mensaje = exito
+                            ? "Producto guardado correctamente."
+                            : "No se pudo guardar el producto. Revisá los logs del backend.";
+                        String respuestaJson = "{\"exito\":" + exito + ",\"mensaje\":\"" + mensaje + "\"}";
                         byte[] bytes = respuestaJson.getBytes(StandardCharsets.UTF_8);
-                        
+                        int status = exito
+                            ? ("POST".equalsIgnoreCase(method) ? 201 : 200)
+                            : 500;
                         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
+                        exchange.sendResponseHeaders(status, bytes.length);
                         try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
 
                     } catch (Exception e) {
@@ -1142,13 +1147,13 @@ public class ServidorPrincipal {
 
                             // Estado del stock y cálculo del Valor Total del Inventario
                            String sqlStock = (idSucursal == 0)
-                            ? "SELECT s.Cantidad, p.stock_minimo, COALESCE(p.Precio_Compra, 0) AS Precio_Compra FROM stock_sucursal s JOIN productos p ON s.ID_Producto = p.ID_Producto"
-                            : "SELECT s.Cantidad, p.stock_minimo, COALESCE(p.Precio_Compra, 0) AS Precio_Compra FROM stock_sucursal s JOIN productos p ON s.ID_Producto = p.ID_Producto WHERE s.ID_Sucursal = ?";
+                            ? "SELECT s.Stock_Actual, s.Stock_Minimo, COALESCE(p.Precio_Compra, 0) AS Precio_Compra FROM stock_sucursal s JOIN productos p ON s.ID_Producto = p.ID_Producto"
+                            : "SELECT s.Stock_Actual, s.Stock_Minimo, COALESCE(p.Precio_Compra, 0) AS Precio_Compra FROM stock_sucursal s JOIN productos p ON s.ID_Producto = p.ID_Producto WHERE s.ID_Sucursal = ?";
                             try (PreparedStatement ps = con.prepareStatement(sqlStock)) {
                                 if (idSucursal != 0) ps.setInt(1, idSucursal);
                                 try (ResultSet rs = ps.executeQuery()) {
                                     while (rs.next()) {
-                                        int stock = rs.getInt("Cantidad");
+                                        int stock = rs.getInt("Stock_Actual");
                                         int min = rs.getInt("Stock_Minimo");
                                         double precioCompra = rs.getDouble("Precio_Compra");
 
