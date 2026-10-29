@@ -28,7 +28,7 @@ async function cargarProductos() {
         // Renderizar cada producto devuelto por la base de datos
         productos.forEach(p => {
             const idProd = p.idProducto || p.id;
-            const precio = p.precioVenta || p.precio || 0;
+            const precio = Number(p.precioVenta ?? p.precio ?? 0);
             const stock = p.stock !== undefined ? p.stock : 0;
             const minStock = p.stockMinimo !== undefined ? p.stockMinimo : 5;
 

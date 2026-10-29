@@ -501,7 +501,7 @@
             filtrados.sort((a, b) => {
                 if (ordenSelec === 'nombre') return (a.nombre || '').localeCompare(b.nombre || '');
                 if (ordenSelec === 'stock') return parseInt(b.stock || 0) - parseInt(a.stock || 0);
-                if (ordenSelec === 'precio') return parseFloat(b.precio || 0) - parseFloat(a.precio || 0);
+                if (ordenSelec === 'precio') return parseFloat(b.precioVenta ?? b.precio ?? 0) - parseFloat(a.precioVenta ?? a.precio ?? 0);
                 if (ordenSelec === 'recientes') return parseInt(b.id || 0) - parseInt(a.id || 0);
                 return 0;
             });
@@ -523,7 +523,7 @@
             tbody.innerHTML = '';
             filtrados.forEach(p => {
                 const inicial = p.nombre ? p.nombre.charAt(0).toUpperCase() : 'P';
-                const precioFormateado = parseFloat(p.precio || 0).toFixed(2);
+                const precioFormateado = Number(p.precioVenta ?? p.precio ?? 0).toFixed(2);
                 const stock = parseInt(p.stock || 0);
                 const stockMin = p.stockMinimo !== undefined ? parseInt(p.stockMinimo) : STOCK_MINIMO_DEFAULT;
 
@@ -576,11 +576,13 @@
                 const respuesta = await fetch(`https://rudafer-api.onrender.com/api/productos?id=${id}`, {
                     method: 'DELETE'
                 });
+                const resultado = await respuesta.json();
 
-                if (respuesta.ok) {
-                    cargarProductosDesdeBD();
+                if (respuesta.ok && resultado.exito) {
+                    await cargarProductosDesdeBD();
+                    alert(resultado.mensaje || 'Producto eliminado correctamente.');
                 } else {
-                    alert('No se pudo eliminar el producto de la base de datos.');
+                    alert(resultado.mensaje || 'No se pudo eliminar el producto de la base de datos.');
                 }
             } catch (error) {
                 console.error('Error al conectar con el servidor:', error);
@@ -602,10 +604,10 @@
                 document.getElementById('edit-marca').value = p.marca || '';
                 document.getElementById('edit-estante').value = p.estante || '';
                 document.getElementById('edit-fila').value = p.fila || '';
-                document.getElementById('edit-precioCompra').value = p.precioCompra || 0;
-                document.getElementById('edit-precioVenta').value = p.precio || 0;
-                document.getElementById('edit-stock').value = p.stock || 0;
-                document.getElementById('edit-stockMinimo').value = p.stockMinimo || 5;
+                document.getElementById('edit-precioCompra').value = p.precioCompra ?? 0;
+                document.getElementById('edit-precioVenta').value = p.precioVenta ?? p.precio ?? 0;
+                document.getElementById('edit-stock').value = p.stock ?? 0;
+                document.getElementById('edit-stockMinimo').value = p.stockMinimo ?? 5;
                 if (p.idCategoria) {
                     document.getElementById('edit-idCategoria').value = p.idCategoria;
                 }
@@ -624,8 +626,10 @@
         document.getElementById('formEditar').addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            const idProductoActual = parseInt(document.getElementById('edit-id').value);
+            const productoOriginal = listaProductosGlobal.find(item => Number(item.id) === idProductoActual);
             const productoActualizado = {
-                id: parseInt(document.getElementById('edit-id').value),
+                id: idProductoActual,
                 codigo: document.getElementById('edit-codigo').value,
                 nombre: document.getElementById('edit-nombre').value,
                 descripcion: document.getElementById('edit-descripcion').value || '',
@@ -636,8 +640,16 @@
                 precioVenta: parseFloat(document.getElementById('edit-precioVenta').value) || 0.0,
                 stockActual: parseInt(document.getElementById('edit-stock').value) || 0,
                 stockMinimo: parseInt(document.getElementById('edit-stockMinimo').value) || 5,
-                idCategoria: parseInt(document.getElementById('edit-idCategoria').value) || 1
+                idCategoria: parseInt(document.getElementById('edit-idCategoria').value) || 1,
+                idProveedor: parseInt(productoOriginal?.idProveedor) || 0,
+                idSucursal: obtenerSucursalActiva()
             };
+
+            if (!Number.isFinite(productoActualizado.precioVenta) || productoActualizado.precioVenta < 0 ||
+                !Number.isFinite(productoActualizado.precioCompra) || productoActualizado.precioCompra < 0) {
+                alert('Ingresá precios válidos y no negativos.');
+                return;
+            }
 
             try {
                 const respuesta = await fetch('https://rudafer-api.onrender.com/api/productos', {
@@ -646,11 +658,13 @@
                     body: JSON.stringify(productoActualizado)
                 });
 
-                if (respuesta.ok) {
+                const resultado = await respuesta.json();
+                if (respuesta.ok && resultado.exito) {
                     cerrarModal();
-                    cargarProductosDesdeBD();
+                    await cargarProductosDesdeBD();
+                    alert(resultado.mensaje || 'Producto actualizado correctamente.');
                 } else {
-                    alert('Error al actualizar el producto en la base de datos.');
+                    alert(resultado.mensaje || 'Error al actualizar el producto en la base de datos.');
                 }
             } catch (error) {
                 console.error('Error de conexión:', error);
