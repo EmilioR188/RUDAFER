@@ -98,7 +98,7 @@ public class ProductoDAO {
         
         if (idSucursal == 0) {
             // Vista General: Suma stock de todas las sucursales
-            sql = "SELECT p.ID_Producto, p.Codigo_Barras, p.Nombre, p.Marca, p.Estante, p.Fila, " +
+            sql = "SELECT p.ID_Producto, p.Codigo_Barras, p.Nombre, MAX(p.Descripcion) AS Descripcion, p.Marca, p.Estante, p.Fila, p.ID_Categoria, " +
                   "COALESCE(p.Precio_Compra, 0) AS Precio_Compra, " +
                   "COALESCE(p.Precio_Venta, 0) AS Precio_Venta, " +
                   "COALESCE(MAX(s.Stock_Minimo), 5) AS Stock_Minimo, " +
@@ -110,10 +110,10 @@ public class ProductoDAO {
                   "LEFT JOIN stock_sucursal s ON p.ID_Producto = s.ID_Producto " +
                   "LEFT JOIN proveedor pr ON p.ID_Proveedor = pr.ID_Proveedor " +
                   "LEFT JOIN categoria c ON p.ID_Categoria = c.ID_Categoria " +
-                  "GROUP BY p.ID_Producto, p.Codigo_Barras, p.Nombre, p.Marca, p.Estante, p.Fila, p.Precio_Compra, p.Precio_Venta, p.ID_Proveedor, pr.Nombre, c.Nombre_Categoria";
+                  "GROUP BY p.ID_Producto, p.Codigo_Barras, p.Nombre, p.Marca, p.Estante, p.Fila, p.ID_Categoria, p.Precio_Compra, p.Precio_Venta, p.ID_Proveedor, pr.Nombre, c.Nombre_Categoria";
         } else {
             // Sucursal Específica - CORREGIDO con LEFT JOIN para mostrar productos con stock 0
-            sql = "SELECT p.ID_Producto, p.Codigo_Barras, p.Nombre, p.Marca, p.Estante, p.Fila, " +
+            sql = "SELECT p.ID_Producto, p.Codigo_Barras, p.Nombre, p.Descripcion, p.Marca, p.Estante, p.Fila, p.ID_Categoria, " +
                   "COALESCE(p.Precio_Compra, 0) AS Precio_Compra, " +
                   "COALESCE(p.Precio_Venta, 0) AS Precio_Venta, " +
                   "COALESCE(s.Stock_Minimo, 5) AS Stock_Minimo, " +
@@ -155,21 +155,28 @@ public class ProductoDAO {
                     String fila = rs.getString("Fila");
                     if (fila == null) fila = "";
 
+                    String descripcion = rs.getString("Descripcion");
+                    if (descripcion == null) descripcion = "";
+
                     json.append("{")
                         .append("\"id\":").append(idProd).append(",")
                         .append("\"idProducto\":").append(idProd).append(",")
-                        .append("\"codigo\":\"").append(rs.getString("Codigo_Barras") != null ? rs.getString("Codigo_Barras") : "").append("\",")
-                        .append("\"nombre\":\"").append(rs.getString("Nombre").replace("\"", "\\\"")).append("\",")
-                        .append("\"marca\":\"").append(rs.getString("Marca") != null ? rs.getString("Marca").replace("\"", "\\\"") : "").append("\",")
+                        .append("\"codigo\":\"").append(escaparJsonString(rs.getString("Codigo_Barras"))).append("\",")
+                        .append("\"nombre\":\"").append(escaparJsonString(rs.getString("Nombre"))).append("\",")
+                        .append("\"marca\":\"").append(escaparJsonString(rs.getString("Marca"))).append("\",")
+                        .append("\"descripcion\":\"").append(escaparJsonString(descripcion)).append("\",")
+                        .append("\"idCategoria\":").append(rs.getInt("ID_Categoria")).append(",")
                         .append("\"stock\":").append(rs.getInt("Stock_Actual")).append(",")
                         .append("\"stockMinimo\":").append(rs.getInt("Stock_Minimo")).append(",")
-                        .append("\"precioCompra\":").append(rs.getDouble("Precio_Compra")).append(",")
-                        .append("\"precioVenta\":").append(rs.getDouble("Precio_Venta")).append(",")
-                        .append("\"estante\":\"").append(estante.replace("\"", "\\\"")).append("\",")
-                        .append("\"fila\":\"").append(fila.replace("\"", "\\\"")).append("\",")
+                        .append("\"precioCompra\":").append(rs.getBigDecimal("Precio_Compra") != null ? rs.getBigDecimal("Precio_Compra").toPlainString() : "0.00").append(",")
+                        .append("\"precioVenta\":").append(rs.getBigDecimal("Precio_Venta") != null ? rs.getBigDecimal("Precio_Venta").toPlainString() : "0.00").append(",")
+                        // Campo legacy para compatibilidad con clientes que esperan la clave "precio".
+                        .append("\"precio\":").append(rs.getBigDecimal("Precio_Venta") != null ? rs.getBigDecimal("Precio_Venta").toPlainString() : "0.00").append(",")
+                        .append("\"estante\":\"").append(escaparJsonString(estante)).append("\",")
+                        .append("\"fila\":\"").append(escaparJsonString(fila)).append("\",")
                         .append("\"idProveedor\":").append(idProv).append(",")
-                        .append("\"proveedor\":\"").append(proveedor.replace("\"", "\\\"")).append("\",")
-                        .append("\"categoria\":\"").append(categoria.replace("\"", "\\\"")).append("\"")
+                        .append("\"proveedor\":\"").append(escaparJsonString(proveedor)).append("\",")
+                        .append("\"categoria\":\"").append(escaparJsonString(categoria)).append("\"")
                         .append("}");
                 }
             }
@@ -179,6 +186,30 @@ public class ProductoDAO {
         
         json.append("]");
         return json.toString();
+    }
+
+    private static String escaparJsonString(String valor) {
+        if (valor == null) return "";
+        StringBuilder escapado = new StringBuilder(valor.length() + 16);
+        for (int i = 0; i < valor.length(); i++) {
+            char c = valor.charAt(i);
+            switch (c) {
+                case '\\': escapado.append("\\\\"); break;
+                case '\"': escapado.append("\\\""); break;
+                case '\b': escapado.append("\\b"); break;
+                case '\f': escapado.append("\\f"); break;
+                case '\n': escapado.append("\\n"); break;
+                case '\r': escapado.append("\\r"); break;
+                case '\t': escapado.append("\\t"); break;
+                default:
+                    if (c < 0x20) {
+                        escapado.append(String.format("\\u%04x", (int) c));
+                    } else {
+                        escapado.append(c);
+                    }
+            }
+        }
+        return escapado.toString();
     }
 
     public boolean registrarProducto(String codigoBarras, String nombre, String descripcion, String marca, 
@@ -261,15 +292,96 @@ public class ProductoDAO {
         }
     }
 
-    public boolean eliminarProducto(int idProducto) {
-        String sql = "DELETE FROM productos WHERE ID_Producto = ?";
-        try (Connection con = ConexionBD.obtenerConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, idProducto);
-            return ps.executeUpdate() > 0;
+    /** Resultado del intento de eliminación, con un código HTTP apto para la API. */
+    public static class ResultadoEliminacion {
+        public final boolean exito;
+        public final int codigoHttp;
+        public final String mensaje;
+
+        public ResultadoEliminacion(boolean exito, int codigoHttp, String mensaje) {
+            this.exito = exito;
+            this.codigoHttp = codigoHttp;
+            this.mensaje = mensaje;
+        }
+    }
+
+    /**
+     * Elimina un producto solo si no forma parte del historial de ventas o transferencias.
+     * El stock por sucursal es dependiente y se elimina en la misma transacción.
+     */
+    public ResultadoEliminacion eliminarProducto(int idProducto) {
+        if (idProducto <= 0) {
+            return new ResultadoEliminacion(false, 400, "El ID del producto no es válido.");
+        }
+
+        Connection con = null;
+        try {
+            con = ConexionBD.obtenerConexion();
+            con.setAutoCommit(false);
+
+            try (PreparedStatement ps = con.prepareStatement(
+                    "SELECT COUNT(*) FROM productos WHERE ID_Producto = ?")) {
+                ps.setInt(1, idProducto);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (!rs.next() || rs.getLong(1) == 0) {
+                        con.rollback();
+                        return new ResultadoEliminacion(false, 404, "No se encontró el producto indicado.");
+                    }
+                }
+            }
+
+            long ventas = contarReferencias(con,
+                "SELECT COUNT(*) FROM detalles_venta WHERE ID_Producto = ?", idProducto);
+            long transferencias = contarReferencias(con,
+                "SELECT COUNT(*) FROM detalles_transferencia WHERE ID_Producto = ?", idProducto);
+
+            if (ventas > 0 || transferencias > 0) {
+                con.rollback();
+                return new ResultadoEliminacion(false, 409,
+                    "No se puede eliminar este producto porque tiene ventas o transferencias históricas asociadas. Se conservó para proteger el historial.");
+            }
+
+            try (PreparedStatement psStock = con.prepareStatement(
+                    "DELETE FROM stock_sucursal WHERE ID_Producto = ?")) {
+                psStock.setInt(1, idProducto);
+                psStock.executeUpdate();
+            }
+
+            try (PreparedStatement psProducto = con.prepareStatement(
+                    "DELETE FROM productos WHERE ID_Producto = ?")) {
+                psProducto.setInt(1, idProducto);
+                if (psProducto.executeUpdate() == 0) {
+                    con.rollback();
+                    return new ResultadoEliminacion(false, 404, "No se encontró el producto indicado.");
+                }
+            }
+
+            con.commit();
+            return new ResultadoEliminacion(true, 200, "Producto eliminado correctamente.");
         } catch (SQLException e) {
-            System.err.println("Error al eliminar producto: " + e.getMessage());
-            return false;
+            if (con != null) {
+                try { con.rollback(); } catch (SQLException ex) { e.addSuppressed(ex); }
+            }
+            System.err.println("Error al eliminar producto ID " + idProducto + ": " + e.getMessage());
+            if (e.getErrorCode() == 1451 || (e.getSQLState() != null && e.getSQLState().startsWith("23"))) {
+                return new ResultadoEliminacion(false, 409,
+                    "No se puede eliminar el producto porque existen registros relacionados. Se conservaron los datos históricos.");
+            }
+            return new ResultadoEliminacion(false, 500,
+                "Ocurrió un error de base de datos al intentar eliminar el producto.");
+        } finally {
+            if (con != null) {
+                try { con.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+    }
+
+    private long contarReferencias(Connection con, String sql, int idProducto) throws SQLException {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idProducto);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getLong(1) : 0L;
+            }
         }
     }
 

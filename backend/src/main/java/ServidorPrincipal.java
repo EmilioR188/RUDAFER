@@ -217,13 +217,14 @@ public class ServidorPrincipal {
                         }
 
                         ProductoDAO dao = new ProductoDAO();
-                        boolean exito = id > 0 && dao.eliminarProducto(id);
+                        ProductoDAO.ResultadoEliminacion resultado = dao.eliminarProducto(id);
 
-                        String respuestaJson = "{\"exito\": " + exito + "}";
+                        String respuestaJson = "{\"exito\":" + resultado.exito +
+                            ",\"mensaje\":\"" + escaparJson(resultado.mensaje) + "\"}";
                         byte[] bytes = respuestaJson.getBytes(StandardCharsets.UTF_8);
-                        
+
                         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
+                        exchange.sendResponseHeaders(resultado.codigoHttp, bytes.length);
                         try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1440,6 +1441,14 @@ public class ServidorPrincipal {
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
         exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    }
+
+    private static String escaparJson(String valor) {
+        if (valor == null) return "";
+        return valor.replace("\\", "\\\\")
+                    .replace("\"", "\\\"")
+                    .replace("\r", "\\r")
+                    .replace("\n", "\\n");
     }
 
     private static String obtenerValorJson(String json, String clave) {
