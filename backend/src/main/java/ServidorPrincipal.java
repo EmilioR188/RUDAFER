@@ -10,6 +10,12 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class ServidorPrincipal {
 
@@ -20,7 +26,7 @@ public class ServidorPrincipal {
         HttpServer server = HttpServer.create(new InetSocketAddress(puerto), 0);
 
         // =========================================================
-        // 0. ENDPOINT: SUCURSALES DINÁMICAS (/api/sucursales) [GET]
+        // 0. ENDPOINT: SUCURSALES (/api/sucursales) [GET, POST, PUT, DELETE]
         // =========================================================
         server.createContext("/api/sucursales", new HttpHandler() {
             @Override
@@ -30,28 +36,49 @@ public class ServidorPrincipal {
                     exchange.sendResponseHeaders(204, -1);
                     return;
                 }
-
-                if ("GET".equalsIgnoreCase(exchange.getRequestMethod())) {
-                    try {
-                        StringBuilder json = new StringBuilder("[{\"id\": 0, \"nombre\": \"🌐 Vista General (Todas)\"}");
-                        try (Connection con = ConexionBD.obtenerConexion();
-                             PreparedStatement ps = con.prepareStatement("SELECT ID_Sucursal, Nombre FROM sucursal");
-                             ResultSet rs = ps.executeQuery()) {
-                            while (rs.next()) {
-                                json.append(",{\"id\":").append(rs.getInt("ID_Sucursal"))
-                                    .append(",\"nombre\":\"").append(rs.getString("Nombre").replace("\"", "\\\"")).append("\"}");
+                SucursalDAO dao = new SucursalDAO();
+                String method = exchange.getRequestMethod();
+                try {
+                    if ("GET".equalsIgnoreCase(method)) {
+                        enviarJson(exchange, 200, dao.obtenerJsonSucursales());
+                        return;
+                    }
+                    if ("POST".equalsIgnoreCase(method) || "PUT".equalsIgnoreCase(method)) {
+                        String body = leerCuerpo(exchange);
+                        String nombre = obtenerValorJson(body, "nombre");
+                        String direccion = obtenerValorJson(body, "direccion");
+                        String telefono = obtenerValorJson(body, "telefono");
+                        String email = obtenerValorJson(body, "email");
+                        SucursalDAO.Resultado resultado;
+                        if ("POST".equalsIgnoreCase(method)) {
+                            resultado = dao.crear(nombre, direccion, telefono, email);
+                        } else {
+                            int id = 0;
+                            try { id = Integer.parseInt(obtenerValorJson(body, "id")); } catch (Exception ignored) {}
+                            resultado = dao.actualizar(id, nombre, direccion, telefono, email);
+                        }
+                        enviarJson(exchange, resultado.codigoHttp,
+                                "{\"exito\":" + resultado.exito + ",\"mensaje\":\"" + escaparJson(resultado.mensaje) + "\"}");
+                        return;
+                    }
+                    if ("DELETE".equalsIgnoreCase(method)) {
+                        String query = exchange.getRequestURI().getQuery();
+                        int id = 0;
+                        if (query != null) {
+                            for (String parte : query.split("&")) {
+                                if (parte.startsWith("id=")) { try { id = Integer.parseInt(parte.substring(3)); } catch (Exception ignored) {} }
                             }
                         }
-                        json.append("]");
-
-                        byte[] bytes = json.toString().getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        SucursalDAO.Resultado resultado = dao.eliminar(id);
+                        enviarJson(exchange, resultado.codigoHttp,
+                                "{\"exito\":" + resultado.exito + ",\"mensaje\":\"" + escaparJson(resultado.mensaje) + "\"}");
+                        return;
                     }
+                    enviarJson(exchange, 405, "{\"exito\":false,\"mensaje\":\"Método no permitido.\"}");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    try { enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error interno al procesar sucursales.\"}"); }
+                    catch (Exception ignored) {}
                 }
             }
         });
@@ -171,6 +198,24 @@ public class ServidorPrincipal {
                             }
                         } catch(Exception ignored){}
 
+                        List<ProductoDAO.StockSucursalDTO> stocksPorSucursal = new ArrayList<>();
+                        try {
+                            JsonObject productoJson = JsonParser.parseString(body).getAsJsonObject();
+                            JsonArray arrayStocks = productoJson.getAsJsonArray("sucursalesStock");
+                            if (arrayStocks != null) {
+                                for (JsonElement elemento : arrayStocks) {
+                                    if (!elemento.isJsonObject()) continue;
+                                    JsonObject stockJson = elemento.getAsJsonObject();
+                                    stocksPorSucursal.add(new ProductoDAO.StockSucursalDTO(
+                                            stockJson.get("idSucursal").getAsInt(),
+                                            stockJson.get("stockActual").getAsInt(),
+                                            stockJson.get("stockMinimo").getAsInt()));
+                                }
+                            }
+                        } catch (Exception e) {
+                            throw new IllegalArgumentException("El detalle de stock por sucursal no tiene un formato válido.", e);
+                        }
+
                         ProductoDAO dao = new ProductoDAO();
                         boolean exito = false;
 
@@ -181,9 +226,13 @@ public class ServidorPrincipal {
                                 if(v.isEmpty()) v = obtenerValorJson(body, "idProducto");
                                 if(!v.isEmpty() && !"undefined".equalsIgnoreCase(v)) idProducto = Integer.parseInt(v); 
                             } catch(Exception ignored){}
-                            exito = dao.actualizarProducto(idProducto, codigo, nombre, descripcion, marca, estante, fila, precioCompra, precioVenta, idCategoria, idProveedor, stock, stockMinimo, idSucursal);
+                            exito = stocksPorSucursal.isEmpty()
+                                    ? dao.actualizarProducto(idProducto, codigo, nombre, descripcion, marca, estante, fila, precioCompra, precioVenta, idCategoria, idProveedor, stock, stockMinimo, idSucursal)
+                                    : dao.actualizarProducto(idProducto, codigo, nombre, descripcion, marca, estante, fila, precioCompra, precioVenta, idCategoria, idProveedor, stock, stockMinimo, idSucursal, stocksPorSucursal);
                         } else {
-                            exito = dao.registrarProducto(codigo, nombre, descripcion, marca, estante, fila, precioCompra, precioVenta, idCategoria, idProveedor, stock, stockMinimo, idSucursal);
+                            exito = stocksPorSucursal.isEmpty()
+                                    ? dao.registrarProducto(codigo, nombre, descripcion, marca, estante, fila, precioCompra, precioVenta, idCategoria, idProveedor, stock, stockMinimo, idSucursal)
+                                    : dao.registrarProducto(codigo, nombre, descripcion, marca, estante, fila, precioCompra, precioVenta, idCategoria, idProveedor, stock, stockMinimo, idSucursal, stocksPorSucursal);
                         }
 
                         String mensaje = exito
@@ -506,6 +555,27 @@ public class ServidorPrincipal {
                         exchange.sendResponseHeaders(500, -1);
                     }
                 }
+            }
+        });
+
+        // =========================================================
+        // 5. ENDPOINT: TRANSFERENCIAS ENTRE SUCURSALES (/api/transferencias) [POST]
+        // =========================================================
+        server.createContext("/api/transferencias", new HttpHandler() {
+            @Override
+            public void handle(HttpExchange exchange) throws IOException {
+                configurarHeadersCORS(exchange);
+                if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
+                    exchange.sendResponseHeaders(204, -1);
+                    return;
+                }
+                if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
+                    enviarJson(exchange, 405, "{\"exito\":false,\"mensaje\":\"Método no permitido.\"}");
+                    return;
+                }
+                TransferenciaDAO.Resultado resultado = new TransferenciaDAO().crearDesdeJson(leerCuerpo(exchange));
+                enviarJson(exchange, resultado.codigoHttp,
+                        "{\"exito\":" + resultado.exito + ",\"mensaje\":\"" + escaparJson(resultado.mensaje) + "\"}");
             }
         });
 
@@ -1334,13 +1404,13 @@ public class ServidorPrincipal {
                         String sqlCount = (idSucursal == 0)
                             ? "SELECT " +
                               "(SELECT COUNT(*) FROM ventas) AS ventas, " +
-                              "(SELECT COUNT(*) FROM historial_pedidos WHERE Estado = 'entregado' OR Estado = 'Recibido') AS compras, " +
+                              "(SELECT COUNT(*) FROM historial_pedidos WHERE (Estado = 'entregado' OR Estado = 'Recibido') AND COALESCE(tipo, 'compra') = 'compra') AS compras, " +
                               "(SELECT COUNT(*) FROM pagos_proveedores) AS pagos, " +
                               "(SELECT COUNT(*) FROM transferencias) AS transferencias"
                             : "SELECT " +
                               "(SELECT COUNT(*) FROM ventas WHERE ID_Sucursal = ?) AS ventas, " +
-                              "(SELECT COUNT(*) FROM historial_pedidos WHERE (Estado = 'entregado' OR Estado = 'Recibido') AND ID_Sucursal = ?) AS compras, " +
-                              "(SELECT COUNT(*) FROM pagos_proveedores) AS pagos, " +
+                              "(SELECT COUNT(*) FROM historial_pedidos WHERE (Estado = 'entregado' OR Estado = 'Recibido') AND COALESCE(tipo, 'compra') = 'compra' AND ID_Sucursal = ?) AS compras, " +
+                              "0 AS pagos, " + // pagos_proveedores no tiene ID_Sucursal: no se atribuyen a una sucursal concreta.
                               "(SELECT COUNT(*) FROM transferencias WHERE ID_Sucursal_Origen = ? OR ID_Sucursal_Destino = ?) AS transferencias";
                         
                         try (PreparedStatement ps = con.prepareStatement(sqlCount)) {
@@ -1376,13 +1446,15 @@ public class ServidorPrincipal {
                     String sqlMovimientos = (idSucursal == 0)
                         ? "SELECT v.Fecha_Hora AS Fecha, 'venta' AS Tipo, CONCAT('Venta #', v.ID_Venta) AS Detalle, 'Ventas' AS Categoria, v.Total_Venta AS Cantidad, COALESCE(su.Nombre, 'Sucursal Central') AS Sucursal, CONCAT(e.Nombres, ' ', e.Apellidos) AS Responsable, CONCAT('VTA-', v.ID_Venta) AS Referencia FROM ventas v JOIN empleados e ON v.ID_Empleado = e.ID_Empleado LEFT JOIN sucursal su ON v.ID_Sucursal = su.ID_Sucursal " +
                           "UNION ALL " +
-                          "SELECT h.fecha AS Fecha, 'compra' AS Tipo, COALESCE(h.proveedor, 'Proveedor General') AS Detalle, 'Compras / Pedidos' AS Categoria, CONCAT('-', h.total) AS Cantidad, COALESCE(su.Nombre, 'Sucursal Central') AS Sucursal, 'Administración' AS Responsable, CONCAT('PED-', h.id_historial) AS Referencia FROM historial_pedidos h LEFT JOIN sucursal su ON h.ID_Sucursal = su.ID_Sucursal WHERE (h.estado = 'entregado' OR h.estado = 'Recibido') " +
+                          "SELECT h.fecha AS Fecha, 'compra' AS Tipo, COALESCE(h.proveedor, 'Proveedor General') AS Detalle, 'Compras / Pedidos' AS Categoria, CONCAT('-', h.total) AS Cantidad, COALESCE(su.Nombre, 'Sucursal Central') AS Sucursal, 'Administración' AS Responsable, CONCAT('PED-', h.id_historial) AS Referencia FROM historial_pedidos h LEFT JOIN sucursal su ON h.ID_Sucursal = su.ID_Sucursal WHERE (h.estado = 'entregado' OR h.estado = 'Recibido') AND COALESCE(h.tipo, 'compra') = 'compra' " +
                           "UNION ALL " +
                           "SELECT t.Fecha AS Fecha, 'transferencia' AS Tipo, CONCAT('Transferencia a ', su2.Nombre) AS Detalle, 'Transferencias' AS Categoria, CONCAT('Traspaso #', t.ID_Transferencia) AS Cantidad, COALESCE(su1.Nombre, 'Sucursal Central') AS Sucursal, CONCAT(e.Nombres, ' ', e.Apellidos) AS Responsable, CONCAT('TRF-', t.ID_Transferencia) AS Referencia FROM transferencias t JOIN empleados e ON t.ID_Empleado = e.ID_Empleado LEFT JOIN sucursal su1 ON t.ID_Sucursal_Origen = su1.ID_Sucursal LEFT JOIN sucursal su2 ON t.ID_Sucursal_Destino = su2.ID_Sucursal " +
+                          "UNION ALL " +
+                          "SELECT pp.Fecha AS Fecha, 'pago' AS Tipo, CONCAT('Pago a ', COALESCE(pr.Nombre, CONCAT('Proveedor #', pp.ID_Proveedor))) AS Detalle, 'Pagos a proveedores' AS Categoria, CONCAT('-', pp.Monto) AS Cantidad, 'General' AS Sucursal, 'Administración' AS Responsable, CONCAT('PAG-', pp.ID_Pago) AS Referencia FROM pagos_proveedores pp LEFT JOIN proveedor pr ON pp.ID_Proveedor = pr.ID_Proveedor " +
                           "ORDER BY Fecha DESC LIMIT 50"
                         : "SELECT v.Fecha_Hora AS Fecha, 'venta' AS Tipo, CONCAT('Venta #', v.ID_Venta) AS Detalle, 'Ventas' AS Categoria, v.Total_Venta AS Cantidad, COALESCE(su.Nombre, 'Sucursal Central') AS Sucursal, CONCAT(e.Nombres, ' ', e.Apellidos) AS Responsable, CONCAT('VTA-', v.ID_Venta) AS Referencia FROM ventas v JOIN empleados e ON v.ID_Empleado = e.ID_Empleado LEFT JOIN sucursal su ON v.ID_Sucursal = su.ID_Sucursal WHERE v.ID_Sucursal = ? " +
                           "UNION ALL " +
-                          "SELECT h.fecha AS Fecha, 'compra' AS Tipo, COALESCE(h.proveedor, 'Proveedor General') AS Detalle, 'Compras / Pedidos' AS Categoria, CONCAT('-', h.total) AS Cantidad, COALESCE(su.Nombre, 'Sucursal Central') AS Sucursal, 'Administración' AS Responsable, CONCAT('PED-', h.id_historial) AS Referencia FROM historial_pedidos h LEFT JOIN sucursal su ON h.ID_Sucursal = su.ID_Sucursal WHERE (h.estado = 'entregado' OR h.estado = 'Recibido') AND h.ID_Sucursal = ? " +
+                          "SELECT h.fecha AS Fecha, 'compra' AS Tipo, COALESCE(h.proveedor, 'Proveedor General') AS Detalle, 'Compras / Pedidos' AS Categoria, CONCAT('-', h.total) AS Cantidad, COALESCE(su.Nombre, 'Sucursal Central') AS Sucursal, 'Administración' AS Responsable, CONCAT('PED-', h.id_historial) AS Referencia FROM historial_pedidos h LEFT JOIN sucursal su ON h.ID_Sucursal = su.ID_Sucursal WHERE (h.estado = 'entregado' OR h.estado = 'Recibido') AND COALESCE(h.tipo, 'compra') = 'compra' AND h.ID_Sucursal = ? " +
                           "UNION ALL " +
                           "SELECT t.Fecha AS Fecha, 'transferencia' AS Tipo, CONCAT('Transferencia a ', su2.Nombre) AS Detalle, 'Transferencias' AS Categoria, CONCAT('Traspaso #', t.ID_Transferencia) AS Cantidad, COALESCE(su1.Nombre, 'Sucursal Central') AS Sucursal, CONCAT(e.Nombres, ' ', e.Apellidos) AS Responsable, CONCAT('TRF-', t.ID_Transferencia) AS Referencia FROM transferencias t JOIN empleados e ON t.ID_Empleado = e.ID_Empleado LEFT JOIN sucursal su1 ON t.ID_Sucursal_Origen = su1.ID_Sucursal LEFT JOIN sucursal su2 ON t.ID_Sucursal_Destino = su2.ID_Sucursal WHERE t.ID_Sucursal_Origen = ? OR t.ID_Sucursal_Destino = ? " +
                           "ORDER BY Fecha DESC LIMIT 50";
@@ -1399,14 +1471,14 @@ public class ServidorPrincipal {
                             while (rs.next()) {
                                 if (!primero) json.append(",");
                                 json.append("{")
-                                    .append("\"fecha\": \"").append(rs.getString("Fecha")).append("\",")
-                                    .append("\"tipo\": \"").append(rs.getString("Tipo")).append("\",")
-                                    .append("\"detalle\": \"").append(rs.getString("Detalle").replace("\"", "\\\"")).append("\",")
-                                    .append("\"categoria\": \"").append(rs.getString("Categoria")).append("\",")
-                                    .append("\"cantidad\": \"").append(rs.getString("Cantidad")).append("\",")
-                                    .append("\"sucursal\": \"").append(rs.getString("Sucursal")).append("\",")
-                                    .append("\"responsable\": \"").append(rs.getString("Responsable")).append("\",")
-                                    .append("\"referencia\": \"").append(rs.getString("Referencia")).append("\"")
+                                    .append("\"fecha\":\"").append(escaparJson(rs.getString("Fecha"))).append("\",")
+                                    .append("\"tipo\":\"").append(escaparJson(rs.getString("Tipo"))).append("\",")
+                                    .append("\"detalle\":\"").append(escaparJson(rs.getString("Detalle"))).append("\",")
+                                    .append("\"categoria\":\"").append(escaparJson(rs.getString("Categoria"))).append("\",")
+                                    .append("\"cantidad\":\"").append(escaparJson(rs.getString("Cantidad"))).append("\",")
+                                    .append("\"sucursal\":\"").append(escaparJson(rs.getString("Sucursal"))).append("\",")
+                                    .append("\"responsable\":\"").append(escaparJson(rs.getString("Responsable"))).append("\",")
+                                    .append("\"referencia\":\"").append(escaparJson(rs.getString("Referencia"))).append("\"")
                                     .append("}");
                                 primero = false;
                             }
@@ -1432,7 +1504,7 @@ public class ServidorPrincipal {
 
         server.setExecutor(null);
         System.out.println("=====================================================");
-        System.out.println("Servidor unificado RUDAFER activo en http://localhost:" + puerto);
+        System.out.println("Servidor unificado RUDAFER activo en el puerto " + puerto);
         System.out.println("=====================================================");
         server.start();
     }
@@ -1441,6 +1513,22 @@ public class ServidorPrincipal {
         exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
         exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
         exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    }
+
+    private static String leerCuerpo(HttpExchange exchange) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8))) {
+            StringBuilder body = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) body.append(line);
+            return body.toString();
+        }
+    }
+
+    private static void enviarJson(HttpExchange exchange, int status, String json) throws IOException {
+        byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
+        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
+        exchange.sendResponseHeaders(status, bytes.length);
+        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
     }
 
     private static String escaparJson(String valor) {

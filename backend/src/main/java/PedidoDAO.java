@@ -88,9 +88,13 @@ public class PedidoDAO {
 
     public String obtenerJsonHistorial() {
         StringBuilder json = new StringBuilder("[");
-        String sql = "SELECT h.id_historial, h.proveedor, h.detalle_pedido, h.total, h.fecha, h.estado, h.ID_Sucursal, s.Nombre AS NombreSucursal " +
+        String sql = "SELECT h.id_historial, h.proveedor, h.detalle_pedido, h.total, h.fecha, h.estado, h.ID_Sucursal, " +
+                     "h.tipo, h.ID_Sucursal_Origen, h.ID_Sucursal_Destino, s.Nombre AS NombreSucursal, " +
+                     "so.Nombre AS NombreSucursalOrigen, sd.Nombre AS NombreSucursalDestino " +
                      "FROM historial_pedidos h " +
                      "LEFT JOIN sucursal s ON h.ID_Sucursal = s.ID_Sucursal " +
+                     "LEFT JOIN sucursal so ON h.ID_Sucursal_Origen = so.ID_Sucursal " +
+                     "LEFT JOIN sucursal sd ON h.ID_Sucursal_Destino = sd.ID_Sucursal " +
                      "ORDER BY h.fecha DESC";
         
         try (Connection con = ConexionBD.obtenerConexion();
@@ -104,25 +108,33 @@ public class PedidoDAO {
                 
                 String detalle = rs.getString("detalle_pedido");
                 if (detalle == null) detalle = "[]";
-                detalle = detalle.replace("\"", "\\\"");
-                
                 String proveedor = rs.getString("proveedor");
                 if (proveedor == null) proveedor = "Sin Proveedor";
-
                 String estado = rs.getString("estado");
                 if (estado == null) estado = "realizado";
-
                 String nombreSucursal = rs.getString("NombreSucursal");
                 if (nombreSucursal == null) nombreSucursal = "Sucursal Central";
+                String nombreOrigen = rs.getString("NombreSucursalOrigen");
+                if (nombreOrigen == null) nombreOrigen = "";
+                String nombreDestino = rs.getString("NombreSucursalDestino");
+                if (nombreDestino == null) nombreDestino = "";
+                String tipo = rs.getString("tipo");
+                if (tipo == null || tipo.isBlank()) tipo = "compra";
 
                 json.append("{")
                     .append("\"id\":").append(rs.getInt("id_historial")).append(",")
-                    .append("\"proveedor\":\"").append(proveedor).append("\",")
-                    .append("\"total\":").append(rs.getDouble("total")).append(",")
-                    .append("\"estado\":\"").append(estado).append("\",")
-                    .append("\"nombreSucursal\":\"").append(nombreSucursal).append("\",")
-                    .append("\"detalle\":\"").append(detalle).append("\",")
-                    .append("\"fecha\":\"").append(rs.getString("fecha")).append("\"")
+                    .append("\"proveedor\":\"").append(escJson(proveedor)).append("\",")
+                    .append("\"total\":").append(rs.getBigDecimal("total") != null ? rs.getBigDecimal("total").toPlainString() : "0.00").append(",")
+                    .append("\"estado\":\"").append(escJson(estado)).append("\",")
+                    .append("\"tipo\":\"").append(escJson(tipo)).append("\",")
+                    .append("\"idSucursal\":").append(rs.getInt("ID_Sucursal")).append(",")
+                    .append("\"idSucursalOrigen\":").append(rs.getInt("ID_Sucursal_Origen")).append(",")
+                    .append("\"idSucursalDestino\":").append(rs.getInt("ID_Sucursal_Destino")).append(",")
+                    .append("\"nombreSucursal\":\"").append(escJson(nombreSucursal)).append("\",")
+                    .append("\"nombreSucursalOrigen\":\"").append(escJson(nombreOrigen)).append("\",")
+                    .append("\"nombreSucursalDestino\":\"").append(escJson(nombreDestino)).append("\",")
+                    .append("\"detalle\":\"").append(escJson(detalle)).append("\",")
+                    .append("\"fecha\":\"").append(escJson(rs.getString("fecha"))).append("\"")
                     .append("}");
             }
         } catch (Exception e) {
@@ -275,4 +287,11 @@ public class PedidoDAO {
             this.precio = precio;
         }
     }
+
+    private static String escJson(String value) {
+        if (value == null) return "";
+        return value.replace("\\", "\\\\").replace("\"", "\\\"")
+                .replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
+    }
+
 }

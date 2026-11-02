@@ -7,6 +7,17 @@ import java.util.List;
 
 public class ProductoDAO {
 
+    public static class StockSucursalDTO {
+        public int idSucursal;
+        public int stockActual;
+        public int stockMinimo;
+        public StockSucursalDTO(int idSucursal, int stockActual, int stockMinimo) {
+            this.idSucursal = idSucursal;
+            this.stockActual = stockActual;
+            this.stockMinimo = stockMinimo;
+        }
+    }
+
     public static class Producto {
         private int idProducto;
         private String codigo;
@@ -212,9 +223,17 @@ public class ProductoDAO {
         return escapado.toString();
     }
 
-    public boolean registrarProducto(String codigoBarras, String nombre, String descripcion, String marca, 
-                                     String estante, String fila, double precioCompra, double precioVenta, 
+    public boolean registrarProducto(String codigoBarras, String nombre, String descripcion, String marca,
+                                     String estante, String fila, double precioCompra, double precioVenta,
                                      int idCategoria, int idProveedor, int stockActual, int stockMinimo, int idSucursal) {
+        return registrarProducto(codigoBarras, nombre, descripcion, marca, estante, fila, precioCompra, precioVenta,
+                idCategoria, idProveedor, stockActual, stockMinimo, idSucursal, null);
+    }
+
+    public boolean registrarProducto(String codigoBarras, String nombre, String descripcion, String marca,
+                                     String estante, String fila, double precioCompra, double precioVenta,
+                                     int idCategoria, int idProveedor, int stockActual, int stockMinimo, int idSucursal,
+                                     List<StockSucursalDTO> stocksPorSucursal) {
         Connection con = null;
         try {
             con = ConexionBD.obtenerConexion();
@@ -263,16 +282,31 @@ public class ProductoDAO {
                 }
             }
 
-            // Guarda el stock inicial y mínimo para la sucursal elegida.
+            // Persiste el stock inicial: si el formulario envió valores para varias sucursales,
+            // aplica todos; los clientes anteriores siguen usando una única sucursal.
             String sqlStock = "INSERT INTO stock_sucursal (ID_Producto, ID_Sucursal, Cantidad, Stock_Minimo) " +
                               "VALUES (?, ?, ?, ?) " +
                               "ON DUPLICATE KEY UPDATE Cantidad = VALUES(Cantidad), Stock_Minimo = VALUES(Stock_Minimo)";
             try (PreparedStatement psStock = con.prepareStatement(sqlStock)) {
-                psStock.setInt(1, idProductoGenerado);
-                psStock.setInt(2, idSucursal > 0 ? idSucursal : 1);
-                psStock.setInt(3, stockActual);
-                psStock.setInt(4, stockMinimo);
-                psStock.executeUpdate();
+                if (stocksPorSucursal != null && !stocksPorSucursal.isEmpty()) {
+                    for (StockSucursalDTO stock : stocksPorSucursal) {
+                        if (stock == null || stock.idSucursal <= 0 || stock.stockActual < 0 || stock.stockMinimo < 0) {
+                            throw new SQLException("Datos de stock por sucursal inválidos.");
+                        }
+                        psStock.setInt(1, idProductoGenerado);
+                        psStock.setInt(2, stock.idSucursal);
+                        psStock.setInt(3, stock.stockActual);
+                        psStock.setInt(4, stock.stockMinimo);
+                        psStock.addBatch();
+                    }
+                    psStock.executeBatch();
+                } else {
+                    psStock.setInt(1, idProductoGenerado);
+                    psStock.setInt(2, idSucursal > 0 ? idSucursal : 1);
+                    psStock.setInt(3, stockActual);
+                    psStock.setInt(4, stockMinimo);
+                    psStock.executeUpdate();
+                }
             }
 
             con.commit();
@@ -385,9 +419,17 @@ public class ProductoDAO {
         }
     }
 
-    public boolean actualizarProducto(int idProducto, String codigo, String nombre, String descripcion, String marca, 
-                                     String estante, String fila, double precioCompra, double precioVenta, 
+    public boolean actualizarProducto(int idProducto, String codigo, String nombre, String descripcion, String marca,
+                                     String estante, String fila, double precioCompra, double precioVenta,
                                      int idCategoria, int idProveedor, int stockActual, int stockMinimo, int idSucursal) {
+        return actualizarProducto(idProducto, codigo, nombre, descripcion, marca, estante, fila, precioCompra, precioVenta,
+                idCategoria, idProveedor, stockActual, stockMinimo, idSucursal, null);
+    }
+
+    public boolean actualizarProducto(int idProducto, String codigo, String nombre, String descripcion, String marca,
+                                     String estante, String fila, double precioCompra, double precioVenta,
+                                     int idCategoria, int idProveedor, int stockActual, int stockMinimo, int idSucursal,
+                                     List<StockSucursalDTO> stocksPorSucursal) {
         Connection con = null;
         try {
             con = ConexionBD.obtenerConexion();
@@ -417,11 +459,25 @@ public class ProductoDAO {
                               "ON DUPLICATE KEY UPDATE Cantidad = VALUES(Cantidad), Stock_Minimo = VALUES(Stock_Minimo)";
 
             try (PreparedStatement psStock = con.prepareStatement(sqlStock)) {
-                psStock.setInt(1, idProducto);
-                psStock.setInt(2, idSucursal > 0 ? idSucursal : 1);
-                psStock.setInt(3, stockActual);
-                psStock.setInt(4, stockMinimo);
-                psStock.executeUpdate();
+                if (stocksPorSucursal != null && !stocksPorSucursal.isEmpty()) {
+                    for (StockSucursalDTO stock : stocksPorSucursal) {
+                        if (stock == null || stock.idSucursal <= 0 || stock.stockActual < 0 || stock.stockMinimo < 0) {
+                            throw new SQLException("Datos de stock por sucursal inválidos.");
+                        }
+                        psStock.setInt(1, idProducto);
+                        psStock.setInt(2, stock.idSucursal);
+                        psStock.setInt(3, stock.stockActual);
+                        psStock.setInt(4, stock.stockMinimo);
+                        psStock.addBatch();
+                    }
+                    psStock.executeBatch();
+                } else {
+                    psStock.setInt(1, idProducto);
+                    psStock.setInt(2, idSucursal > 0 ? idSucursal : 1);
+                    psStock.setInt(3, stockActual);
+                    psStock.setInt(4, stockMinimo);
+                    psStock.executeUpdate();
+                }
             }
 
             con.commit();

@@ -1,20 +1,19 @@
 public class PruebaLogin {
     public static void main(String[] args) {
+        String dni = System.getenv("TEST_DNI");
+        String password = System.getenv("TEST_PASSWORD");
+        if (dni == null || dni.isBlank() || password == null || password.isBlank()) {
+            System.err.println("Definí TEST_DNI y TEST_PASSWORD como variables de entorno para ejecutar esta prueba.");
+            System.exit(1);
+        }
+
         EmpleadoDAO dao = new EmpleadoDAO();
-
-        // Probamos con el usuario administrador inicial cargado en la base de datos
-        // DNI: 12345678 | Contraseña: admin123
-        EmpleadoDAO.SesionUsuario usuario = dao.validarLogin("12345678", "admin123");
-
+        EmpleadoDAO.SesionUsuario usuario = dao.validarLogin(dni, password);
         if (usuario != null) {
-            System.out.println("---------------------------------------------");
-            System.out.println("¡INICIO DE SESIÓN EXITOSO!");
-            System.out.println("Usuario: " + usuario.getNombreCompleto());
-            System.out.println("DNI: " + usuario.getDni());
-            System.out.println("Rol: " + usuario.getRol());
-            System.out.println("---------------------------------------------");
+            System.out.println("Inicio de sesión de prueba correcto para: " + usuario.getNombreCompleto());
         } else {
-            System.out.println("Error: Credenciales incorrectas o usuario no encontrado.");
+            System.err.println("Las credenciales de prueba no son válidas.");
+            System.exit(1);
         }
     }
 }
