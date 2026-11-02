@@ -120,25 +120,14 @@ public class ServidorPrincipal {
 
                         ProductoDAO dao = new ProductoDAO();
                         String jsonProductos = dao.obtenerJsonProductos(idSucursal);
-
-                        byte[] bytes = jsonProductos.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, 200, jsonProductos);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error interno en productos.\"}");
                     }
                 } else if ("POST".equalsIgnoreCase(method) || "PUT".equalsIgnoreCase(method)) {
                     try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder bodyBuilder = new StringBuilder();
-                        String linea;
-                        while ((linea = reader.readLine()) != null) {
-                            bodyBuilder.append(linea);
-                        }
-                        String body = bodyBuilder.toString();
-
+                        String body = leerCuerpo(exchange);
                         String codigo = obtenerValorJson(body, "codigo");
                         String nombre = obtenerValorJson(body, "nombre");
                         String descripcion = obtenerValorJson(body, "descripcion");
@@ -238,18 +227,12 @@ public class ServidorPrincipal {
                         String mensaje = exito
                             ? "Producto guardado correctamente."
                             : "No se pudo guardar el producto. Revisá los logs del backend.";
-                        String respuestaJson = "{\"exito\":" + exito + ",\"mensaje\":\"" + mensaje + "\"}";
-                        byte[] bytes = respuestaJson.getBytes(StandardCharsets.UTF_8);
-                        int status = exito
-                            ? ("POST".equalsIgnoreCase(method) ? 201 : 200)
-                            : 500;
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(status, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        int status = exito ? ("POST".equalsIgnoreCase(method) ? 201 : 200) : 500;
+                        enviarJson(exchange, status, "{\"exito\":" + exito + ",\"mensaje\":\"" + escaparJson(mensaje) + "\"}");
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error interno al guardar producto.\"}");
                     }
                 } else if ("DELETE".equalsIgnoreCase(method)) {
                     try {
@@ -267,17 +250,11 @@ public class ServidorPrincipal {
 
                         ProductoDAO dao = new ProductoDAO();
                         ProductoDAO.ResultadoEliminacion resultado = dao.eliminarProducto(id);
-
-                        String respuestaJson = "{\"exito\":" + resultado.exito +
-                            ",\"mensaje\":\"" + escaparJson(resultado.mensaje) + "\"}";
-                        byte[] bytes = respuestaJson.getBytes(StandardCharsets.UTF_8);
-
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(resultado.codigoHttp, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, resultado.codigoHttp,
+                                "{\"exito\":" + resultado.exito + ",\"mensaje\":\"" + escaparJson(resultado.mensaje) + "\"}");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error interno al eliminar producto.\"}");
                     }
                 }
             }
@@ -298,25 +275,11 @@ public class ServidorPrincipal {
                 String method = exchange.getRequestMethod();
                 ProveedorDAO dao = new ProveedorDAO();
 
-                if ("GET".equalsIgnoreCase(method)) {
-                    try {
-                        String jsonProveedores = dao.obtenerJsonProveedores();
-                        byte[] bytes = jsonProveedores.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
-                    }
-                } else if ("POST".equalsIgnoreCase(method)) {
-                    try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder sb = new StringBuilder();
-                        String line;
-                        while ((line = reader.readLine()) != null) sb.append(line);
-                        String body = sb.toString();
-
+                try {
+                    if ("GET".equalsIgnoreCase(method)) {
+                        enviarJson(exchange, 200, dao.obtenerJsonProveedores());
+                    } else if ("POST".equalsIgnoreCase(method)) {
+                        String body = leerCuerpo(exchange);
                         String nombre = obtenerValorJson(body, "nombre");
                         String telefono = obtenerValorJson(body, "telefono");
                         String email = obtenerValorJson(body, "email");
@@ -324,23 +287,9 @@ public class ServidorPrincipal {
                         try { deudaInicial = Double.parseDouble(obtenerValorJson(body, "deudaInicial")); } catch(Exception ignored){}
 
                         boolean exito = dao.registrarProveedor(nombre, telefono, email, deudaInicial);
-                        String resp = "{\"exito\": " + exito + "}";
-                        byte[] bytes = resp.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
-                    }
-                } else if ("PUT".equalsIgnoreCase(method)) {
-                    try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder sb = new StringBuilder();
-                        String line;
-                        while ((line = reader.readLine()) != null) sb.append(line);
-                        String body = sb.toString();
-
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
+                    } else if ("PUT".equalsIgnoreCase(method)) {
+                        String body = leerCuerpo(exchange);
                         int id = 0;
                         try { id = Integer.parseInt(obtenerValorJson(body, "idProveedor")); } catch(Exception ignored){}
                         String nombre = obtenerValorJson(body, "nombre");
@@ -350,17 +299,8 @@ public class ServidorPrincipal {
                         try { deudaTotal = Double.parseDouble(obtenerValorJson(body, "deudaTotal")); } catch(Exception ignored){}
 
                         boolean exito = id > 0 && dao.actualizarProveedor(id, nombre, telefono, email, deudaTotal);
-                        String resp = "{\"exito\": " + exito + "}";
-                        byte[] bytes = resp.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
-                    }
-                } else if ("DELETE".equalsIgnoreCase(method)) {
-                    try {
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
+                    } else if ("DELETE".equalsIgnoreCase(method)) {
                         String query = exchange.getRequestURI().getQuery();
                         int id = 0;
                         if (query != null && query.contains("id=")) {
@@ -368,15 +308,11 @@ public class ServidorPrincipal {
                             id = Integer.parseInt(idStr);
                         }
                         boolean exito = id > 0 && dao.eliminarProveedor(id);
-                        String resp = "{\"exito\": " + exito + "}";
-                        byte[] bytes = resp.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error en proveedores.\"}");
                 }
             }
         });
@@ -395,12 +331,7 @@ public class ServidorPrincipal {
 
                 if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                     try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder sb = new StringBuilder();
-                        String line;
-                        while ((line = reader.readLine()) != null) sb.append(line);
-                        String body = sb.toString();
-
+                        String body = leerCuerpo(exchange);
                         int idProveedor = 0;
                         try { idProveedor = Integer.parseInt(obtenerValorJson(body, "idProveedor")); } catch(Exception ignored){}
 
@@ -411,15 +342,10 @@ public class ServidorPrincipal {
 
                         ProveedorDAO dao = new ProveedorDAO();
                         boolean exito = idProveedor > 0 && monto > 0 && dao.registrarPago(idProveedor, monto, observacion);
-
-                        String resp = "{\"exito\": " + exito + "}";
-                        byte[] bytes = resp.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error en pagos a proveedores.\"}");
                     }
                 }
             }
@@ -439,13 +365,7 @@ public class ServidorPrincipal {
 
                 if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                     try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder bodyBuilder = new StringBuilder();
-                        String linea;
-                        while ((linea = reader.readLine()) != null) {
-                            bodyBuilder.append(linea);
-                        }
-                        String body = bodyBuilder.toString();
+                        String body = leerCuerpo(exchange);
                         
                         String proveedor = "Proveedor General";
                         int idxProv = body.indexOf("\"proveedor\":\"");
@@ -466,7 +386,6 @@ public class ServidorPrincipal {
                             }
                         }
 
-                        // Capturar el ID de la sucursal seleccionada
                         int idSucursal = 1;
                         try {
                             String sucStr = obtenerValorJson(body, "idSucursal");
@@ -487,17 +406,11 @@ public class ServidorPrincipal {
 
                         PedidoDAO dao = new PedidoDAO();
                         boolean exito = dao.guardarPedidoRealizado(proveedor, detalle, total, idSucursal);
-
-                        String respuestaJson = "{\"exito\": " + exito + "}";
-                        byte[] bytes = respuestaJson.getBytes(StandardCharsets.UTF_8);
-                        
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error al crear pedido.\"}");
                     }
                 }
             }
@@ -517,14 +430,7 @@ public class ServidorPrincipal {
 
                 if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                     try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder bodyBuilder = new StringBuilder();
-                        String linea;
-                        while ((linea = reader.readLine()) != null) {
-                            bodyBuilder.append(linea);
-                        }
-                        String body = bodyBuilder.toString();
-                        
+                        String body = leerCuerpo(exchange);
                         int idHistorial = 0;
                         try {
                             String idStr = obtenerValorJson(body, "idHistorial");
@@ -542,17 +448,11 @@ public class ServidorPrincipal {
 
                         PedidoDAO dao = new PedidoDAO();
                         boolean exito = dao.procesarLlegadaPedido(jsonItems, idHistorial);
-
-                        String respuestaJson = "{\"exito\": " + exito + "}";
-                        byte[] bytes = respuestaJson.getBytes(StandardCharsets.UTF_8);
-                        
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error al recibir pedido.\"}");
                     }
                 }
             }
@@ -573,9 +473,14 @@ public class ServidorPrincipal {
                     enviarJson(exchange, 405, "{\"exito\":false,\"mensaje\":\"Método no permitido.\"}");
                     return;
                 }
-                TransferenciaDAO.Resultado resultado = new TransferenciaDAO().crearDesdeJson(leerCuerpo(exchange));
-                enviarJson(exchange, resultado.codigoHttp,
-                        "{\"exito\":" + resultado.exito + ",\"mensaje\":\"" + escaparJson(resultado.mensaje) + "\"}");
+                try {
+                    TransferenciaDAO.Resultado resultado = new TransferenciaDAO().crearDesdeJson(leerCuerpo(exchange));
+                    enviarJson(exchange, resultado.codigoHttp,
+                            "{\"exito\":" + resultado.exito + ",\"mensaje\":\"" + escaparJson(resultado.mensaje) + "\"}");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error interno al procesar transferencia.\"}");
+                }
             }
         });
 
@@ -594,15 +499,10 @@ public class ServidorPrincipal {
                 if ("GET".equalsIgnoreCase(exchange.getRequestMethod())) {
                     try {
                         PedidoDAO dao = new PedidoDAO();
-                        String jsonHistorial = dao.obtenerJsonHistorial();
-
-                        byte[] bytes = jsonHistorial.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, 200, dao.obtenerJsonHistorial());
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error en historial de pedidos.\"}");
                     }
                 }
             }
@@ -622,14 +522,7 @@ public class ServidorPrincipal {
 
                 if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                     try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder bodyBuilder = new StringBuilder();
-                        String linea;
-                        while ((linea = reader.readLine()) != null) {
-                            bodyBuilder.append(linea);
-                        }
-                        String body = bodyBuilder.toString();
-                        
+                        String body = leerCuerpo(exchange);
                         String dni = obtenerValorJson(body, "dni");
                         if (dni.isEmpty()) dni = obtenerValorJson(body, "usuario");
                         
@@ -649,15 +542,11 @@ public class ServidorPrincipal {
                         } else {
                             respuestaJson = "{\"exito\": false, \"mensaje\": \"DNI o contraseña incorrectos\"}";
                         }
-
-                        byte[] bytes = respuestaJson.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, 200, respuestaJson);
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error en el login.\"}");
                     }
                 }
             }
@@ -677,14 +566,7 @@ public class ServidorPrincipal {
 
                 if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                     try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder bodyBuilder = new StringBuilder();
-                        String linea;
-                        while ((linea = reader.readLine()) != null) {
-                            bodyBuilder.append(linea);
-                        }
-                        String body = bodyBuilder.toString();
-                        
+                        String body = leerCuerpo(exchange);
                         int idHistorial = 0;
                         try {
                             String idStr = obtenerValorJson(body, "idHistorial");
@@ -693,17 +575,11 @@ public class ServidorPrincipal {
 
                         PedidoDAO dao = new PedidoDAO();
                         boolean exito = idHistorial > 0 && dao.cancelarPedido(idHistorial);
-
-                        String respuestaJson = "{\"exito\": " + exito + "}";
-                        byte[] bytes = respuestaJson.getBytes(StandardCharsets.UTF_8);
-                        
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error al cancelar pedido.\"}");
                     }
                 }
             }
@@ -724,25 +600,11 @@ public class ServidorPrincipal {
                 String method = exchange.getRequestMethod();
                 EmpleadoDAO dao = new EmpleadoDAO();
 
-                if ("GET".equalsIgnoreCase(method)) {
-                    try {
-                        String json = dao.obtenerJsonEmpleados();
-                        byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
-                    }
-                } else if ("POST".equalsIgnoreCase(method)) {
-                    try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder sb = new StringBuilder();
-                        String line;
-                        while ((line = reader.readLine()) != null) sb.append(line);
-                        String body = sb.toString();
-
+                try {
+                    if ("GET".equalsIgnoreCase(method)) {
+                        enviarJson(exchange, 200, dao.obtenerJsonEmpleados());
+                    } else if ("POST".equalsIgnoreCase(method)) {
+                        String body = leerCuerpo(exchange);
                         String dni = obtenerValorJson(body, "dni");
                         String nombres = obtenerValorJson(body, "nombres");
                         String apellidos = obtenerValorJson(body, "apellidos");
@@ -760,24 +622,9 @@ public class ServidorPrincipal {
                         try { comision = Double.parseDouble(obtenerValorJson(body, "comision")); } catch(Exception ignored){}
 
                         boolean exito = dao.registrarEmpleado(dni, nombres, apellidos, telefono, usuario, password, idSucursal, idRol, comision);
-
-                        String resp = "{\"exito\": " + exito + "}";
-                        byte[] bytes = resp.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
-                    }
-                } else if ("PUT".equalsIgnoreCase(method)) {
-                    try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder sb = new StringBuilder();
-                        String line;
-                        while ((line = reader.readLine()) != null) sb.append(line);
-                        String body = sb.toString();
-
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
+                    } else if ("PUT".equalsIgnoreCase(method)) {
+                        String body = leerCuerpo(exchange);
                         int id = 0;
                         try { id = Integer.parseInt(obtenerValorJson(body, "idEmpleado")); } catch(Exception ignored){}
                         String dni = obtenerValorJson(body, "dni");
@@ -797,18 +644,8 @@ public class ServidorPrincipal {
                         try { comision = Double.parseDouble(obtenerValorJson(body, "comision")); } catch(Exception ignored){}
 
                         boolean exito = id > 0 && dao.actualizarEmpleado(id, dni, nombres, apellidos, telefono, usuario, password, idSucursal, idRol, comision);
-
-                        String resp = "{\"exito\": " + exito + "}";
-                        byte[] bytes = resp.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
-                    }
-                } else if ("DELETE".equalsIgnoreCase(method)) {
-                    try {
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
+                    } else if ("DELETE".equalsIgnoreCase(method)) {
                         String query = exchange.getRequestURI().getQuery();
                         int id = 0;
                         if (query != null && query.contains("id=")) {
@@ -816,15 +653,11 @@ public class ServidorPrincipal {
                             id = Integer.parseInt(idStr);
                         }
                         boolean exito = id > 0 && dao.eliminarEmpleado(id);
-                        String resp = "{\"exito\": " + exito + "}";
-                        byte[] bytes = resp.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error en empleados.\"}");
                 }
             }
         });
@@ -843,14 +676,7 @@ public class ServidorPrincipal {
 
                 if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                     try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder bodyBuilder = new StringBuilder();
-                        String linea;
-                        while ((linea = reader.readLine()) != null) {
-                            bodyBuilder.append(linea);
-                        }
-                        String body = bodyBuilder.toString();
-                        
+                        String body = leerCuerpo(exchange);
                         double total = 0.0;
                         try { total = Double.parseDouble(obtenerValorJson(body, "total")); } catch(Exception ignored){}
 
@@ -892,17 +718,11 @@ public class ServidorPrincipal {
 
                         VentaDAO dao = new VentaDAO();
                         boolean exito = dao.procesarVenta(jsonItems, total, idPago, cuotas, idEmpleado, idSucursal);
-
-                        String respuestaJson = "{\"exito\": " + exito + "}";
-                        byte[] bytes = respuestaJson.getBytes(StandardCharsets.UTF_8);
-                        
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error al procesar venta.\"}");
                     }
                 }
             }
@@ -947,15 +767,10 @@ public class ServidorPrincipal {
                         }
 
                         String jsonRespuesta = "{\"ventasRealizadas\": " + ventasRealizadas + ", \"comisionAcumulada\": " + comisionAcumulada + "}";
-                        byte[] bytes = jsonRespuesta.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { 
-                            os.write(bytes); 
-                        }
+                        enviarJson(exchange, 200, jsonRespuesta);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error en stats de empleado.\"}");
                     }
                 }
             }
@@ -1018,15 +833,10 @@ public class ServidorPrincipal {
                         }
                         jsonBuilder.append("]");
 
-                        byte[] bytes = jsonBuilder.toString().getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { 
-                            os.write(bytes); 
-                        }
+                        enviarJson(exchange, 200, jsonBuilder.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error en ventas de hoy.\"}");
                     }
                 }
             }
@@ -1046,26 +856,16 @@ public class ServidorPrincipal {
 
                 if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                     try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder sb = new StringBuilder();
-                        String line;
-                        while ((line = reader.readLine()) != null) sb.append(line);
-                        String body = sb.toString();
-
+                        String body = leerCuerpo(exchange);
                         int idEmpleado = 0;
                         try { idEmpleado = Integer.parseInt(obtenerValorJson(body, "idEmpleado")); } catch(Exception ignored){}
 
                         EmpleadoDAO dao = new EmpleadoDAO();
                         boolean exito = idEmpleado > 0 && dao.resetearComisionEmpleado(idEmpleado);
-
-                        String resp = "{\"exito\": " + exito + "}";
-                        byte[] bytes = resp.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error al resetear comisión.\"}");
                     }
                 }
             }
@@ -1086,31 +886,17 @@ public class ServidorPrincipal {
                 String method = exchange.getRequestMethod();
                 VentaDAO dao = new VentaDAO();
 
-                if ("GET".equalsIgnoreCase(method)) {
-                    try {
+                try {
+                    if ("GET".equalsIgnoreCase(method)) {
                         String query = exchange.getRequestURI().getQuery();
                         int idSucursal = 1;
                         if (query != null && query.contains("idSucursal=")) {
                             try { idSucursal = Integer.parseInt(query.split("idSucursal=")[1].split("&")[0]); } catch(Exception ignored){}
                         }
 
-                        String jsonHistorial = dao.obtenerJsonHistorialCierres(idSucursal);
-                        byte[] bytes = jsonHistorial.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
-                    }
-                } else if ("POST".equalsIgnoreCase(method)) {
-                    try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8));
-                        StringBuilder sb = new StringBuilder();
-                        String line;
-                        while ((line = reader.readLine()) != null) sb.append(line);
-                        String body = sb.toString();
-
+                        enviarJson(exchange, 200, dao.obtenerJsonHistorialCierres(idSucursal));
+                    } else if ("POST".equalsIgnoreCase(method)) {
+                        String body = leerCuerpo(exchange);
                         String fecha = obtenerValorJson(body, "fecha"); 
                         int idSucursal = 1;
                         try {
@@ -1119,16 +905,11 @@ public class ServidorPrincipal {
                         } catch(Exception ignored){}
 
                         boolean exito = dao.procesarCierreDiario(fecha.isEmpty() ? null : fecha, idSucursal);
-
-                        String resp = "{\"exito\": " + exito + "}";
-                        byte[] bytes = resp.getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 200, "{\"exito\": " + exito + "}");
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error en cierre de caja.\"}");
                 }
             }
         });
@@ -1184,7 +965,6 @@ public class ServidorPrincipal {
                         }
 
                         try (Connection con = ConexionBD.obtenerConexion()) {
-                            // Total vendido filtrado por sucursal (si idSucursal == 0, se toma general omitiendo el filtro o sumando todo)
                             String sqlVentas = (idSucursal == 0) 
                                 ? "SELECT COALESCE(SUM(Total_Venta), 0) AS Total, COUNT(*) AS Cantidad FROM ventas v WHERE " + filtroFecha
                                 : "SELECT COALESCE(SUM(Total_Venta), 0) AS Total, COUNT(*) AS Cantidad FROM ventas v WHERE v.ID_Sucursal = ? AND " + filtroFecha;
@@ -1199,7 +979,6 @@ public class ServidorPrincipal {
                                 }
                             }
 
-                            // Costo exacto de mercadería vendida filtrado por sucursal
                             String sqlCosto = (idSucursal == 0)
                                 ? "SELECT COALESCE(SUM(dv.Cantidad * p.Precio_Compra), 0) AS CostoTotal, COALESCE(SUM(dv.Cantidad), 0) AS Unidades " +
                                   "FROM detalles_venta dv JOIN ventas v ON dv.ID_Venta = v.ID_Venta JOIN productos p ON dv.ID_Producto = p.ID_Producto WHERE " + filtroFecha
@@ -1216,7 +995,6 @@ public class ServidorPrincipal {
                                 }
                             }
 
-                            // Estado del stock y cálculo del Valor Total del Inventario
                            String sqlStock = (idSucursal == 0)
                             ? "SELECT s.Stock_Actual, s.Stock_Minimo, COALESCE(p.Precio_Compra, 0) AS Precio_Compra FROM stock_sucursal s JOIN productos p ON s.ID_Producto = p.ID_Producto"
                             : "SELECT s.Stock_Actual, s.Stock_Minimo, COALESCE(p.Precio_Compra, 0) AS Precio_Compra FROM stock_sucursal s JOIN productos p ON s.ID_Producto = p.ID_Producto WHERE s.ID_Sucursal = ?";
@@ -1241,7 +1019,6 @@ public class ServidorPrincipal {
                                 }
                             }
 
-                            // Métodos de pago reales
                             jsonMetodosPago = new StringBuilder("[");
                             String sqlPagos = (idSucursal == 0)
                                 ? "SELECT p.Metodo_Pago AS NombrePago, COUNT(*) AS Cantidad, SUM(v.Total_Venta) AS Total FROM ventas v JOIN pago p ON v.ID_Pago = p.ID_Pago WHERE " + filtroFecha + " GROUP BY p.ID_Pago, p.Metodo_Pago"
@@ -1264,7 +1041,6 @@ public class ServidorPrincipal {
                             }
                             jsonMetodosPago.append("]");
 
-                            // Top 4 productos más vendidos
                             jsonTopProductos = new StringBuilder("[");
                             String sqlProductos = (idSucursal == 0)
                                 ? "SELECT p.Nombre, COALESCE(c.Nombre_Categoria, 'General') AS Categoria, SUM(dv.Cantidad) AS UnidadesVendidas, SUM(dv.Cantidad * dv.Precio_Unitario) AS Total " +
@@ -1290,7 +1066,6 @@ public class ServidorPrincipal {
                             }
                             jsonTopProductos.append("]");
 
-                            // Top Vendedores
                             jsonTopEmpleados = new StringBuilder("[");
                             String sqlEmpleados = (idSucursal == 0)
                                 ? "SELECT CONCAT(e.Nombres, ' ', e.Apellidos) AS NombreCompleto, COUNT(v.ID_Venta) AS Ventas, COALESCE(SUM(v.Total_Venta), 0) AS Total FROM empleados e LEFT JOIN ventas v ON e.ID_Empleado = v.ID_Empleado AND (" + filtroFecha + ") GROUP BY e.ID_Empleado, e.Nombres, e.Apellidos ORDER BY Total DESC, Ventas DESC LIMIT 3"
@@ -1316,7 +1091,6 @@ public class ServidorPrincipal {
                             }
                             jsonTopEmpleados.append("]");
 
-                            // Gráfico de rendimiento temporal
                             jsonGrafico = new StringBuilder("[");
                             String sqlGrafico = (idSucursal == 0)
                                 ? "SELECT DATE(v.Fecha_Hora) AS FechaDia, SUM(v.Total_Venta) AS TotalDia FROM ventas v WHERE " + filtroFecha + " GROUP BY DATE(v.Fecha_Hora) ORDER BY FechaDia ASC"
@@ -1363,13 +1137,10 @@ public class ServidorPrincipal {
                             .append("\"grafico\":").append(jsonGrafico)
                             .append("}");
 
-                        byte[] bytes = json.toString().getBytes(StandardCharsets.UTF_8);
-                        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                        exchange.sendResponseHeaders(200, bytes.length);
-                        try (OutputStream os = exchange.getResponseBody()) { os.write(bytes); }
+                        enviarJson(exchange, 200, json.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
-                        exchange.sendResponseHeaders(500, -1);
+                        enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error en estadísticas de dashboard.\"}");
                     }
                 }
             }
@@ -1410,7 +1181,7 @@ public class ServidorPrincipal {
                             : "SELECT " +
                               "(SELECT COUNT(*) FROM ventas WHERE ID_Sucursal = ?) AS ventas, " +
                               "(SELECT COUNT(*) FROM historial_pedidos WHERE (Estado = 'entregado' OR Estado = 'Recibido') AND COALESCE(tipo, 'compra') = 'compra' AND ID_Sucursal = ?) AS compras, " +
-                              "0 AS pagos, " + // pagos_proveedores no tiene ID_Sucursal: no se atribuyen a una sucursal concreta.
+                              "0 AS pagos, " + 
                               "(SELECT COUNT(*) FROM transferencias WHERE ID_Sucursal_Origen = ? OR ID_Sucursal_Destino = ?) AS transferencias";
                         
                         try (PreparedStatement ps = con.prepareStatement(sqlCount)) {
@@ -1488,16 +1259,11 @@ public class ServidorPrincipal {
                     }
 
                     json.append("]}");
+                    enviarJson(exchange, 200, json.toString());
 
-                    byte[] bytes = json.toString().getBytes(StandardCharsets.UTF_8);
-                    exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-                    exchange.sendResponseHeaders(200, bytes.length);
-                    try (OutputStream os = exchange.getResponseBody()) { 
-                        os.write(bytes); 
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    exchange.sendResponseHeaders(500, -1);
+                    enviarJson(exchange, 500, "{\"exito\":false,\"mensaje\":\"Error al obtener movimientos.\"}");
                 }
             }
         });
@@ -1510,9 +1276,9 @@ public class ServidorPrincipal {
     }
 
     private static void configurarHeadersCORS(HttpExchange exchange) {
-        exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
-        exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type");
-        exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+        exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     }
 
     private static String leerCuerpo(HttpExchange exchange) throws IOException {
@@ -1525,6 +1291,7 @@ public class ServidorPrincipal {
     }
 
     private static void enviarJson(HttpExchange exchange, int status, String json) throws IOException {
+        configurarHeadersCORS(exchange); // Asegura que las cabeceras CORS vayan siempre
         byte[] bytes = json.getBytes(StandardCharsets.UTF_8);
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
         exchange.sendResponseHeaders(status, bytes.length);
