@@ -3024,3 +3024,106 @@ html.dark-mode .analytics-grid .panel,
     background: var(--surface);
     border-color: var(--border);
 }
+
+/* =========================================================
+   FOOTER INSTITUCIONAL (EQUIPO 2+2)
+   ========================================================= */
+
+.site-footer {
+    width: 100%;
+    margin-top: 40px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    color: var(--text-soft);
+    font-size: 13px;
+    padding-top: 35px;
+    transition: background 0.35s ease, border-color 0.35s ease;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 30px 24px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-logo-box {
+    width: 140px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.footer-logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.footer-col h3 {
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0;
+}
+
+.footer-col h4 {
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.footer-col p {
+    color: var(--text-soft);
+    line-height: 1.5;
+    font-size: 12px;
+    margin: 0;
+}
+
+.brand-tagline {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.footer-contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.footer-contact-list li strong {
+    color: var(--text);
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--border-soft);
+    padding: 16px 24px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface-2);
+}
+
+/* RESPONSIVE */
+@media (max-width: 850px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}

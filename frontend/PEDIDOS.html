@@ -114,8 +114,6 @@
                             <option value="2">Sucursal 2</option>
                         </select>
                     </div>
-                </div>
-                <div class="topbar-actions">
                     <label for="modo-oscuro" class="theme-switch" title="Cambiar modo claro/oscuro">
                         <span class="theme-sun">☀</span>
                         <span class="theme-track"><span class="theme-knob"></span></span>
@@ -146,10 +144,14 @@
                         <h2>Lista de pedidos</h2>
                         <p>Administrá las compras a proveedores y las transferencias entre sucursales.</p>
                     </div>
-                    <button class="new-order-button" id="nuevoPedido" type="button">
-                        <span class="plus-icon">+</span>
-                        Nuevo pedido
-                    </button>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <button class="new-order-button" id="btnTransferirStock" type="button" style="background:var(--surface-2);border:1px solid var(--border);color:var(--text);">
+                            <span style="font-size:16px;">⇄</span> Transferir stock
+                        </button>
+                        <button class="new-order-button" id="nuevoPedido" type="button">
+                            <span class="plus-icon">+</span> Nuevo pedido
+                        </button>
+                    </div>
                 </section>
 
                 <!-- FILTROS -->
@@ -294,6 +296,60 @@
         </div>
     </div>
 
+    <!-- MODAL TRANSFERENCIA DE STOCK -->
+    <div class="modal-overlay" id="modalTransferencia">
+        <div class="modal-card" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>Transferencia de Stock entre Sucursales</h3>
+                <button type="button" onclick="cerrarModalTransferencia()">✕</button>
+            </div>
+                
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <label style="display: block; margin-bottom: 6px; font-size: 12px; font-weight: bold; color: var(--muted);">SUCURSAL ORIGEN:</label>
+                    <select id="selectSucursalOrigen" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 13px; font-weight: 600; outline: none;">
+                        <option value="">Cargando...</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display: block; margin-bottom: 6px; font-size: 12px; font-weight: bold; color: var(--muted);">SUCURSAL DESTINO:</label>
+                    <select id="selectSucursalDestino" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 13px; font-weight: 600; outline: none;">
+                        <option value="">Cargando...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <input type="search" id="buscadorModalTransferencia" placeholder="Buscar producto en el stock de origen..." 
+                       style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-size: 13px; font-weight: 600; outline: none;" disabled>
+            </div>
+
+            <div class="orders-table-wrapper" style="max-height: 350px; overflow-y: auto;">
+                <table class="orders-table" style="min-width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>PRODUCTO</th>
+                            <th>STOCK ORIGEN</th>
+                            <th>CANTIDAD A TRANSFERIR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaModalTransferenciaProductos">
+                        <tr><td colspan="4" style="text-align: center; padding: 20px; color: var(--muted);">Seleccioná la sucursal de origen primero.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-actions">
+                <span id="resumenTransferenciaModal" style="font-size: 12px; color: var(--muted);">Indicá las cantidades a transferir.</span>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn-cancel" onclick="cerrarModalTransferencia()">Cancelar</button>
+                    <button type="button" class="btn-submit" onclick="confirmarTransferenciaStock()">Ejecutar Transferencia</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL CONFIRMAR RECEPCIÓN E INGRESO DE STOCK -->
     <div class="modal-overlay" id="modalRecepcionPedido">
         <div class="modal-card" style="max-width: 850px;">
@@ -348,6 +404,7 @@
         });
 
         let catalogoProductosGlobal = [];
+        let catalogoTransferenciaGlobal = [];
         let pedidoActualEnRecepcion = null;
         let historialPedidosGlobal = [];
 
@@ -391,7 +448,9 @@
                         cantItems = 1;
                     }
 
-                    const idPedidoFicticio = "PED-00" + h.id;
+                    const tipoPedido = (h.tipo || 'compra').toLowerCase();
+                    const esTransferencia = tipoPedido === 'transferencia';
+                    const idPedidoFicticio = (esTransferencia ? "TRF-00" : "PED-00") + h.id;
                     const fechaFormateada = h.fecha ? new Date(h.fecha).toLocaleDateString("es-AR") : new Date().toLocaleDateString("es-AR");
                     
                     const estadoBD = h.estado ? h.estado.toLowerCase() : 'realizado';
@@ -411,28 +470,24 @@
                     const tr = document.createElement("tr");
                     tr.dataset.id = idPedidoFicticio;
                     tr.dataset.idHistorial = h.id;
-                    tr.dataset.tipo = "compra";
+                    tr.dataset.tipo = tipoPedido;
                     tr.dataset.estado = estadoBD;
 
                     tr.innerHTML = `
                         <td><span class="order-number">${idPedidoFicticio}</span></td>
                         <td>${fechaFormateada}</td>
-                        <td><span class="type-badge purchase">Compra</span></td>
-                        <td><div class="supplier-cell"><strong>${h.proveedor || 'Proveedor General'}</strong><span>${h.nombreSucursal || 'Sucursal Central'}</span></div></td>
+                        <td><span class="type-badge ${esTransferencia ? 'transfer' : 'purchase'}">${esTransferencia ? 'Transferencia' : 'Compra'}</span></td>
+                        <td><div class="supplier-cell"><strong>${esTransferencia ? 'Traspaso de stock' : (h.proveedor || 'Proveedor General')}</strong><span>${esTransferencia ? `${h.nombreSucursalOrigen || 'Origen'} → ${h.nombreSucursalDestino || 'Destino'}` : (h.nombreSucursal || 'Sucursal Central')}</span></div></td>
                         <td><span class="${claseEstado}">${textoEstado}</span></td>
                         <td><strong class="order-total">${totalFormateado}</strong></td>
                         <td>${cantItems} ítems</td>
                         <td>
                             <div class="order-actions">
-                                ${estadoBD === 'realizado' ? `
+                                ${!esTransferencia && estadoBD === 'realizado' ? `
                                 <button class="order-action check" type="button" title="Marcar como recibido / confirmar ingreso" onclick="abrirModalRecepcion(${h.id}, '${idPedidoFicticio}')">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 </button>` : ''}
-                                <button class="order-action cancel" type="button" title="Cancelar pedido" onclick="cancelarPedidoFila(this)">
-                                    <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
-                                </button>
+                                ${!esTransferencia ? `<button class="order-action cancel" type="button" title="Cancelar pedido" onclick="cancelarPedidoFila(this)"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>` : '<span style="font-size:11px;color:var(--muted);">Registrada</span>'}
                             </div>
                         </td>
                     `;
@@ -446,6 +501,171 @@
                 console.error("Error al cargar el historial desde Java:", err);
             }
         }
+
+        // Lógica del modal de Transferencia de Stock
+        document.getElementById("btnTransferirStock").addEventListener("click", async function () {
+            document.getElementById("modalTransferencia").classList.add("active");
+            await cargarSucursalesTransferencia();
+        });
+
+        function cerrarModalTransferencia() {
+            document.getElementById("modalTransferencia").classList.remove("active");
+            document.getElementById("selectSucursalOrigen").value = "";
+            document.getElementById("selectSucursalDestino").value = "";
+            document.getElementById("tablaModalTransferenciaProductos").innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px; color: var(--muted);">Seleccioná la sucursal de origen primero.</td></tr>`;
+            document.getElementById("buscadorModalTransferencia").disabled = true;
+            document.getElementById("buscadorModalTransferencia").value = "";
+        }
+
+        async function cargarSucursalesTransferencia() {
+            const selectOrig = document.getElementById("selectSucursalOrigen");
+            const selectDest = document.getElementById("selectSucursalDestino");
+            selectOrig.innerHTML = `<option value="">Cargando...</option>`;
+            selectDest.innerHTML = `<option value="">Cargando...</option>`;
+
+            try {
+                const res = await fetch('https://rudafer-api.onrender.com/api/sucursales');
+                const sucursales = await res.json();
+                
+                let optionsHtml = `<option value="">-- Seleccioná sucursal --</option>`;
+                sucursales.forEach(s => {
+                    if (s.id !== 0) {
+                        optionsHtml += `<option value="${s.id}">${s.nombre}</option>`;
+                    }
+                });
+
+                selectOrig.innerHTML = optionsHtml;
+                selectDest.innerHTML = optionsHtml;
+            } catch (err) {
+                console.error("Error al cargar sucursales para transferencia:", err);
+            }
+        }
+
+        document.getElementById("selectSucursalOrigen").addEventListener("change", async function() {
+            const idSucursal = this.value;
+            const buscador = document.getElementById("buscadorModalTransferencia");
+            const tbody = document.getElementById("tablaModalTransferenciaProductos");
+
+            if (!idSucursal) {
+                buscador.disabled = true;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px; color: var(--muted);">Seleccioná la sucursal de origen primero.</td></tr>`;
+                return;
+            }
+
+            buscador.disabled = false;
+            try {
+                const res = await fetch(`https://rudafer-api.onrender.com/api/productos?idSucursal=${idSucursal}`);
+                catalogoTransferenciaGlobal = await res.json();
+                renderizarProductosTransferencia("");
+            } catch (err) {
+                console.error("Error al cargar stock de origen:", err);
+            }
+        });
+
+        document.getElementById("buscadorModalTransferencia").addEventListener("input", function() {
+            renderizarProductosTransferencia(this.value.toLowerCase().trim());
+        });
+
+        function renderizarProductosTransferencia(filtro) {
+            const tbody = document.getElementById("tablaModalTransferenciaProductos");
+            let filtrados = catalogoTransferenciaGlobal.filter(p => {
+                const codigo = (p.codigo || "").toLowerCase();
+                const nombre = (p.nombre || "").toLowerCase();
+                return !filtro || codigo.includes(filtro) || nombre.includes(filtro);
+            });
+
+            if (filtrados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px; color: var(--muted);">No hay productos con stock en esta sucursal.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = "";
+            filtrados.forEach(p => {
+                const stock = parseInt(p.stock || 0);
+                tbody.innerHTML += `
+                    <tr>
+                        <td><span class="order-number">${p.codigo || "-"}</span></td>
+                        <td><strong>${p.nombre}</strong></td>
+                        <td><strong>${stock} u.</strong></td>
+                        <td>
+                            <input type="number" class="input-cant-traspaso" 
+                                data-id="${p.idProducto}" 
+                                data-stock-max="${stock}"
+                                value="0" min="0" max="${stock}" placeholder="0"
+                                style="width: 75px; height: 35px; text-align: center; border-radius: 7px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font-weight: bold;">
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function confirmarTransferenciaStock() {
+            const idOrigen = document.getElementById("selectSucursalOrigen").value;
+            const idDestino = document.getElementById("selectSucursalDestino").value;
+
+            if (!idOrigen || !idDestino) {
+                alert("Seleccioná la sucursal de origen y la de destino.");
+                return;
+            }
+            if (idOrigen === idDestino) {
+                alert("La sucursal de origen y destino no pueden ser la misma.");
+                return;
+            }
+
+            const inputs = document.querySelectorAll(".input-cant-traspaso");
+            let itemsTraspaso = [];
+
+            try {
+                inputs.forEach(input => {
+                    const cant = parseInt(input.value) || 0;
+                    const stockMax = parseInt(input.dataset.stockMax) || 0;
+                    if (cant > 0) {
+                        if (cant > stockMax) {
+                            alert(`Estás intentando transferir más cantidad de la disponible en stock.`);
+                            throw new Error("Stock superado");
+                        }
+                        itemsTraspaso.push({
+                            idProducto: parseInt(input.dataset.id),
+                            cantidad: cant
+                        });
+                    }
+                });
+            } catch(e) {
+                return;
+            }
+
+            if (itemsTraspaso.length === 0) {
+                alert("Ingresá al menos una cantidad mayor a 0 para transferir.");
+                return;
+            }
+
+            const datosTransferencia = {
+                idSucursalOrigen: parseInt(idOrigen),
+                idSucursalDestino: parseInt(idDestino),
+                idEmpleado: parseInt(localStorage.getItem('ID_Empleado') || '0', 10),
+                items: itemsTraspaso
+            };
+
+            try {
+                const res = await fetch('https://rudafer-api.onrender.com/api/transferencias', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datosTransferencia)
+                });
+
+                const data = await res.json();
+                if (res.ok && data.exito) {
+                    alert("¡Transferencia realizada con éxito!");
+                    cerrarModalTransferencia();
+                    cargarHistorialPedidosBD();
+                } else {
+                    alert("Error: " + (data.mensaje || "No se pudo procesar la transferencia."));
+                }
+            } catch (err) {
+                console.error("Error al enviar transferencia:", err);
+            }
+        }
+
 
         // 1. Al hacer clic en "Nuevo pedido", inicializamos cargando sucursales
         document.getElementById("nuevoPedido").addEventListener("click", async function () {
@@ -947,6 +1167,36 @@
         });
     </script>
     <script src="auth.js"></script>
+
+
+    <!-- FOOTER INSTITUCIONAL - EQUIPO 2+2 -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col footer-brand">
+                <div class="footer-logo-box">
+                    <img src="assets/2+2.png" alt="Logo Equipo 2+2" class="footer-logo">
+                </div>
+                <h3>Equipo 2+2 (Dos más dos)</h3>
+                <p class="brand-tagline">Optimización de procesos y logística integrada.</p>
+            </div>
+            <div class="footer-col">
+                <h4>¿Quiénes somos?</h4>
+                <p>Somos expertos en análisis de logística y optimización de procesos dedicados al desarrollo y soporte de sistemas eficientes.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Canales Oficiales</h4>
+                <ul class="footer-contact-list">
+                    <li>📌 <strong>Desarrollado por:</strong> Equipo 2+2</li>
+                    <li>📧 <strong>Soporte:</strong> contacto@equipo2mas2.com</li>
+                    <li>📞 <strong>Línea central:</strong> 011-5555-1234</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Equipo 2+2 (Dos más dos). Todos los derechos reservados. Sistema RUDAFER.</p>
+        </div>
+    </footer>
+
 </body>
 
 </html>

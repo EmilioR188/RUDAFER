@@ -88,9 +88,7 @@
                             <option value="1">Sucursal Central</option>
                             <option value="2">Sucursal 2</option>
                         </select>
-                    </div>
-                <div class="topbar-actions">
-                    <label for="modo-oscuro" class="theme-switch" title="Cambiar modo claro/oscuro">
+                        <label for="modo-oscuro" class="theme-switch" title="Cambiar modo claro/oscuro">
                         <span class="theme-sun">☀</span>
                         <span class="theme-track"><span class="theme-knob"></span></span>
                         <span class="theme-moon">☾</span>
@@ -456,7 +454,8 @@
         async function cargarReportes() {
             const periodo = document.getElementById("reportesPeriodo").value;
             try {
-                const response = await fetch(`https://rudafer-api.onrender.com/api/dashboard/stats?periodo=${periodo}`);
+                const idSucursal = document.getElementById('selectSucursalGlobal')?.value || localStorage.getItem('rudafer_sucursal_activa') || '1';
+                const response = await fetch(`https://rudafer-api.onrender.com/api/dashboard/stats?periodo=${periodo}&idSucursal=${encodeURIComponent(idSucursal)}`);
                 if (!response.ok) throw new Error("Error al conectar con el servidor");
 
                 const data = await response.json();
@@ -575,7 +574,7 @@
             if (!tbody) return;
             
             try {
-                const response = await fetch("https://rudafer-api.onrender.com/api/cierre-caja");
+                const response = await fetch(`https://rudafer-api.onrender.com/api/cierre-caja?idSucursal=${encodeURIComponent(document.getElementById('selectSucursalGlobal')?.value || localStorage.getItem('rudafer_sucursal_activa') || '1')}`);
                 if (!response.ok) throw new Error("Error al conectar con el servidor");
 
                 const cierres = await response.json();
@@ -627,5 +626,35 @@
         }
     </script>
     <script src="auth.js"></script>
+
+
+    <!-- FOOTER INSTITUCIONAL - EQUIPO 2+2 -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col footer-brand">
+                <div class="footer-logo-box">
+                    <img src="assets/2+2.png" alt="Logo Equipo 2+2" class="footer-logo">
+                </div>
+                <h3>Equipo 2+2 (Dos más dos)</h3>
+                <p class="brand-tagline">Optimización de procesos y logística integrada.</p>
+            </div>
+            <div class="footer-col">
+                <h4>¿Quiénes somos?</h4>
+                <p>Somos expertos en análisis de logística y optimización de procesos dedicados al desarrollo y soporte de sistemas eficientes.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Canales Oficiales</h4>
+                <ul class="footer-contact-list">
+                    <li>📌 <strong>Desarrollado por:</strong> Equipo 2+2</li>
+                    <li>📧 <strong>Soporte:</strong> contacto@equipo2mas2.com</li>
+                    <li>📞 <strong>Línea central:</strong> 011-5555-1234</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Equipo 2+2 (Dos más dos). Todos los derechos reservados. Sistema RUDAFER.</p>
+        </div>
+    </footer>
+
 </body>
 </html>

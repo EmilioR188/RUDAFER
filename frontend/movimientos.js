@@ -1,114 +1,165 @@
-document.addEventListener('DOMContentLoaded', () => {
-    cargarMovimientos();
+const API_BASE_MOVIMIENTOS = "https://rudafer-api.onrender.com";
+let listaMovimientosGlobal = [];
+let movimientosFiltrados = [];
 
-    // Escuchar cambios en los filtros para recargar dinámicamente
-    document.getElementById('sucursalMovimiento').addEventListener('change', cargarMovimientos);
-    document.getElementById('filtroMovimiento').addEventListener('change', filtrarTablaLocal);
-    document.getElementById('filtroSucursal').addEventListener('change', filtrarTablaLocal);
-    document.getElementById('ordenMovimientos').addEventListener('change', ordenarTablaLocal);
+document.addEventListener("DOMContentLoaded", () => {
+    const selectorSucursal = document.getElementById("selectSucursalGlobal");
+    if (selectorSucursal) {
+        const sucursalGuardada = localStorage.getItem("rudafer_sucursal_activa");
+        if (sucursalGuardada) selectorSucursal.value = sucursalGuardada;
+        selectorSucursal.addEventListener("change", cargarMovimientos);
+    }
 
-    // Botón limpiar filtros
-    document.getElementById('limpiarMovimiento').addEventListener('click', () => {
-        document.getElementById('filtroMovimiento').value = 'todos';
-        document.getElementById('filtroFechaDesde').value = '';
-        document.getElementById('filtroFechaHasta').value = '';
-        document.getElementById('filtroSucursal').value = 'todas';
-        document.getElementById('sucursalMovimiento').value = 'general';
-        cargarMovimientos();
+    ["filtroMovimiento", "filtroFechaDesde", "filtroFechaHasta"].forEach(id => {
+        const control = document.getElementById(id);
+        if (control) control.addEventListener("change", aplicarFiltrosLocales);
     });
+
+    const orden = document.getElementById("ordenMovimientos");
+    if (orden) orden.addEventListener("change", aplicarFiltrosLocales);
+
+    const limpiar = document.getElementById("limpiarMovimiento");
+    if (limpiar) {
+        limpiar.addEventListener("click", () => {
+            const tipo = document.getElementById("filtroMovimiento");
+            const desde = document.getElementById("filtroFechaDesde");
+            const hasta = document.getElementById("filtroFechaHasta");
+            if (tipo) tipo.value = "todos";
+            if (desde) desde.value = "";
+            if (hasta) hasta.value = "";
+            aplicarFiltrosLocales();
+        });
+    }
+
+    cargarMovimientos();
 });
 
 async function cargarMovimientos() {
-    const sucursalSelect = document.getElementById('sucursalMovimiento').value;
-    
-    try {
-        const response = await fetch(`https://rudafer-api.onrender.com/api/movimientos?sucursal=${sucursalSelect}`);
-        if (!response.ok) throw new Error('Error al conectar con el servidor');
+    const selector = document.getElementById("selectSucursalGlobal");
+    const idSucursal = selector?.value || localStorage.getItem("rudafer_sucursal_activa") || "1";
+    const tbody = document.getElementById("tablaMovimientos");
+    if (tbody) tbody.innerHTML = '<tr><td colspan="7">Cargando movimientos...</td></tr>';
 
+    try {
+        const response = await fetch(`${API_BASE_MOVIMIENTOS}/api/movimientos?idSucursal=${encodeURIComponent(idSucursal)}`);
+        if (!response.ok) throw new Error(`El servidor respondió HTTP ${response.status}`);
         const data = await response.json();
 
-        // Actualizar tarjetas de resumen (si el resumen incluye pagos, lo manejamos de forma segura)
-       // Actualizar tarjetas de resumen
-        const cards = document.querySelectorAll('.movement-summary-card strong');
-        if (cards.length >= 4 && data.resumen) {
-            cards[0].textContent = data.resumen.ventas;
-            cards[1].textContent = data.resumen.compras;
-            cards[2].textContent = data.resumen.transferencias;
-            cards[3].textContent = data.resumen.pagos || 0;
-        }
+        const resumen = data.resumen || {};
+        establecerTexto("resumenVentas", resumen.ventas ?? 0);
+        establecerTexto("resumenCompras", resumen.compras ?? 0);
+        establecerTexto("resumenTransferencias", resumen.transferencias ?? 0);
+        establecerTexto("resumenPagos", resumen.pagos ?? 0);
 
-        // Renderizar la tabla si trae elementos
-        if (data.lista && data.lista.length > 0) {
-            const tbody = document.getElementById('tablaMovimientos');
-            tbody.innerHTML = '';
-
-            data.lista.forEach(item => {
-                const esPositivo = !item.cantidad.toString().includes('-');
-                const claseCantidad = esPositivo ? 'quantity positive' : 'quantity negative';
-                
-                // Formatear el texto legible del tipo de movimiento
-                let tipoTexto = item.tipo;
-                if (tipoTexto === 'venta') tipoTexto = 'Venta';
-                else if (tipoTexto === 'compra') tipoTexto = 'Compra';
-                else if (tipoTexto === 'pago') tipoTexto = 'Pago';
-                else if (tipoTexto === 'transferencia') tipoTexto = 'Transferencia';
-                else tipoTexto = item.tipo.charAt(0).toUpperCase() + item.tipo.slice(1);
-
-                tbody.innerHTML += `
-                    <tr data-movimiento="${item.tipo}">
-                        <td>${item.fecha}</td>
-                        <td>
-                            <span class="movement-type ${item.tipo}">
-                                <span class="movement-dot"></span>
-                                ${tipoTexto}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="movement-product">
-                                <strong>${item.detalle}</strong>
-                                <span>${item.categoria}</span>
-                            </div>
-                        </td>
-                        <td><strong class="${claseCantidad}">${item.cantidad}</strong></td>
-                        <td>${item.sucursal}</td>
-                        <td>${item.responsable}</td>
-                        <td>${item.referencia}</td>
-                    </tr>
-                `;
-            });
-        }
+        listaMovimientosGlobal = Array.isArray(data.lista) ? data.lista : [];
+        aplicarFiltrosLocales();
     } catch (error) {
-        console.warn("Aviso: No se pudo conectar con el endpoint de movimientos, operando de forma local.", error);
+        console.error("Error al cargar movimientos:", error);
+        if (tbody) {
+            tbody.innerHTML = "";
+            const row = tbody.insertRow();
+            const cell = row.insertCell();
+            cell.colSpan = 7;
+            cell.textContent = "No se pudieron cargar los movimientos. Verificá la conexión con el servidor.";
+        }
+        establecerTexto("infoConteoMovimientos", "Error al cargar movimientos");
     }
 }
 
-// Filtros locales interactivos para la tabla ya renderizada
-function filtrarTablaLocal() {
-    const tipoFiltro = document.getElementById('filtroMovimiento').value;
-    const sucursalFiltro = document.getElementById('filtroSucursal').value;
-    const filas = document.querySelectorAll('#tablaMovimientos tr');
+function aplicarFiltrosLocales() {
+    const tipoFiltro = document.getElementById("filtroMovimiento")?.value || "todos";
+    const desdeValor = document.getElementById("filtroFechaDesde")?.value || "";
+    const hastaValor = document.getElementById("filtroFechaHasta")?.value || "";
+    const desde = desdeValor ? new Date(`${desdeValor}T00:00:00`) : null;
+    const hasta = hastaValor ? new Date(`${hastaValor}T23:59:59`) : null;
 
-    filas.forEach(fila => {
-        const tipoMov = fila.getAttribute('data-movimiento');
-        const textoFila = fila.textContent.toLowerCase();
-        
-        let cumpleTipo = (tipoFiltro === 'todos' || tipoMov === tipoFiltro);
-        let cumpleSucursal = (sucursalFiltro === 'todas' || textoFila.includes(sucursalFiltro.toLowerCase()));
-
-        if (cumpleTipo && cumpleSucursal) {
-            fila.style.display = '';
-        } else {
-            fila.style.display = 'none';
+    movimientosFiltrados = listaMovimientosGlobal.filter(item => {
+        const tipo = String(item.tipo || "").toLowerCase();
+        if (tipoFiltro !== "todos" && tipo !== tipoFiltro) return false;
+        if (desde || hasta) {
+            const fechaTexto = String(item.fecha || "").replace(" ", "T");
+            const fecha = fechaTexto ? new Date(fechaTexto) : null;
+            if (fecha && !Number.isNaN(fecha.getTime())) {
+                if (desde && fecha < desde) return false;
+                if (hasta && fecha > hasta) return false;
+            }
         }
+        return true;
     });
+
+    const orden = document.getElementById("ordenMovimientos")?.value || "reciente";
+    movimientosFiltrados.sort((a, b) => {
+        const fechaA = new Date(String(a.fecha || "").replace(" ", "T")).getTime() || 0;
+        const fechaB = new Date(String(b.fecha || "").replace(" ", "T")).getTime() || 0;
+        return orden === "antiguo" ? fechaA - fechaB : fechaB - fechaA;
+    });
+    renderizarTablaMovimientos(movimientosFiltrados);
 }
 
-function ordenarTablaLocal() {
-    const orden = document.getElementById('ordenMovimientos').value;
-    const tbody = document.getElementById('tablaMovimientos');
-    const filasArray = Array.from(tbody.querySelectorAll('tr'));
+function renderizarTablaMovimientos(movimientos) {
+    const tbody = document.getElementById("tablaMovimientos");
+    if (!tbody) return;
+    tbody.replaceChildren();
 
-    filasArray.reverse(); // Invierte el orden visual entre recientes y antiguos
+    if (!movimientos.length) {
+        const row = tbody.insertRow();
+        const cell = row.insertCell();
+        cell.colSpan = 7;
+        cell.textContent = "No hay movimientos registrados para los filtros seleccionados.";
+        establecerTexto("infoConteoMovimientos", "0 movimientos encontrados");
+        return;
+    }
 
-    filasArray.forEach(fila => tbody.appendChild(fila));
+    movimientos.forEach(item => {
+        const row = tbody.insertRow();
+        const tipo = String(item.tipo || "movimiento").toLowerCase();
+        const tipoLabel = tipo.charAt(0).toUpperCase() + tipo.slice(1);
+        const cantidad = String(item.cantidad ?? "0");
+
+        agregarCelda(row, formatearFecha(item.fecha));
+        const tipoCell = row.insertCell();
+        const badge = document.createElement("span");
+        badge.className = `movement-type ${tipo}`;
+        const dot = document.createElement("span");
+        dot.className = "movement-dot";
+        badge.append(dot, document.createTextNode(tipoLabel));
+        tipoCell.appendChild(badge);
+
+        const detalleCell = row.insertCell();
+        const detalle = document.createElement("div");
+        detalle.className = "movement-product";
+        const strong = document.createElement("strong");
+        strong.textContent = item.detalle || "-";
+        const category = document.createElement("span");
+        category.textContent = item.categoria || "-";
+        detalle.append(strong, category);
+        detalleCell.appendChild(detalle);
+
+        const cantidadCell = row.insertCell();
+        const cantidadStrong = document.createElement("strong");
+        cantidadStrong.className = cantidad.includes("-") ? "quantity negative" : "quantity positive";
+        cantidadStrong.textContent = cantidad;
+        cantidadCell.appendChild(cantidadStrong);
+
+        agregarCelda(row, item.sucursal || "Sucursal Central");
+        agregarCelda(row, item.responsable || "Administración");
+        agregarCelda(row, item.referencia || "-");
+    });
+
+    establecerTexto("infoConteoMovimientos", `Mostrando ${movimientos.length} movimientos`);
+}
+
+function agregarCelda(row, value) {
+    const cell = row.insertCell();
+    cell.textContent = value == null || value === "" ? "-" : String(value);
+}
+
+function establecerTexto(id, value) {
+    const element = document.getElementById(id);
+    if (element) element.textContent = String(value);
+}
+
+function formatearFecha(value) {
+    if (!value) return "-";
+    return String(value).replace("T", " ");
 }

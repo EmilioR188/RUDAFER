@@ -11,6 +11,7 @@
         if (localStorage.getItem("rudafer_theme") === "dark") {
             document.documentElement.classList.add("dark-mode");
         }
+
     </script>
 </head>
 
@@ -83,9 +84,7 @@
                             <option value="1">Sucursal Central</option>
                             <option value="2">Sucursal 2</option>
                         </select>
-                    </div>
-                <div class="topbar-actions">
-                    <label for="modo-oscuro" class="theme-switch" title="Cambiar modo claro/oscuro">
+                        <label for="modo-oscuro" class="theme-switch" title="Cambiar modo claro/oscuro">
                         <span class="theme-sun">☀</span>
                         <span class="theme-track"><span class="theme-knob"></span></span>
                         <span class="theme-moon">☾</span>
@@ -164,6 +163,34 @@
                     </div>
                 </section>
 
+                <!-- SECCIÓN 3: SUCURSALES -->
+                <section>
+                    <div class="admin-section-heading">
+                        <h2>Gestión de Sucursales</h2>
+                        <button class="btn-accion-admin" type="button" onclick="abrirModalSucursal()">+ Nueva sucursal</button>
+                    </div>
+
+                    <div class="admin-table-card">
+                        <div class="admin-table-wrapper">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID SUCURSAL</th>
+                                        <th>NOMBRE DE LA SUCURSAL</th>
+                                        <th>DIRECCIÓN</th>
+                                        <th>TELÉFONO</th>
+                                        <th>EMAIL</th>
+                                        <th>ACCIONES</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaSucursales">
+                                    <tr><td colspan="6" style="text-align: center; padding: 25px; color: var(--muted);">Cargando sucursales...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </main>
     </div>
@@ -183,8 +210,8 @@
                     <div class="admin-form-group"><label>Apellidos</label><input type="text" id="empApellidos" required></div>
                     <div class="admin-form-group"><label>Teléfono</label><input type="text" id="empTelefono"></div>
                     <div class="admin-form-group"><label>Nombre de Usuario</label><input type="text" id="empUsuario" required></div>
-                    <div class="admin-form-group"><label>Contraseña</label><input type="password" id="empPassword" required></div>
-                    <div class="admin-form-group"><label>Sucursal ID</label><input type="number" id="empSucursal" value="1" required></div>
+                    <div class="admin-form-group"><label>Contraseña</label><input type="password" id="empPassword"></div>
+                    <div class="admin-form-group"><label>Sucursal</label><select id="empSucursal" required><option value="1">Sucursal Central</option></select></div>
                     <div class="admin-form-group"><label>Rol ID (1: Admin, 2: Empleado)</label><input type="number" id="empRol" value="2" required></div>
                     <div class="admin-form-group full"><label>Comisión por venta (%)</label><input type="number" step="0.1" id="empComision" value="2.5" required></div>
                 </div>
@@ -248,10 +275,34 @@
         </div>
     </div>
 
+    <!-- MODAL REGISTRAR / EDITAR SUCURSAL -->
+    <div class="admin-modal-overlay" id="modalSucursal">
+        <div class="admin-modal-card">
+            <div class="admin-modal-header">
+                <h3 id="tituloModalSucursal">Registrar Nueva Sucursal</h3>
+                <button type="button" onclick="cerrarModalSucursal()">✕</button>
+            </div>
+            <form id="formSucursal" onsubmit="guardarSucursal(event)">
+                <input type="hidden" id="sucId" value="0">
+                <div class="admin-form-grid">
+                    <div class="admin-form-group full"><label>Nombre de la Sucursal</label><input type="text" id="sucNombre" required placeholder="Ej: Sucursal Norte"></div>
+                    <div class="admin-form-group full"><label>Dirección</label><input type="text" id="sucDireccion" placeholder="Ej: Av. San Martín 1234"></div>
+                    <div class="admin-form-group"><label>Teléfono</label><input type="text" id="sucTelefono" placeholder="Ej: 1122334455"></div>
+                    <div class="admin-form-group"><label>Email</label><input type="email" id="sucEmail" placeholder="Ej: sucursal@rudafer.com"></div>
+                </div>
+                <div class="admin-modal-actions">
+                    <button type="button" class="btn-cancelar" onclick="cerrarModalSucursal()">Cancelar</button>
+                    <button type="submit" class="btn-accion-admin">Guardar Sucursal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="auth.js"></script>
     <script>
         let empleadosCache = [];
         let proveedoresCache = [];
+        let sucursalesCache = [];
 
         document.addEventListener("DOMContentLoaded", () => {
             cargarDatosAdmin();
@@ -337,6 +388,68 @@
                     });
                 }
 
+                // Cargar Sucursales
+                const resSuc = await fetch('https://rudafer-api.onrender.com/api/sucursales');
+                const sucursalesCrudas = await resSuc.json();
+                
+                sucursalesCache = sucursalesCrudas.filter(s => {
+                    const idVal = s.id !== undefined ? s.id : s.ID_Sucursal;
+                    if (idVal === 0 || idVal === "0") return false;
+                    const nombreVal = s.nombre || s.Nombre || "";
+                    const nombreMin = nombreVal.toLowerCase();
+                    if (nombreMin.includes("vista general") || nombreMin.includes("general")) return false;
+                    return true;
+                });
+
+                const selectEmpSucursal = document.getElementById("empSucursal");
+                if (selectEmpSucursal) {
+                    const sucursalSeleccionada = selectEmpSucursal.value || "1";
+                    selectEmpSucursal.innerHTML = "";
+                    sucursalesCache.forEach(s => {
+                        const id = s.id !== undefined ? s.id : s.ID_Sucursal;
+                        const nombre = s.nombre || s.Nombre || `Sucursal ${id}`;
+                        const option = document.createElement("option");
+                        option.value = String(id);
+                        option.textContent = nombre;
+                        selectEmpSucursal.appendChild(option);
+                    });
+                    selectEmpSucursal.value = sucursalSeleccionada;
+                    if (!selectEmpSucursal.value && selectEmpSucursal.options.length) selectEmpSucursal.selectedIndex = 0;
+                }
+
+                const tbodySuc = document.getElementById("tablaSucursales");
+                tbodySuc.innerHTML = "";
+
+                if(sucursalesCache.length === 0) {
+                    tbodySuc.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 20px; color: var(--muted);">No hay sucursales registradas.</td></tr>`;
+                } else {
+                    sucursalesCache.forEach(s => {
+                        const sId = s.id !== undefined ? s.id : s.ID_Sucursal;
+                        const sNombre = s.nombre || s.Nombre || "Sin nombre";
+                        const sDireccion = s.direccion || s.Direccion || s.domicilio || s.Domicilio || 'Sin dirección';
+                        const sTelefono = s.telefono || s.Telefono || '-';
+                        const sEmail = s.email || s.Email || 'Sin email';
+
+                        tbodySuc.innerHTML += `
+                            <tr>
+                                <td><span class="order-number">SUC-00${sId}</span></td>
+                                <td><strong>${sNombre}</strong></td>
+                                <td>${sDireccion}</td>
+                                <td>${sTelefono}</td>
+                                <td>${sEmail}</td>
+                                <td>
+                                    <button class="action-icon-btn" type="button" title="Editar sucursal" onclick="editarSucursal(${sId})">
+                                        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    </button>
+                                    <button class="action-icon-btn delete" type="button" title="Eliminar sucursal" onclick="eliminarSucursal(${sId})">
+                                        <svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+
             } catch (err) {
                 console.error("Error al cargar datos de administración:", err);
             }
@@ -371,6 +484,8 @@
             document.getElementById("empId").value = "0";
             document.getElementById("tituloModalEmpleado").textContent = "Registrar Nuevo Empleado";
             document.getElementById("formEmpleado").reset();
+            document.getElementById("empPassword").required = true;
+            document.getElementById("empPassword").placeholder = "Contraseña para el nuevo empleado";
             document.getElementById("modalEmpleado").classList.add("active");
         }
 
@@ -384,7 +499,9 @@
             document.getElementById("empTelefono").value = emp.telefono || "";
             document.getElementById("empUsuario").value = emp.nombreUsuario;
             document.getElementById("empPassword").value = "";
-            document.getElementById("empSucursal").value = "1";
+            document.getElementById("empPassword").required = false;
+            document.getElementById("empPassword").placeholder = "Dejá vacío para conservar la contraseña actual";
+            document.getElementById("empSucursal").value = String(emp.idSucursal || 1);
             document.getElementById("empRol").value = emp.rol === "ADMINISTRADOR" ? 1 : 2;
             document.getElementById("empComision").value = emp.comision;
             
@@ -425,6 +542,28 @@
             document.getElementById("modalPagoProveedor").classList.add("active");
         }
         function cerrarModalPago() { document.getElementById("modalPagoProveedor").classList.remove("active"); }
+
+        function abrirModalSucursal() {
+            document.getElementById("sucId").value = "0";
+            document.getElementById("tituloModalSucursal").textContent = "Registrar Nueva Sucursal";
+            document.getElementById("formSucursal").reset();
+            document.getElementById("modalSucursal").classList.add("active");
+        }
+
+        function editarSucursal(id) {
+            const suc = sucursalesCache.find(s => (s.id !== undefined ? s.id : s.ID_Sucursal) === id);
+            if (!suc) return;
+            document.getElementById("sucId").value = suc.id !== undefined ? suc.id : suc.ID_Sucursal;
+            document.getElementById("sucNombre").value = suc.nombre || suc.Nombre || "";
+            document.getElementById("sucDireccion").value = suc.direccion || suc.Direccion || suc.domicilio || suc.Domicilio || "";
+            document.getElementById("sucTelefono").value = suc.telefono || suc.Telefono || "";
+            document.getElementById("sucEmail").value = suc.email || suc.Email || "";
+            
+            document.getElementById("tituloModalSucursal").textContent = `Editar Sucursal: ${suc.nombre || suc.Nombre}`;
+            document.getElementById("modalSucursal").classList.add("active");
+        }
+
+        function cerrarModalSucursal() { document.getElementById("modalSucursal").classList.remove("active"); }
 
         async function guardarEmpleado(e) {
             e.preventDefault();
@@ -536,7 +675,86 @@
                 alert("Error al registrar el pago");
             }
         }
+        async function guardarSucursal(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById("sucId").value);
+            const data = {
+                id: id,
+                nombre: document.getElementById("sucNombre").value,
+                direccion: document.getElementById("sucDireccion").value,
+                telefono: document.getElementById("sucTelefono").value,
+                email: document.getElementById("sucEmail").value
+            };
+
+            const url = 'https://rudafer-api.onrender.com/api/sucursales';
+            const method = id > 0 ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (res.ok) {
+                    alert(id > 0 ? "Sucursal actualizada con éxito" : "Sucursal registrada con éxito");
+                    cerrarModalSucursal();
+                    cargarDatosAdmin();
+                } else {
+                    alert("Error al procesar la sucursal en el servidor.");
+                }
+            } catch (err) {
+                console.error("Error de red:", err);
+                alert("No se pudo conectar con el servidor Java.");
+            }
+        }
+
+        async function eliminarSucursal(id) {
+            if(!confirm("¿Estás seguro de eliminar esta sucursal?")) return;
+            try {
+                const res = await fetch(`https://rudafer-api.onrender.com/api/sucursales?id=${id}`, { method: 'DELETE' });
+                if(res.ok) {
+                    alert("Sucursal eliminada correctamente");
+                    cargarDatosAdmin();
+                } else {
+                    alert("No se pudo eliminar la sucursal (puede tener stock o empleados asociados).");
+                }
+            } catch (err) {
+                console.error("Error de red:", err);
+                alert("Error de conexión con el servidor.");
+            }
+        }
     </script>
+
+
+    <!-- FOOTER INSTITUCIONAL - EQUIPO 2+2 -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col footer-brand">
+                <div class="footer-logo-box">
+                    <img src="assets/2+2.png" alt="Logo Equipo 2+2" class="footer-logo">
+                </div>
+                <h3>Equipo 2+2 (Dos más dos)</h3>
+                <p class="brand-tagline">Optimización de procesos y logística integrada.</p>
+            </div>
+            <div class="footer-col">
+                <h4>¿Quiénes somos?</h4>
+                <p>Somos expertos en análisis de logística y optimización de procesos dedicados al desarrollo y soporte de sistemas eficientes.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Canales Oficiales</h4>
+                <ul class="footer-contact-list">
+                    <li>📌 <strong>Desarrollado por:</strong> Equipo 2+2</li>
+                    <li>📧 <strong>Soporte:</strong> contacto@equipo2mas2.com</li>
+                    <li>📞 <strong>Línea central:</strong> 011-5555-1234</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Equipo 2+2 (Dos más dos). Todos los derechos reservados. Sistema RUDAFER.</p>
+        </div>
+    </footer>
+
 </body>
 
 </html>
