@@ -11,7 +11,6 @@
         if (localStorage.getItem("rudafer_theme") === "dark") {
             document.documentElement.classList.add("dark-mode");
         }
-
     </script>
 </head>
 
@@ -85,20 +84,21 @@
                             <option value="2">Sucursal 2</option>
                         </select>
                         <label for="modo-oscuro" class="theme-switch" title="Cambiar modo claro/oscuro">
-                        <span class="theme-sun">☀</span>
-                        <span class="theme-track"><span class="theme-knob"></span></span>
-                        <span class="theme-moon">☾</span>
-                    </label>
+                            <span class="theme-sun">☀</span>
+                            <span class="theme-track"><span class="theme-knob"></span></span>
+                            <span class="theme-moon">☾</span>
+                        </label>
 
-                    <div class="user-profile">
-                        <div class="avatar" id="avatarUsuario">U</div>
-                        <div class="user-info">
-                            <strong id="nombreUsuario">Cargando...</strong>
-                            <span id="rolUsuario">Administrador</span>
+                        <div class="user-profile">
+                            <div class="avatar" id="avatarUsuario">U</div>
+                            <div class="user-info">
+                                <strong id="nombreUsuario">Cargando...</strong>
+                                <span id="rolUsuario">Administrador</span>
+                            </div>
+                            <button id="btnCerrarSesion" type="button" class="icon-button" title="Cerrar sesión" style="background: none; border: none; cursor: pointer; color: inherit; padding: 4px;">
+                                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                            </button>
                         </div>
-                        <button id="btnCerrarSesion" type="button" class="icon-button" title="Cerrar sesión" style="background: none; border: none; cursor: pointer; color: inherit; padding: 4px;">
-                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                        </button>
                     </div>
                 </div>
             </header>
@@ -136,7 +136,7 @@
                 </section>
 
                 <!-- SECCIÓN 2: PROVEEDORES -->
-                <section>
+                <section style="margin-bottom: 40px;">
                     <div class="admin-section-heading">
                         <h2>Gestión de Proveedores</h2>
                         <button class="btn-accion-admin" type="button" onclick="abrirModalProveedor()">+ Nuevo proveedor</button>
@@ -282,17 +282,17 @@
                 <h3 id="tituloModalSucursal">Registrar Nueva Sucursal</h3>
                 <button type="button" onclick="cerrarModalSucursal()">✕</button>
             </div>
-            <form id="formSucursal" onsubmit="guardarSucursal(event)">
+            <form id="formSucursal">
                 <input type="hidden" id="sucId" value="0">
                 <div class="admin-form-grid">
-                    <div class="admin-form-group full"><label>Nombre de la Sucursal</label><input type="text" id="sucNombre" required placeholder="Ej: Sucursal Norte"></div>
+                    <div class="admin-form-group full"><label>Nombre de la Sucursal</label><input type="text" id="sucNombre" placeholder="Ej: Sucursal Norte"></div>
                     <div class="admin-form-group full"><label>Dirección</label><input type="text" id="sucDireccion" placeholder="Ej: Av. San Martín 1234"></div>
                     <div class="admin-form-group"><label>Teléfono</label><input type="text" id="sucTelefono" placeholder="Ej: 1122334455"></div>
                     <div class="admin-form-group"><label>Email</label><input type="email" id="sucEmail" placeholder="Ej: sucursal@rudafer.com"></div>
                 </div>
                 <div class="admin-modal-actions">
                     <button type="button" class="btn-cancelar" onclick="cerrarModalSucursal()">Cancelar</button>
-                    <button type="submit" class="btn-accion-admin">Guardar Sucursal</button>
+                    <button type="button" class="btn-accion-admin" onclick="guardarSucursalManual()">Guardar Sucursal</button>
                 </div>
             </form>
         </div>
@@ -380,7 +380,7 @@
                                         <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
                                     </button>
                                     <button class="action-icon-btn delete" type="button" title="Eliminar proveedor" onclick="eliminarProveedor(${p.idProveedor})">
-                                        <svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                        <svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2 2v2"/></svg>
                                     </button>
                                 </td>
                             </tr>
@@ -442,7 +442,7 @@
                                         <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                     </button>
                                     <button class="action-icon-btn delete" type="button" title="Eliminar sucursal" onclick="eliminarSucursal(${sId})">
-                                        <svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                        <svg viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2 2v2"/></svg>
                                     </button>
                                 </td>
                             </tr>
@@ -675,15 +675,21 @@
                 alert("Error al registrar el pago");
             }
         }
-        async function guardarSucursal(e) {
-            e.preventDefault();
-            const id = parseInt(document.getElementById("sucId").value);
+
+        async function guardarSucursalManual() {
+            const nombreVal = document.getElementById("sucNombre").value.trim();
+            if (!nombreVal) {
+                alert("Por favor ingresá el nombre de la sucursal.");
+                return;
+            }
+
+            const id = parseInt(document.getElementById("sucId").value) || 0;
             const data = {
                 id: id,
-                nombre: document.getElementById("sucNombre").value,
-                direccion: document.getElementById("sucDireccion").value,
-                telefono: document.getElementById("sucTelefono").value,
-                email: document.getElementById("sucEmail").value
+                nombre: nombreVal,
+                direccion: document.getElementById("sucDireccion").value.trim(),
+                telefono: document.getElementById("sucTelefono").value.trim(),
+                email: document.getElementById("sucEmail").value.trim()
             };
 
             const url = 'https://rudafer-api.onrender.com/api/sucursales';
@@ -725,7 +731,6 @@
             }
         }
     </script>
-
 
     <!-- FOOTER INSTITUCIONAL - EQUIPO 2+2 -->
     <footer class="site-footer">
