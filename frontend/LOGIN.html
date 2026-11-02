@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="ESTILOS.css">
     <link rel="stylesheet" href="LOGIN.css">
     <style>
-        /* Estilo idéntico al input de usuario para mantener la armonía visual */
         .input-wrapper-pass {
             position: relative;
             display: flex;
@@ -97,7 +96,6 @@
                 <label for="password">Contraseña</label>
                 
                 <div class="input-wrapper input-wrapper-pass">
-                    <!-- Candado con la misma clase e ícono original -->
                     <svg viewBox="0 0 24 24">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -105,207 +103,13 @@
 
                     <input type="password" id="password" name="password" placeholder="••••••••" required>
 
-                    <!-- Botón del ojo integrado perfectamente -->
-                    <button type="button" id="btnTogglePassword" class="toggle-password-btn" title="Mostrar u ocultar contraseña" onclick="toggleVisibilidadPassword()">
-                        <!-- Ícono Ojo Abierto -->
-                        <svg id="iconEyeOpen" viewBox="0 0 24 24">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-
-                        <!-- Ícono Ojo Tachado (Oculto inicialmente) -->
-                        <svg id="iconEyeClosed" viewBox="0 0 24 24" style="display: none;">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                            <line x1="1" y1="1" x2="23" y2="23"></line>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <!-- BOTÓN INGRESAR -->
-            <button type="submit" class="btn-login">
-                <span>Ingresar al portal</span>
-                <svg viewBox="0 0 24 24">
-                    <path d="M5 12h14"/>
-                    <path d="m12 5 7 7-7 7"/>
-                </svg>
-            </button>
-
-        </form>
-
-        <!-- FOOTER DE SEGURIDAD -->
-        <div class="login-footer">
-            <span class="status-dot"></span>
-            <span>Conexión segura con el servidor</span>
-        </div>
-
-    </main>
-
-    <!-- Script de visibilidad -->
-    <script>
-        function toggleVisibilidadPassword() {
-            const inputPass = document.getElementById("password");
-            const eyeOpen = document.getElementById("iconEyeOpen");
-            const eyeClosed = document.getElementById("iconEyeClosed");
-
-            if (inputPass.type === "password") {
-                inputPass.type = "text";
-                eyeOpen.style.display = "none";
-                eyeClosed.style.display = "block";
-            } else {
-                inputPass.type = "password";
-                eyeOpen.style.display = "block";
-                eyeClosed.style.display = "none";
-            }
-        }
-    </script>
-
-    <script src="login.js"></script>
-
-    <!-- FOOTER INSTITUCIONAL - EQUIPO 2+2 -->
-    <footer class="site-footer">
-        <div class="footer-container">
-            <div class="footer-col footer-brand">
-                <div class="footer-logo-box">
-                    <img src="assets/2+2.png" alt="Logo Equipo 2+2" class="footer-logo">
-                </div>
-                <h3>Equipo 2+2 (Dos más dos)</h3>
-                <p class="brand-tagline">Optimización de procesos y logística integrada.</p>
-            </div>
-            <div class="footer-col">
-                <h4>¿Quiénes somos?</h4>
-                <p>Somos expertos en análisis de logística y optimización de procesos dedicados al desarrollo y soporte de sistemas eficientes.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Canales Oficiales</h4>
-                <ul class="footer-contact-list">
-                    <li>📌 <strong>Desarrollado por:</strong> Equipo 2+2</li>
-                    <li>📧 <strong>Soporte:</strong> contacto@equipo2mas2.com</li>
-                    <li>📞 <strong>Línea central:</strong> 011-5555-1234</li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Equipo 2+2 (Dos más dos). Todos los derechos reservados. Sistema RUDAFER.</p>
-        </div>
-    </footer>
-
-</body>
-
-</html><!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RUDAFER | Iniciar Sesión</title>
-    <link rel="stylesheet" href="ESTILOS.css">
-    <link rel="stylesheet" href="LOGIN.css">
-    <style>
-        /* Contenedor adaptado para albergar el input y el botón perfectamente alineados */
-        .input-wrapper-pass {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-
-        .input-wrapper-pass input {
-            width: 100%;
-            padding-right: 45px !important; /* Espacio para que el texto no se superponga al ícono */
-        }
-
-        .toggle-password-btn {
-            position: absolute;
-            right: 12px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--muted, #888);
-            transition: color 0.2s ease;
-            z-index: 5;
-        }
-
-        .toggle-password-btn:hover {
-            color: var(--text, #333);
-        }
-
-        .toggle-password-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-    </style>
-</head>
-
-<body class="login-body">
-
-    <!-- CONTENEDOR TARJETA CENTRADA -->
-    <main class="login-card">
-
-        <!-- BRAND / LOGO -->
-        <div class="login-brand">
-            <div class="brand-mark">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <div class="brand-text">
-                <h1>RUDAFER</h1>
-                <p>Gestión Interna</p>
-            </div>
-        </div>
-
-        <!-- TÍTULO -->
-        <div class="login-header">
-            <h2>Bienvenido al sistema</h2>
-            <p>Ingresá tus credenciales para acceder.</p>
-        </div>
-
-        <!-- FORMULARIO PREPARADO PARA JAVA (POST /login) -->
-        <form action="login" method="POST" class="login-form">
-
-            <!-- USUARIO (DNI) -->
-            <div class="form-group">
-                <label for="dni">Usuario (DNI)</label>
-                <div class="input-wrapper">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
-                    </svg>
-                    <input type="text" id="dni" name="dni" placeholder="Ej: 38123456" required autofocus pattern="[0-9]{7,8}" title="Ingrese un número de DNI válido sin puntos">
-                </div>
-            </div>
-
-            <!-- CONTRASEÑA -->
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                
-                <div class="input-wrapper-pass">
-                    <svg viewBox="0 0 24 24" style="position: absolute; left: 14px; width: 20px; height: 20px; stroke: var(--muted); fill: none; stroke-width: 2;">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                    </svg>
-
-                    <input type="password" id="password" name="password" placeholder="••••••••" required style="padding-left: 45px;">
-
                     <!-- Botón del ojo integrado -->
                     <button type="button" id="btnTogglePassword" class="toggle-password-btn" title="Mostrar u ocultar contraseña" onclick="toggleVisibilidadPassword()">
-                        <!-- Ícono Ojo Abierto -->
                         <svg id="iconEyeOpen" viewBox="0 0 24 24">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                             <circle cx="12" cy="12" r="3"></circle>
                         </svg>
 
-                        <!-- Ícono Ojo Tachado (Oculto inicialmente) -->
                         <svg id="iconEyeClosed" viewBox="0 0 24 24" style="display: none;">
                             <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
                             <line x1="1" y1="1" x2="23" y2="23"></line>
