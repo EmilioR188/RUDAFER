@@ -8,46 +8,24 @@
     <link rel="stylesheet" href="ESTILOS.css">
     <link rel="stylesheet" href="LOGIN.css">
     <style>
-        .input-wrapper-pass {
-            position: relative;
+        /* Estilo limpio para el checkbox de mostrar contraseña */
+        .checkbox-container {
             display: flex;
             align-items: center;
-            width: 100%;
-        }
-
-        .input-wrapper-pass input {
-            width: 100%;
-            padding-left: 42px !important;
-            padding-right: 45px !important;
-        }
-
-        .toggle-password-btn {
-            position: absolute;
-            right: 12px;
-            background: none;
-            border: none;
+            gap: 8px;
+            margin-top: 8px;
+            margin-bottom: 4px;
+            font-size: 13px;
+            color: var(--text-soft, #555);
             cursor: pointer;
-            padding: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--muted, #888);
-            transition: color 0.2s ease;
-            z-index: 5;
+            user-select: none;
         }
 
-        .toggle-password-btn:hover {
-            color: var(--text, #333);
-        }
-
-        .toggle-password-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+        .checkbox-container input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--orange, #f59b20);
+            cursor: pointer;
         }
     </style>
 </head>
@@ -95,27 +73,20 @@
             <div class="form-group">
                 <label for="password">Contraseña</label>
                 
-                <div class="input-wrapper input-wrapper-pass">
+                <div class="input-wrapper">
                     <svg viewBox="0 0 24 24">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                     </svg>
 
                     <input type="password" id="password" name="password" placeholder="••••••••" required>
-
-                    <!-- Botón del ojo integrado -->
-                    <button type="button" id="btnTogglePassword" class="toggle-password-btn" title="Mostrar u ocultar contraseña" onclick="toggleVisibilidadPassword()">
-                        <svg id="iconEyeOpen" viewBox="0 0 24 24">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-
-                        <svg id="iconEyeClosed" viewBox="0 0 24 24" style="display: none;">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                            <line x1="1" y1="1" x2="23" y2="23"></line>
-                        </svg>
-                    </button>
                 </div>
+
+                <!-- Checkbox para mostrar contraseña -->
+                <label class="checkbox-container">
+                    <input type="checkbox" id="verPassword" onclick="toggleCheckboxPassword()">
+                    <span>Mostrar contraseña</span>
+                </label>
             </div>
 
             <!-- BOTÓN INGRESAR -->
@@ -137,21 +108,16 @@
 
     </main>
 
-    <!-- Script de visibilidad -->
+    <!-- Script del Checkbox -->
     <script>
-        function toggleVisibilidadPassword() {
+        function toggleCheckboxPassword() {
             const inputPass = document.getElementById("password");
-            const eyeOpen = document.getElementById("iconEyeOpen");
-            const eyeClosed = document.getElementById("iconEyeClosed");
+            const checkbox = document.getElementById("verPassword");
 
-            if (inputPass.type === "password") {
+            if (checkbox.checked) {
                 inputPass.type = "text";
-                eyeOpen.style.display = "none";
-                eyeClosed.style.display = "block";
             } else {
                 inputPass.type = "password";
-                eyeOpen.style.display = "block";
-                eyeClosed.style.display = "none";
             }
         }
     </script>
