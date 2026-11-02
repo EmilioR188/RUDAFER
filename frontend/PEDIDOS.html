@@ -626,6 +626,7 @@
                         }
                         itemsTraspaso.push({
                             idProducto: parseInt(input.dataset.id),
+                            id_producto: parseInt(input.dataset.id),
                             cantidad: cant
                         });
                     }
@@ -639,10 +640,15 @@
                 return;
             }
 
+            const empleadoId = parseInt(localStorage.getItem('ID_Empleado') || localStorage.getItem('idEmpleado') || '1', 10);
+
             const datosTransferencia = {
                 idSucursalOrigen: parseInt(idOrigen),
+                id_sucursal_origen: parseInt(idOrigen),
                 idSucursalDestino: parseInt(idDestino),
-                idEmpleado: parseInt(localStorage.getItem('ID_Empleado') || '0', 10),
+                id_sucursal_destino: parseInt(idDestino),
+                idEmpleado: empleadoId,
+                id_empleado: empleadoId,
                 items: itemsTraspaso
             };
 
@@ -653,16 +659,23 @@
                     body: JSON.stringify(datosTransferencia)
                 });
 
-                const data = await res.json();
-                if (res.ok && data.exito) {
+                let data = {};
+                try {
+                    data = await res.json();
+                } catch (parseErr) {
+                    console.warn("La respuesta no fue un JSON válido:", parseErr);
+                }
+
+                if (res.ok && (data.exito !== false)) {
                     alert("¡Transferencia realizada con éxito!");
                     cerrarModalTransferencia();
                     cargarHistorialPedidosBD();
                 } else {
-                    alert("Error: " + (data.mensaje || "No se pudo procesar la transferencia."));
+                    alert("Error: " + (data.mensaje || "No se pudo procesar la transferencia en el servidor."));
                 }
             } catch (err) {
                 console.error("Error al enviar transferencia:", err);
+                alert("Error de red al conectar con el servidor de Render.");
             }
         }
 
